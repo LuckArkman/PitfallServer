@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "NJG3vTwLb1U=",
+  "success": true,
+  "projectFilePath": "/home/mplopes/Documentos/GitHub/PitfallServer/Interfaces/Interfaces.csproj",
+  "expectedPackageFiles": [
+    "/home/mplopes/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.16/microsoft.aspnetcore.app.ref.8.0.16.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "qKVWivFgYMg=",
+  "success": true,
+  "projectFilePath": "/home/mplopes/Documentos/GitHub/PitfallServer/Controllers/Controllers.csproj",
+  "expectedPackageFiles": [
+    "/home/mplopes/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.16/microsoft.aspnetcore.app.ref.8.0.16.nupkg.sha512"
+  ],
+  "logs": []
+}
