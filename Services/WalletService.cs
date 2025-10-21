@@ -1,16 +1,21 @@
 using Data;
 using DTOs;
+using Microsoft.EntityFrameworkCore;
 
 namespace Services;
 
 public class WalletService
 {
     private readonly AppDbContext _db;
-    public WalletService(AppDbContext db) { _db = db; }
+
+    public WalletService(AppDbContext db)
+    {
+        _db = db;
+    }
 
     public async Task<Wallet> GetOrCreateWalletAsync(long userId)
     {
-        var w = await _db.Wallets.FindAsync(userId);
+        var w = await _db.Wallets.FirstOrDefaultAsync(w => w.UserId == userId);
         if (w != null) return w;
         w = new Wallet { UserId = userId, Balance = 0, BalanceWithdrawal = 0, BalanceBonus = 0, UpdatedAt = DateTime.UtcNow };
         _db.Wallets.Add(w);

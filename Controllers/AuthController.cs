@@ -17,6 +17,14 @@ public class AuthController : ControllerBase
         if (token == null) return Ok(new { message = "Credenciais inválidas." });
         return Ok(new { token });
     }
+    
+    [HttpPost("Register")]
+    public async Task<IActionResult> Register([FromBody] LoginRequest req)
+    {
+        var token = await _auth.RegisterAsync(req.Email, req.Password);
+        if (token == null) return Ok(new { message = "Credenciais inválidas." });
+        return Ok(new { token });
+    }
 }
 
 public class LoginRequest { public string Email { get; set; } public string Password { get; set; } }

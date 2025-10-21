@@ -1,77 +1,39 @@
-using Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using Services;
+using Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Config
-var configuration = builder.Configuration;
-
-// Add DbContext
+// --- Banco de Dados ---
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Services
-builder.Services.AddScoped<TokenService>();
+// --- Serviços da aplicação ---
 builder.Services.AddScoped<AuthService>();
-builder.Services.AddScoped<AdminTokenService>();
-builder.Services.AddScoped<AdminAuthService>();
+builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<WalletService>();
-/*
-// Authentication JWT (so we can use [Authorize])
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = "JwtBearer";
-    options.DefaultChallengeScheme = "JwtBearer";
-}).AddJwtBearer("JwtBearer", options =>
-{
-    var key = configuration["Jwt:Key"];
-    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidIssuer = configuration["Jwt:Issuer"],
-        ValidateAudience = true,
-        ValidAudience = configuration["Jwt:Audience"],
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(key)),
-        ValidateLifetime = true,
-        ClockSkew = TimeSpan.Zero
-    };
-});
-*/
+builder.Services.AddScoped<AdminAuthService>();
+builder.Services.AddScoped<AdminTokenService>();
 
-builder.Services.AddAuthorization();
-
-// Controllers & swagger
+// --- Infraestrutura padrão ---
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddSwaggerGen();
+
+// --- CORS ---
+builder.Services.AddCors(options =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Pitfall API", Version = "v1" });
-    // JWT auth in swagger
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    options.AddPolicy("AllowAll", policy =>
     {
-        Type = SecuritySchemeType.Http,
-        Scheme = "bearer",
-        BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Description = "Insira: Bearer {token}"
-    });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement {
-        { new OpenApiSecurityScheme{ Reference = new OpenApiReference{ Type = ReferenceType.SecurityScheme, Id = "Bearer" } }, new string[] {} }
+        policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
     });
 });
 
 var app = builder.Build();
 
-// Apply migrations at startup (optional; be consciente em produção)
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.Migrate();
-}
-
+// --- Pipeline HTTP ---
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -79,9 +41,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowAll");
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
 app.Run();

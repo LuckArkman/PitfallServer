@@ -24,6 +24,7 @@ public class AppDbContext : DbContext
                 b.Property(x => x.Email).HasColumnName("email");
                 b.HasIndex(x => x.Email).IsUnique().HasDatabaseName("ix_users_email");
                 b.Property(x => x.Name).HasColumnName("name");
+                b.Property(x => x.PasswordHash).HasColumnName("PasswordHash");
                 b.Property(x => x.IsInfluencer).HasColumnName("is_influencer").HasDefaultValue(false);
                 b.Property(x => x.Status).HasColumnName("status").HasDefaultValue("active");
             });
@@ -33,14 +34,19 @@ public class AppDbContext : DbContext
                 b.ToTable("admins");
                 b.HasKey(x => x.Id).HasName("pk_admins");
                 b.Property(x => x.Email).HasColumnName("email");
+                b.Property(x => x.PasswordHash).HasColumnName("PasswordHash");
                 b.HasIndex(x => x.Email).IsUnique().HasDatabaseName("ix_admins_email");
             });
 
             modelBuilder.Entity<Wallet>(b =>
             {
                 b.ToTable("wallets");
-                b.HasKey(w => w.UserId).HasName("pk_wallets");
-                b.Property(w => w.UserId).HasColumnName("user_id");
+                b.HasKey(w => w.UserId).HasName("UserId");
+                b.Property(w => w.Currency).HasColumnName("Currency");
+                b.HasKey(w => w.Balance).HasName("Balance");
+                b.Property(w => w.BalanceWithdrawal).HasColumnName("BalanceWithdrawal");
+                b.HasKey(w => w.BalanceBonus).HasName("BalanceBonus");
+                b.Property(w => w.UpdatedAt).HasColumnName("UpdatedAt");
             });
 
             modelBuilder.Entity<WalletLedger>(b =>
