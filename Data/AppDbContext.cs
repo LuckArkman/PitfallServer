@@ -29,15 +29,6 @@ public class AppDbContext : DbContext
                 b.Property(x => x.Status).HasColumnName("status").HasDefaultValue("active");
             });
 
-            modelBuilder.Entity<Admin>(b =>
-            {
-                b.ToTable("admins");
-                b.HasKey(x => x.Id).HasName("pk_admins");
-                b.Property(x => x.Email).HasColumnName("email");
-                b.Property(x => x.PasswordHash).HasColumnName("PasswordHash");
-                b.HasIndex(x => x.Email).IsUnique().HasDatabaseName("ix_admins_email");
-            });
-
             modelBuilder.Entity<Wallet>(b =>
             {
                 b.ToTable("wallets");
@@ -46,6 +37,18 @@ public class AppDbContext : DbContext
                 b.HasKey(w => w.Balance).HasName("Balance");
                 b.Property(w => w.BalanceWithdrawal).HasColumnName("BalanceWithdrawal");
                 b.HasKey(w => w.BalanceBonus).HasName("BalanceBonus");
+                b.Property(w => w.UpdatedAt).HasColumnName("UpdatedAt");
+            });
+
+
+            modelBuilder.Entity<Wallet>(b =>
+            {
+                b.ToTable("wallets");
+                b.HasKey(w => w.UserId).HasName("UserId");
+                b.Property(w => w.Currency).HasColumnName("Currency");
+                b.Property(w => w.Balance).HasColumnName("Balance");
+                b.Property(w => w.BalanceWithdrawal).HasColumnName("BalanceWithdrawal");
+                b.Property(w => w.BalanceBonus).HasColumnName("BalanceBonus");
                 b.Property(w => w.UpdatedAt).HasColumnName("UpdatedAt");
             });
 

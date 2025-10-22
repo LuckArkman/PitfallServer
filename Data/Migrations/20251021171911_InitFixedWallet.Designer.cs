@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251020211319_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20251021171911_InitFixedWallet")]
+    partial class InitFixedWallet
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,29 +38,22 @@ namespace Data.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("email");
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("LastLoginAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("PasswordHash");
+                        .HasColumnType("text");
 
                     b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Id")
-                        .HasName("pk_admins");
+                    b.HasKey("Id");
 
-                    b.HasIndex("Email")
-                        .IsUnique()
-                        .HasDatabaseName("ix_admins_email");
-
-                    b.ToTable("admins", (string)null);
+                    b.ToTable("Admins");
                 });
 
             modelBuilder.Entity("DTOs.GameRound", b =>
@@ -160,11 +153,16 @@ namespace Data.Migrations
 
             modelBuilder.Entity("DTOs.Wallet", b =>
                 {
-                    b.Property<decimal>("BalanceBonus")
-                        .HasColumnType("numeric");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.Property<decimal>("Balance")
-                        .HasColumnType("numeric");
+                        .HasColumnType("numeric")
+                        .HasColumnName("Balance");
+
+                    b.Property<decimal>("BalanceBonus")
+                        .HasColumnType("numeric")
+                        .HasColumnName("BalanceBonus");
 
                     b.Property<decimal>("BalanceWithdrawal")
                         .HasColumnType("numeric")
@@ -179,14 +177,8 @@ namespace Data.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("UpdatedAt");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("BalanceBonus")
-                        .HasName("BalanceBonus");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasKey("UserId")
+                        .HasName("UserId");
 
                     b.ToTable("wallets", (string)null);
                 });

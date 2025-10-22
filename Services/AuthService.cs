@@ -8,16 +8,19 @@ namespace Services;
 
 public class AuthService
 {
-    private readonly AppDbContext _db;
-    private readonly TokenService _tokenService;
-    private readonly WalletService _walletService;
+    readonly AppDbContext _db;
+    readonly TokenService _tokenService;
+    readonly WalletService _walletService;
+    readonly SessionService  _sessionService;
     public AuthService(AppDbContext db,
         TokenService tokenService,
-        WalletService walletService)
+        WalletService walletService,
+        SessionService sessionService)
     {
         _db = db;
         _tokenService = tokenService;
         _walletService = walletService;
+        _sessionService = sessionService;
     }
 
     public async Task<string> AuthenticateAsync(string email, string password)
@@ -27,10 +30,11 @@ public class AuthService
         // NOTE: in schema original password stored in users? if not, adapt to use credentials table.
         // Here we assume PasswordHash in Admins only. If you store user passwords, add property.
         if (user == null) return null;
-
-        // This example assumes user.PasswordHash exists; if you store differently, change accordingly.
-        // For now return token unconditionally (demo)
-        return _tokenService.GenerateToken(user);
+        
+        
+        var token = _tokenService.GenerateToken(user);
+        await _sessionService.SetAsync<User>(token, user);
+        return token;
     }
     
     public async Task<string?> RegisterAsync(string email, string password)

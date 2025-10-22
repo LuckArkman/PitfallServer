@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Services;
 using Data;
+using Microsoft.Extensions.Caching.Distributed;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,19 +10,27 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// --- Configuração do Redis ---
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis") ?? "localhost:6379";
+    options.InstanceName = "PitfallServer_";
+});
+
 // --- Serviços da aplicação ---
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<WalletService>();
 builder.Services.AddScoped<AdminAuthService>();
 builder.Services.AddScoped<AdminTokenService>();
+builder.Services.AddScoped<SessionService>();
 
 // --- Infraestrutura padrão ---
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// --- CORS ---
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
@@ -30,6 +40,13 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader();
     });
 });
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        b => b.MigrationsAssembly("Data") // força o assembly correto
+    )
+);
 
 var app = builder.Build();
 

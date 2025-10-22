@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Data;
 using DTOs;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,7 @@ public class WalletService
     {
         var w = await _db.Wallets.FirstOrDefaultAsync(w => w.UserId == userId);
         if (w != null) return w;
-        w = new Wallet { UserId = userId, Balance = 0, BalanceWithdrawal = 0, BalanceBonus = 0, UpdatedAt = DateTime.UtcNow };
+        w = new Wallet {BalanceBonus = 0, UserId = userId, Currency = "BRL", Balance = 0, BalanceWithdrawal = 0, UpdatedAt = DateTime.UtcNow };
         _db.Wallets.Add(w);
         await _db.SaveChangesAsync();
         return w;

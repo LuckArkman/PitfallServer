@@ -11,6 +11,7 @@ public class TokenService
 {
     private readonly IConfiguration _cfg;
     public TokenService(IConfiguration cfg) => _cfg = cfg;
+    
 
     public string GenerateToken(User user)
     {

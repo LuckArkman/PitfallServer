@@ -7,18 +7,18 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitFixedWallet : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "admins",
+                name: "Admins",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    email = table.Column<string>(type: "text", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
                     PasswordHash = table.Column<string>(type: "text", nullable: false),
                     Role = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -26,7 +26,7 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_admins", x => x.Id);
+                    table.PrimaryKey("PK_Admins", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -90,16 +90,16 @@ namespace Data.Migrations
                 name: "wallets",
                 columns: table => new
                 {
-                    BalanceBonus = table.Column<decimal>(type: "numeric", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     Currency = table.Column<string>(type: "text", nullable: false),
                     Balance = table.Column<decimal>(type: "numeric", nullable: false),
                     BalanceWithdrawal = table.Column<decimal>(type: "numeric", nullable: false),
+                    BalanceBonus = table.Column<decimal>(type: "numeric", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("BalanceBonus", x => x.BalanceBonus);
+                    table.PrimaryKey("UserId", x => x.UserId);
                     table.ForeignKey(
                         name: "FK_wallets_users_UserId",
                         column: x => x.UserId,
@@ -109,21 +109,9 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "ix_admins_email",
-                table: "admins",
-                column: "email",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "ix_users_email",
                 table: "users",
                 column: "email",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_wallets_UserId",
-                table: "wallets",
-                column: "UserId",
                 unique: true);
         }
 
@@ -131,7 +119,7 @@ namespace Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "admins");
+                name: "Admins");
 
             migrationBuilder.DropTable(
                 name: "game_rounds");
