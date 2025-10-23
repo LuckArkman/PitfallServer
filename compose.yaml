@@ -13,3 +13,22 @@
       - 5162:8080
     volumes:
       - ./Server/temp/certificate.pfx:/app/certs/certificate.pfx:ro
+    networks:
+      - server_network
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      # Certifique-se de que estas variáveis correspondem ao seu banco de dados
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: alangoleiro
+      POSTGRES_PASSWORD: Zelda@8703
+    ports:
+      - "5432:5432"
+    networks: # <-- ADICIONADO
+      - server-network # <-- ADICIONADO
+
+networks:
+  server_network:
+    driver: bridge
