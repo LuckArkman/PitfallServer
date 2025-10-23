@@ -1,0 +1,30 @@
+﻿services:
+  server:
+    image: server
+    build:
+      context: .
+      dockerfile: Server/Dockerfile
+    environment:
+      - ASPNETCORE_URLS=http://+:8080;https://+:443
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/certs/certificate.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=3702959
+    ports:
+      - 7154:443
+      - 5162:8080
+    volumes:
+      - ./Server/temp/certificate.pfx:/app/certs/certificate.pfx:ro
+    networks:
+      - server_network
+
+  redis:
+    image: redis:7
+    container_name: redis
+    restart: always
+    ports:
+      - 6379:6379
+    networks:
+      - server_network
+
+networks:
+  server_network:
+    driver: bridge
