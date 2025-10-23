@@ -47,14 +47,20 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 var app = builder.Build();
 
-// --- ATUALIZAÇÃO: Garante que o banco de dados SQLite seja criado na inicialização ---
+// --- ATUALIZAÇÃO: Aplicar migrações do AppDbContext na inicialização ---
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<SessionDbContext>();
-    // Cria o banco de dados e o schema se eles não existirem.
-    context.Database.EnsureCreated();
+
+    // Aplica migrações do banco de dados principal (PostgreSQL)
+    var mainDbContext = services.GetRequiredService<AppDbContext>();
+    mainDbContext.Database.Migrate();
+
+    // Cria o banco de dados de sessão (SQLite) se não existir
+    var sessionDbContext = services.GetRequiredService<SessionDbContext>();
+    sessionDbContext.Database.EnsureCreated();
 }
+// --------------------------------------------------------------------
 
 // --- Pipeline HTTP ---
 if (app.Environment.IsDevelopment())
