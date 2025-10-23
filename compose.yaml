@@ -25,7 +25,7 @@
       POSTGRES_USER: alangoleiro
       POSTGRES_PASSWORD: Zelda@8703
     ports:
-      - "5432:5432"
+      - 5432:5432
     networks: # <-- ADICIONADO
       - server-network # <-- ADICIONADO
 
