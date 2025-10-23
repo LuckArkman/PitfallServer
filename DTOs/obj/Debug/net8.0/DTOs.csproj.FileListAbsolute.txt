@@ -10,3 +10,4 @@
 /home/mplopes/Documentos/GitHub/PitfallServer/DTOs/obj/Debug/net8.0/refint/DTOs.dll
 /home/mplopes/Documentos/GitHub/PitfallServer/DTOs/obj/Debug/net8.0/DTOs.pdb
 /home/mplopes/Documentos/GitHub/PitfallServer/DTOs/obj/Debug/net8.0/ref/DTOs.dll
+/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/obj/Debug/net8.0/DTOs.csproj.AssemblyReference.cache
