@@ -13,9 +13,3 @@
       - 5162:8080
     volumes:
       - ./Server/temp/certificate.pfx:/app/certs/certificate.pfx:ro
-    networks:
-      - server_network
-
-networks:
-  server_network:
-    driver: bridge
