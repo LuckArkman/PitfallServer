@@ -15,19 +15,27 @@
       - ./Server/temp/certificate.pfx:/app/certs/certificate.pfx:ro
     networks:
       - server_network
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   postgres:
     image: postgres:latest
     container_name: postgres
     environment:
-      # Certifique-se de que estas variáveis correspondem ao seu banco de dados
       POSTGRES_DB: mydatabase
       POSTGRES_USER: alangoleiro
       POSTGRES_PASSWORD: Zelda@8703
     ports:
       - 5432:5432
-    networks: # <-- ADICIONADO
-      - server_network # <-- ADICIONADO
+    networks:
+      - server_network
+    # --- ATUALIZAÇÃO: Adicionado healthcheck ---
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U alangoleiro -d mydatabase"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 networks:
   server_network:
