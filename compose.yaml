@@ -16,15 +16,6 @@
     networks:
       - server_network
 
-  redis:
-    image: redis:7
-    container_name: redis
-    restart: always
-    ports:
-      - 6379:6379
-    networks:
-      - server_network
-
 networks:
   server_network:
     driver: bridge

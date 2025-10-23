@@ -26,6 +26,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Reference Include="Microsoft.AspNetCore">
+        <HintPath>..\..\..\..\.nuget\packages\microsoft.aspnetcore.app.ref\8.0.16\ref\net8.0\Microsoft.AspNetCore.dll</HintPath>
+      </Reference>
       <Reference Include="Microsoft.Extensions.Configuration">
         <HintPath>..\..\..\..\..\..\usr\share\dotnet\shared\Microsoft.AspNetCore.App\8.0.16\Microsoft.Extensions.Configuration.dll</HintPath>
       </Reference>

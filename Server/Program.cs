@@ -10,12 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// --- Configuração do Redis ---
-builder.Services.AddStackExchangeRedisCache(options =>
-{
-    options.Configuration = builder.Configuration.GetConnectionString("Redis") ?? "redis:6379";
-    options.InstanceName = "PitfallServer_";
-});
+// --- ATUALIZAÇÃO: Adicionar o DbContext para o banco de dados de sessão (SQLite) ---
+builder.Services.AddDbContext<SessionDbContext>(options =>
+    options.UseSqlite("Data Source=sessions.db")); // Cria um arquivo sessions.db
 
 // --- Serviços da aplicação ---
 builder.Services.AddScoped<AuthService>();
@@ -49,6 +46,15 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 );
 
 var app = builder.Build();
+
+// --- ATUALIZAÇÃO: Garante que o banco de dados SQLite seja criado na inicialização ---
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<SessionDbContext>();
+    // Cria o banco de dados e o schema se eles não existirem.
+    context.Database.EnsureCreated();
+}
 
 // --- Pipeline HTTP ---
 if (app.Environment.IsDevelopment())
