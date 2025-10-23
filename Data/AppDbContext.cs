@@ -29,17 +29,6 @@ public class AppDbContext : DbContext
                 b.Property(x => x.Status).HasColumnName("status").HasDefaultValue("active");
             });
 
-            modelBuilder.Entity<Wallet>(b =>
-            {
-                b.ToTable("wallets");
-                b.HasKey(w => w.UserId).HasName("UserId");
-                b.Property(w => w.Currency).HasColumnName("Currency");
-                b.HasKey(w => w.Balance).HasName("Balance");
-                b.Property(w => w.BalanceWithdrawal).HasColumnName("BalanceWithdrawal");
-                b.HasKey(w => w.BalanceBonus).HasName("BalanceBonus");
-                b.Property(w => w.UpdatedAt).HasColumnName("UpdatedAt");
-            });
-
 
             modelBuilder.Entity<Wallet>(b =>
             {
@@ -57,6 +46,13 @@ public class AppDbContext : DbContext
                 b.ToTable("wallet_ledger");
                 b.HasKey(x => x.Id).HasName("pk_wallet_ledger");
                 b.Property(x => x.Id).HasColumnName("id");
+                b.Property(x => x.UserId).HasColumnName("UserId");
+                b.Property(x => x.Type).HasColumnName("Type");
+                b.Property(x => x.Amount).HasColumnName("Amount");
+                b.Property(x => x.BalanceAfter).HasColumnName("BalanceAfter");
+                b.Property(x => x.GameRoundId).HasColumnName("GameRoundId");
+                b.Property(x => x.Metadata).HasColumnName("Metadata").IsRequired();
+                b.Property(x => x.CreatedAt).HasColumnName("CreatedAt");
             });
 
             modelBuilder.Entity<GameRound>(b =>

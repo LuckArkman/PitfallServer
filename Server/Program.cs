@@ -13,7 +13,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // --- Configuração do Redis ---
 builder.Services.AddStackExchangeRedisCache(options =>
 {
-    options.Configuration = builder.Configuration.GetConnectionString("Redis") ?? "localhost:6379";
+    options.Configuration = builder.Configuration.GetConnectionString("Redis") ?? "redis:6379";
     options.InstanceName = "PitfallServer_";
 });
 

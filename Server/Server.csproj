@@ -19,16 +19,18 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Controllers\Controllers.csproj" />
+      <ProjectReference Include="..\Services\Services.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
       <Content Include="..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Application\Application.csproj" />
-      <ProjectReference Include="..\Controllers\Controllers.csproj" />
-      <ProjectReference Include="..\Interfaces\Interfaces.csproj" />
-      <ProjectReference Include="..\Services\Services.csproj" />
+      <Folder Include="temp\" />
     </ItemGroup>
 
 </Project>
