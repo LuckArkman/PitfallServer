@@ -61,6 +61,23 @@ public class AppDbContext : DbContext
                 b.HasKey(x => x.Id).HasName("pk_game_rounds");
                 b.Property(x => x.Id).HasColumnName("id");
             });
+            
+            modelBuilder.Entity<PixTransaction>(b =>
+            {
+                b.ToTable("pix_transactions");
+                b.HasKey(x => x.Id);
+                b.Property(x => x.UserId);
+                b.Property(x => x.Type);
+                b.Property(x => x.IdTransaction);
+                b.Property(x => x.Amount);
+                b.Property(x => x.Status);
+                b.Property(x => x.PixKey);
+                b.Property(x => x.PixKeyType);
+                b.Property(x => x.QrCode);
+                b.Property(x => x.QrCodeImageUrl);
+                b.Property(x => x.CreatedAt);
+                b.Property(x => x.PaidAt);
+            });
 
             // NOTE: muitos tipos ENUM e detalhes do schema.sql são criados via migration SQL (usando migrationBuilder.Sql)
             base.OnModelCreating(modelBuilder);
