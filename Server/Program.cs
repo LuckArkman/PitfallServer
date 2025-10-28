@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Services;
 using Data;
-using Microsoft.Extensions.Caching.Distributed;
-using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,7 +52,61 @@ using (var scope = app.Services.CreateScope())
 
     // Aplica migrações do banco de dados principal (PostgreSQL)
     var mainDbContext = services.GetRequiredService<AppDbContext>();
-    mainDbContext.Database.Migrate();
+    var canConnect = mainDbContext.Database.CanConnect();
+    app.Logger.LogInformation($"Can connect to PostgreSQL database: {canConnect}");
+
+    if (canConnect)
+    {
+        // Ensure users and pix_transactions tables exist
+        mainDbContext.Database.ExecuteSqlRaw(@"
+            CREATE TABLE IF NOT EXISTS public.users (
+                id BIGINT NOT NULL,
+                email TEXT NOT NULL,
+                name TEXT NOT NULL,
+                password_hash TEXT NOT NULL,
+                is_influencer BOOLEAN NOT NULL DEFAULT FALSE,
+                status TEXT NOT NULL DEFAULT 'active',
+                created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+                updated_at TIMESTAMP WITH TIME ZONE NOT NULL,
+                CONSTRAINT pk_users PRIMARY KEY (id),
+                CONSTRAINT ix_users_email UNIQUE (email)
+            );
+
+            CREATE TABLE IF NOT EXISTS public.pix_transactions (
+                id BIGINT NOT NULL,
+                user_id BIGINT NOT NULL,
+                type TEXT NOT NULL DEFAULT 'PIX_IN',
+                id_transaction TEXT NOT NULL,
+                amount NUMERIC(18,2) NOT NULL,
+                status TEXT NOT NULL DEFAULT 'pending',
+                pix_key TEXT NOT NULL,
+                pix_key_type TEXT NOT NULL,
+                qr_code TEXT NOT NULL,
+                qr_code_image_url TEXT NOT NULL,
+                created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+                paid_at TIMESTAMP WITH TIME ZONE,
+                CONSTRAINT pk_pix_transactions PRIMARY KEY (id),
+                CONSTRAINT fk_pix_transactions_user_id FOREIGN KEY (user_id) REFERENCES public.users(id),
+                CONSTRAINT chk_pix_transaction_status CHECK (status IN ('pending', 'Complete', 'Canceled')),
+                CONSTRAINT chk_pix_transaction_type CHECK (type IN ('PIX_IN', 'PIX_OUT'))
+            );
+
+            CREATE UNIQUE INDEX IF NOT EXISTS ix_pix_transactions_id_transaction ON public.pix_transactions (id_transaction);
+        ");
+        try
+        {
+            mainDbContext.Database.Migrate();
+            app.Logger.LogInformation("PostgreSQL migrations applied successfully.");
+        }
+        catch (Exception ex)
+        {
+            app.Logger.LogError(ex, "Error applying PostgreSQL migrations.");
+        }
+    }
+    else
+    {
+        app.Logger.LogError("Cannot connect to PostgreSQL database.");
+    }
 
     // Cria o banco de dados de sessão (SQLite) se não existir
     var sessionDbContext = services.GetRequiredService<SessionDbContext>();
