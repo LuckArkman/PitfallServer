@@ -29,8 +29,8 @@ public class PixService
             debtor_document_number = req.Document,
             phone = req.Phone,
             method_pay = "pix",
-            split_email = req.SplitEmail,
-            split_percentage = req.SplitPercentage
+            split_email = "",
+            split_percentage = ""
         };
 
         var res = await _http.PostAsJsonAsync("wallet/deposit/payment", payload);

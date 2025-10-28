@@ -23,10 +23,11 @@ public class PixController : ControllerBase
     [HttpPost("deposit")]
     public async Task<IActionResult> CreateDeposit([FromBody] PixDepositRequestDto dto)
     {
-        var user = await _session.GetAsync<User>(dto.Token);
-        if (user == null) return BadRequest(new { message = "Sessão inválida" });
+        Console.WriteLine($"{nameof(CreateDeposit)} >> {dto == null}");
+        //var user = await _session.GetAsync<User>(dto.token);
+        //if (user == null) return BadRequest(new { message = "Sessão inválida" });
 
-        var pixReq = new PixDepositRequest(dto.Amount, dto.Name, dto.Email, dto.Document, dto.Phone, dto.SplitEmail, dto.SplitPercentage);
+        var pixReq = new PixDepositRequest(dto.amount, dto.name, dto.email, dto.documentNumber, dto.phone);
         var result = await _pixService.CreatePixDepositAsync(pixReq);
 
         return Ok(new

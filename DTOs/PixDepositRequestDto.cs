@@ -1,3 +1,3 @@
 namespace DTOs;
 
-public record PixDepositRequestDto(string Token, decimal Amount, string Name, string Email, string Document, string Phone, string? SplitEmail, decimal SplitPercentage);
+public record PixDepositRequestDto(string token, decimal amount, string name, string email, string documentNumber, string phone);
