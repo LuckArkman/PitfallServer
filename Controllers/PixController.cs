@@ -11,12 +11,17 @@ public class PixController : ControllerBase
     private readonly PixService _pixService;
     private readonly SessionService _session;
     private readonly WalletService _wallet;
+    readonly AuthService  _authService;
 
-    public PixController(PixService pixService, SessionService session, WalletService wallet)
+    public PixController(PixService pixService,
+        SessionService session,
+        WalletService wallet,
+        AuthService authService)
     {
         _pixService = pixService;
         _session = session;
         _wallet = wallet;
+        _authService = authService;
     }
 
     // ================================= PIX IN =================================
@@ -26,8 +31,7 @@ public class PixController : ControllerBase
         Console.WriteLine($"{nameof(CreateDeposit)} >> {dto == null}");
         var user = await _session.GetAsync<User>(dto.token);
         if (user == null) return BadRequest(new { message = "Sessão inválida" });
-
-        var pixReq = new PixDepositRequest(dto.amount, dto.name, dto.email, dto.documentNumber, dto.phone);
+        var pixReq = new PixDepositRequest(dto.amount, user.Name, user.Email, dto.documentNumber, dto.phone);
         var result = await _pixService.CreatePixDepositAsync(pixReq, null);
 
         return Ok(result.Charge);
