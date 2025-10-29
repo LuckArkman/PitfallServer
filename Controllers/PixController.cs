@@ -11,12 +11,17 @@ public class PixController : ControllerBase
     private readonly PixService _pixService;
     private readonly SessionService _session;
     private readonly WalletService _wallet;
+    readonly AuthService  _authService;
 
-    public PixController(PixService pixService, SessionService session, WalletService wallet)
+    public PixController(PixService pixService,
+        SessionService session,
+        WalletService wallet,
+        AuthService authService)
     {
         _pixService = pixService;
         _session = session;
         _wallet = wallet;
+        _authService = authService;
     }
 
     // ================================= PIX IN =================================
@@ -24,18 +29,12 @@ public class PixController : ControllerBase
     public async Task<IActionResult> CreateDeposit([FromBody] PixDepositRequestDto dto)
     {
         Console.WriteLine($"{nameof(CreateDeposit)} >> {dto == null}");
-        //var user = await _session.GetAsync<User>(dto.token);
-        //if (user == null) return BadRequest(new { message = "Sessão inválida" });
+        var user = await _session.GetAsync<User>(dto.token);
+        if (user == null) return BadRequest(new { message = "Sessão inválida" });
+        var pixReq = new PixDepositRequest(dto.amount, user.Name, user.Email, dto.documentNumber, dto.phone);
+        var result = await _pixService.CreatePixDepositAsync(pixReq, null);
 
-        var pixReq = new PixDepositRequest(dto.amount, dto.name, dto.email, dto.documentNumber, dto.phone);
-        var result = await _pixService.CreatePixDepositAsync(pixReq);
-
-        return Ok(new
-        {
-            transactionId = result?.IdTransaction,
-            qrcode = result?.Qrcode,
-            qrImage = result?.Qr_Code_Image_Url
-        });
+        return Ok(result.Charge);
     }
 
     // ================================= PIX OUT =================================
@@ -59,17 +58,28 @@ public class PixController : ControllerBase
             amount = result?.Amount
         });
     }
-
     // ================================= CALLBACK PIX-IN =================================
+// Controllers/PixController.cs
     [HttpPost("callback")]
     public async Task<IActionResult> Callback([FromBody] PixWebhookDto callback)
     {
-        // Quando status = paid → creditar usuário
-        if (callback.status == "paid")
-        {
-            await _wallet.CreditAsync(callback.userId, callback.amount, "PIX_IN");
-        }
+        if (callback == null)
+            return BadRequest(new { message = "Payload inválido." });
 
-        return Ok(new { message = "Webhook recebido com sucesso." });
+        try
+        {
+            var processed = await _pixService.ProcessWebhookAsync(callback);
+
+            return Ok(new
+            {
+                message = processed ? "Webhook processado com sucesso." : "Transação não encontrada ou inválida.",
+                processed
+            });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[WEBHOOK ERRO] {ex.Message}\n{ex.StackTrace}");
+            return StatusCode(500, new { message = "Erro interno ao processar webhook." });
+        }
     }
 }

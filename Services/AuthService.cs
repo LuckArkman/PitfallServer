@@ -73,4 +73,13 @@ public class AuthService
         foreach (var b in bytes) sb.Append(b.ToString("x2"));
         return sb.ToString();
     }
+
+    public async Task<object> GetAccount(long userId)
+    {
+        var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        // NOTE: in schema original password stored in users? if not, adapt to use credentials table.
+        // Here we assume PasswordHash in Admins only. If you store user passwords, add property.
+        if (user == null) return null;
+        return user;
+    }
 }

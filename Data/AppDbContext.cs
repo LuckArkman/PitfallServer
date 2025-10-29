@@ -1,6 +1,8 @@
 using DTOs;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Collections.Generic;
 
 namespace Data;
 
@@ -17,7 +19,7 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // User configuration
+        // User
         modelBuilder.Entity<User>(b =>
         {
             b.ToTable("users");
@@ -33,7 +35,7 @@ public class AppDbContext : DbContext
             b.Property(x => x.UpdatedAt).HasColumnName("updated_at").IsRequired();
         });
 
-        // Admin configuration
+        // Admin
         modelBuilder.Entity<Admin>(b =>
         {
             b.ToTable("admins");
@@ -47,7 +49,7 @@ public class AppDbContext : DbContext
             b.HasIndex(x => x.Email).IsUnique().HasDatabaseName("ix_admins_email");
         });
 
-        // Wallet configuration
+        // Wallet
         modelBuilder.Entity<Wallet>(b =>
         {
             b.ToTable("wallets");
@@ -61,7 +63,7 @@ public class AppDbContext : DbContext
             b.HasOne(w => w.User).WithOne(u => u.Wallet).HasForeignKey<Wallet>(w => w.UserId).HasConstraintName("fk_wallets_user_id");
         });
 
-        // WalletLedger configuration
+        // WalletLedger
         modelBuilder.Entity<WalletLedger>(b =>
         {
             b.ToTable("wallet_ledger");
@@ -72,13 +74,13 @@ public class AppDbContext : DbContext
             b.Property(x => x.Amount).HasColumnName("amount").IsRequired().HasPrecision(18, 2);
             b.Property(x => x.BalanceAfter).HasColumnName("balance_after").IsRequired().HasPrecision(18, 2);
             b.Property(x => x.GameRoundId).HasColumnName("game_round_id");
-            b.Property(x => x.Metadata).HasColumnName("metadata").IsRequired();
+            b.Property(x => x.Metadata).HasColumnName("metadata").HasDefaultValue("{}");
             b.Property(x => x.CreatedAt).HasColumnName("created_at").IsRequired();
             b.HasOne<User>().WithMany().HasForeignKey(x => x.UserId).HasConstraintName("fk_wallet_ledger_user_id");
             b.HasOne<GameRound>().WithMany().HasForeignKey(x => x.GameRoundId).HasConstraintName("fk_wallet_ledger_game_round_id");
         });
 
-        // GameRound configuration
+        // GameRound
         modelBuilder.Entity<GameRound>(b =>
         {
             b.ToTable("game_rounds");
@@ -88,34 +90,65 @@ public class AppDbContext : DbContext
             b.Property(x => x.BetAmount).HasColumnName("bet_amount").IsRequired().HasPrecision(18, 2);
             b.Property(x => x.PrizeAmount).HasColumnName("prize_amount").IsRequired().HasPrecision(18, 2);
             b.Property(x => x.Result).HasColumnName("game_result").IsRequired();
-            b.Property(x => x.TrapPositions).HasColumnName("trap_positions").IsRequired().HasConversion(
-                v => JsonSerializer.Serialize<int[]>(v, (JsonSerializerOptions?)null),
-                v => JsonSerializer.Deserialize<int[]>(v, (JsonSerializerOptions?)null) ?? Array.Empty<int>());
-            b.Property(x => x.OpenedPositions).HasColumnName("opened_positions").IsRequired().HasConversion(
-                v => JsonSerializer.Serialize<int[]>(v, (JsonSerializerOptions?)null),
-                v => JsonSerializer.Deserialize<int[]>(v, (JsonSerializerOptions?)null) ?? Array.Empty<int>());
+
+            // TrapPositions
+            b.Property(x => x.TrapPositions)
+                .HasColumnName("trap_positions")
+                .IsRequired()
+                .HasConversion(
+                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
+                    v => JsonSerializer.Deserialize<int[]>(v, (JsonSerializerOptions?)null) ?? Array.Empty<int>()
+                )
+                .Metadata.SetValueComparer(new ValueComparer<int[]>(
+                    (c1, c2) => c1!.SequenceEqual(c2!),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToArray()));
+
+            // OpenedPositions
+            b.Property(x => x.OpenedPositions)
+                .HasColumnName("opened_positions")
+                .IsRequired()
+                .HasConversion(
+                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
+                    v => JsonSerializer.Deserialize<int[]>(v, (JsonSerializerOptions?)null) ?? Array.Empty<int>()
+                )
+                .Metadata.SetValueComparer(new ValueComparer<int[]>(
+                    (c1, c2) => c1!.SequenceEqual(c2!),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToArray()));
+
             b.Property(x => x.CreatedAt).HasColumnName("created_at").IsRequired();
             b.HasOne<User>().WithMany().HasForeignKey(x => x.UserId).HasConstraintName("fk_game_rounds_user_id");
         });
 
+        // PixTransaction
         modelBuilder.Entity<PixTransaction>(b =>
         {
             b.ToTable("pix_transactions");
             b.HasKey(x => x.Id).HasName("pk_pix_transactions");
-            b.Property(x => x.Id).HasColumnName("id");
+
+            b.Property(x => x.Id)
+                .HasColumnName("id")
+                .ValueGeneratedOnAdd(); // GERA ID AUTOMATICAMENTE
+
             b.Property(x => x.UserId).HasColumnName("user_id").IsRequired();
             b.Property(x => x.Type).HasColumnName("type").IsRequired().HasDefaultValue("PIX_IN");
             b.Property(x => x.IdTransaction).HasColumnName("id_transaction").IsRequired();
             b.Property(x => x.Amount).HasColumnName("amount").IsRequired().HasPrecision(18, 2);
             b.Property(x => x.Status).HasColumnName("status").IsRequired().HasDefaultValue("pending");
-            b.Property(x => x.PixKey).HasColumnName("pix_key").IsRequired();
-            b.Property(x => x.PixKeyType).HasColumnName("pix_key_type").IsRequired();
-            b.Property(x => x.QrCode).HasColumnName("qr_code").IsRequired();
-            b.Property(x => x.QrCodeImageUrl).HasColumnName("qr_code_image_url").IsRequired();
+            b.Property(x => x.PixKey).HasColumnName("pix_key");
+            b.Property(x => x.PixKeyType).HasColumnName("pix_key_type");
+            b.Property(x => x.QrCode).HasColumnName("qr_code");
+            b.Property(x => x.QrCodeImageUrl).HasColumnName("qr_code_image_url");
             b.Property(x => x.CreatedAt).HasColumnName("created_at").IsRequired();
             b.Property(x => x.PaidAt).HasColumnName("paid_at");
+
             b.HasOne<User>().WithMany().HasForeignKey(x => x.UserId).HasConstraintName("fk_pix_transactions_user_id");
             b.HasIndex(x => x.IdTransaction).IsUnique().HasDatabaseName("ix_pix_transactions_id_transaction");
+
+            // CHECK constraints corrigidos
+            b.HasCheckConstraint("chk_pix_transaction_status", "status IN ('pending', 'paid', 'canceled')");
+            b.HasCheckConstraint("chk_pix_transaction_type", "type IN ('PIX_IN', 'PIX_OUT')");
         });
 
         base.OnModelCreating(modelBuilder);
