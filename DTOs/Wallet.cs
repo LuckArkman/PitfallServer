@@ -8,5 +8,4 @@ public class Wallet
     public decimal BalanceWithdrawal { get; set; }
     public decimal BalanceBonus { get; set; }
     public DateTime UpdatedAt { get; set; }
-    public User User { get; set; }
 }

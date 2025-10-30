@@ -9,12 +9,16 @@ namespace Controllers;
 public class WalletController : ControllerBase
 {
     readonly WalletService _service;
+    private readonly AuthService _authService;
     readonly SessionService _sessionService;
 
-    public WalletController(WalletService service, SessionService sessionService)
+    public WalletController(WalletService service,
+        SessionService sessionService,
+        AuthService authService)
     {
         _service = service;
         _sessionService = sessionService;
+        _authService = authService;
     }
 
     [HttpPost("wallet")]
@@ -23,11 +27,11 @@ public class WalletController : ControllerBase
         if (string.IsNullOrWhiteSpace(req.token))
             return BadRequest(new { message = "Token não fornecido." });
 
-        var user = await _sessionService.GetAsync<User>(req.token);
+        var user = await _sessionService.GetAsync(req.token) as UserSession;
         if (user == null)
             return Ok(new { message = "Sessão inválida ou expirada." });
 
-        var wallet = await _service.GetOrCreateWalletAsync(user.Id);
+        var wallet = await _service.GetOrCreateWalletAsync(user.UserId, null, null);
 
         return Ok(new
         {
@@ -52,17 +56,16 @@ public class WalletController : ControllerBase
         if (req.Amount <= 0)
             return BadRequest(new { message = "Valor deve ser maior que zero." });
 
-        var user = await _sessionService.GetAsync<User>(req.token);
-        if (user == null)
-            // ATUALIZAÇÃO: Alterado de Ok() para Unauthorized() para refletir o status correto de um token inválido.
-            return Unauthorized();
-
+        var user = await _sessionService.GetAsync(req.token);
+        if (user == null)return Unauthorized();
+        
+        var _wallet = await _authService.GetAccount(user.UserId) as User;
         // Debug: Log do UserId
-        Console.WriteLine($"[DEBUG] UserId: {user.Id}, Email: {user.Email}");
+        Console.WriteLine($"[DEBUG] UserId: {user.UserId}, Email: {_wallet.Email}");
 
         try
         {
-            var wallet = await _service.DebitAsync(user.Id, req.Amount, req.type);
+            var wallet = await _service.DebitAsync(_wallet.Id, req.Amount, req.type);
             
             return Ok(new 
             { 
@@ -98,14 +101,14 @@ public class WalletController : ControllerBase
         if (req.Amount <= 0)
             return BadRequest(new { message = "Valor deve ser maior que zero." });
 
-        var user = await _sessionService.GetAsync<User>(req.token);
+        var user = await _sessionService.GetAsync(req.token);
         Console.WriteLine($"{nameof(CreditBalance)} >> {user == null}");
         if (user == null)
             return Unauthorized();
 
         try
         {
-            var wallet = await _service.CreditAsync(user.Id, req.Amount, req.type);
+            var wallet = await _service.CreditAsync(user.UserId, req.Amount, req.type);
             
             return Ok(new 
             { 
