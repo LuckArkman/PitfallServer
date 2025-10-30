@@ -33,7 +33,7 @@ public class PixController : ControllerBase
         if (session == null) return BadRequest(new { message = "Sessão inválida" });
         var user = await _authService.GetAccount(session.UserId) as User;
         var pixReq = new PixDepositRequest(dto.amount, user.Name, user.Email, dto.documentNumber, dto.phone);
-        var result = await _pixService.CreatePixDepositAsync(pixReq, null);
+        var result = await _pixService.CreatePixDepositAsync(pixReq, user);
 
         return Ok(result.Charge);
     }
