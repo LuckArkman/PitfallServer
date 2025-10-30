@@ -28,32 +28,35 @@ public static class PixTransactionHelper
         CancellationToken ct = default)
     {
         const string sql = @"
-            INSERT INTO public.pix_transactions (
-                ""user_id"", ""type"", ""id_transaction"", ""amount"", ""status"",
-                ""pix_key"", ""pix_key_type"", ""qr_code"", ""qr_code_image_url"", ""created_at""
-            ) VALUES (
-                @user_id, 'PIX_IN', @id_transaction, @amount, 'pending',
-                '', '', @qr_code, @qr_code_image_url, NOW()
-            )
-            RETURNING id::bigint;";
+        INSERT INTO public.pix_transactions (
+            ""user_id"", ""type"", ""id_transaction"", ""amount"", ""status"",
+            ""pix_key"", ""pix_key_type"", ""qr_code"", ""qr_code_image_url"", ""created_at""
+        ) VALUES (
+            @user_id, 'PIX_IN', @id_transaction, @amount, 'pending',
+            '', '', @qr_code, @qr_code_image_url, NOW()
+        )
+        RETURNING id;";
 
         await using var conn = new NpgsqlConnection(connectionString);
         await conn.OpenAsync(ct);
 
         await using var cmd = new NpgsqlCommand(sql, conn);
+        cmd.Parameters.AddWithValue("user_id", userId);
+        cmd.Parameters.AddWithValue("id_transaction", idTransaction);
+        cmd.Parameters.AddWithValue("amount", amount);
+        cmd.Parameters.AddWithValue("qr_code", (object?)qrCode ?? DBNull.Value);
+        cmd.Parameters.AddWithValue("qr_code_image_url", (object?)qrCodeImageUrl ?? DBNull.Value);
 
-        cmd.Parameters.Add(new NpgsqlParameter<long>("user_id", NpgsqlDbType.Bigint) { Value = userId });
-        cmd.Parameters.Add(new NpgsqlParameter<string>("id_transaction", NpgsqlDbType.Varchar) { Value = idTransaction });
-        cmd.Parameters.Add(new NpgsqlParameter<decimal>("amount", NpgsqlDbType.Numeric) { Value = amount });
-        cmd.Parameters.Add(new NpgsqlParameter<string?>("qr_code", NpgsqlDbType.Text) { Value = (object?)qrCode ?? DBNull.Value });
-        cmd.Parameters.Add(new NpgsqlParameter<string?>("qr_code_image_url", NpgsqlDbType.Text) { Value = (object?)qrCodeImageUrl ?? DBNull.Value });
+        var scalar = await cmd.ExecuteScalarAsync(ct);
 
-        // (Opcional) melhora desempenho em chamadas repetidas
-        await cmd.PrepareAsync(ct);
+        // Converte com segurança independente do provider retornar int64, int32 etc.
+        if (scalar is null || scalar is DBNull)
+            throw new InvalidOperationException("Falha ao obter ID gerado.");
 
-        var id = await cmd.ExecuteScalarAsync<long>(ct);
-        return id;
-    }
-    
-    
+        // Tenta paths mais comuns antes do Convert
+        if (scalar is long l) return l;
+        if (scalar is int i) return i;
+
+        return Convert.ToInt64(scalar, System.Globalization.CultureInfo.InvariantCulture);
+    }    
 }
