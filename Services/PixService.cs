@@ -56,12 +56,12 @@ public class PixService
         try
         {
             var l = await PixTransactionHelper.InsertPixTransactionManuallyAsync(
-                connectionString: _cfg.GetConnectionString("DefaultConnection")!,
-                userId: user.Id,
-                idTransaction: obj.IdTransaction,
-                amount: req.Amount,
-                qrCode: obj.QrCode,
-                qrCodeImageUrl: obj.QrCodeImageUrl
+                connectionString: _cfg["ConnectionStrings:DefaultConnection"],
+                user.Id,
+                obj.IdTransaction,
+                req.Amount,
+                obj.QrCode,
+                obj.QrCodeImageUrl
             );
         }
         catch (Exception ex)
