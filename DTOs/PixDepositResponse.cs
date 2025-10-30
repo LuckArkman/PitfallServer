@@ -15,5 +15,6 @@ namespace DTOs
 
         [JsonPropertyName("charge")]
         public PixCharge Charge { get; set; } = new();
+        
     }
 }
