@@ -1,6 +1,7 @@
 using Npgsql;
 using System;
 using System.Threading.Tasks;
+using NpgsqlTypes;
 
 namespace Data;
 
@@ -22,31 +23,36 @@ public static class PixTransactionHelper
         long userId,
         string idTransaction,
         decimal amount,
-        string qrCode,
-        string qrCodeImageUrl)
+        string? qrCode,
+        string? qrCodeImageUrl,
+        CancellationToken ct = default)
     {
         const string sql = @"
             INSERT INTO public.pix_transactions (
-                user_id, type, id_transaction, amount, status,
-                pix_key, pix_key_type, qr_code, qr_code_image_url, created_at
+                ""user_id"", ""type"", ""id_transaction"", ""amount"", ""status"",
+                ""pix_key"", ""pix_key_type"", ""qr_code"", ""qr_code_image_url"", ""created_at""
             ) VALUES (
                 @user_id, 'PIX_IN', @id_transaction, @amount, 'pending',
                 '', '', @qr_code, @qr_code_image_url, NOW()
             )
-            RETURNING id;";
+            RETURNING id::bigint;";
 
         await using var conn = new NpgsqlConnection(connectionString);
-        await conn.OpenAsync();
+        await conn.OpenAsync(ct);
 
         await using var cmd = new NpgsqlCommand(sql, conn);
-        cmd.Parameters.AddWithValue("user_id", userId);
-        cmd.Parameters.AddWithValue("id_transaction", idTransaction);
-        cmd.Parameters.AddWithValue("amount", amount);
-        cmd.Parameters.AddWithValue("qr_code", qrCode ?? (object)DBNull.Value);
-        cmd.Parameters.AddWithValue("qr_code_image_url", qrCodeImageUrl ?? (object)DBNull.Value);
 
-        var result = await cmd.ExecuteScalarAsync();
-        return result is long id ? id : throw new Exception("Falha ao obter ID gerado.");
+        cmd.Parameters.Add(new NpgsqlParameter<long>("user_id", NpgsqlDbType.Bigint) { Value = userId });
+        cmd.Parameters.Add(new NpgsqlParameter<string>("id_transaction", NpgsqlDbType.Varchar) { Value = idTransaction });
+        cmd.Parameters.Add(new NpgsqlParameter<decimal>("amount", NpgsqlDbType.Numeric) { Value = amount });
+        cmd.Parameters.Add(new NpgsqlParameter<string?>("qr_code", NpgsqlDbType.Text) { Value = (object?)qrCode ?? DBNull.Value });
+        cmd.Parameters.Add(new NpgsqlParameter<string?>("qr_code_image_url", NpgsqlDbType.Text) { Value = (object?)qrCodeImageUrl ?? DBNull.Value });
+
+        // (Opcional) melhora desempenho em chamadas repetidas
+        await cmd.PrepareAsync(ct);
+
+        var id = await cmd.ExecuteScalarAsync<long>(ct);
+        return id;
     }
     
     
