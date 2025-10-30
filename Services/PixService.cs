@@ -12,16 +12,16 @@ public class PixService
 {
     private readonly HttpClient _http;
     private readonly IConfiguration _cfg;
-    private readonly AppDbContext _db;
     private readonly WalletService _walletService;
+    private PixRepository _pixRepository;
 
-    public PixService(AppDbContext db, HttpClient http, IConfiguration cfg,
+    public PixService(HttpClient http, IConfiguration cfg,
         WalletService walletService)
     {
-        _db = db;
         _http = http;
         _cfg = cfg;
         _walletService = walletService;
+        _pixRepository = new PixRepository(_cfg["ConnectionStrings:DefaultConnection"]);
     }
 
     public async Task<PixDepositResponse?> CreatePixDepositAsync(PixDepositRequest req, User? user)
@@ -129,8 +129,7 @@ public class PixService
             throw new ArgumentException("Webhook inválido.");
 
         // 1. Busca transação
-        var pixTx = await _db.PixTransactions
-            .FirstOrDefaultAsync(x => x.IdTransaction == webhook.idTransaction);
+        var pixTx = await _pixRepository.GetByIdTransactionAsync(webhook.idTransaction);
 
         if (pixTx == null)
         {
@@ -141,14 +140,14 @@ public class PixService
         // 2. Idempotência
         if (pixTx.Status != "pending")
         {
-            Console.WriteLine($"[WEBHOOK] Já processado: {webhook.idTransaction} | Status: {pixTx.Status}");
+            Console.WriteLine($"[WEBHOOK] Já processado: {webhook.idTransaction} | Status: Ok");
             return true; // Já foi processado
         }
 
         // 3. Validação de userId
         if (pixTx.UserId != webhook.userId)
         {
-            Console.WriteLine($"[WEBHOOK] userId inconsistente! Banco: {pixTx.UserId}, Webhook: {webhook.userId}");
+            Console.WriteLine($"[WEBHOOK] userId inconsistente! , Webhook: {webhook.userId}");
             return false;
         }
 
@@ -159,7 +158,7 @@ public class PixService
         {
             pixTx.Status = "Complete";
             pixTx.PaidAt = DateTime.UtcNow;
-            await UpdatePixTransactionStatusAsync(webhook.idTransaction, pixTx.Status, pixTx.PaidAt);
+            await _pixRepository.UpdateStatusAsync(webhook.idTransaction, pixTx.Status, pixTx.PaidAt);
 
             try
             {
@@ -181,12 +180,6 @@ public class PixService
         {
             Console.WriteLine($"[WEBHOOK] Status ignorado: {webhook.status}");
             return true;
-        }
-
-        // 5. Salva no banco
-        if (success)
-        {
-            await _db.SaveChangesAsync();
         }
 
         return success;

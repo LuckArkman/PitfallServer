@@ -29,8 +29,9 @@ public class PixController : ControllerBase
     public async Task<IActionResult> CreateDeposit([FromBody] PixDepositRequestDto dto)
     {
         Console.WriteLine($"{nameof(CreateDeposit)} >> {dto == null}");
-        var user = await _session.GetAsync<User>(dto.token);
-        if (user == null) return BadRequest(new { message = "Sessão inválida" });
+        var session = await _session.GetAsync(dto.token);
+        if (session == null) return BadRequest(new { message = "Sessão inválida" });
+        var user = await _authService.GetAccount(session.UserId) as User;
         var pixReq = new PixDepositRequest(dto.amount, user.Name, user.Email, dto.documentNumber, dto.phone);
         var result = await _pixService.CreatePixDepositAsync(pixReq, null);
 
@@ -41,10 +42,10 @@ public class PixController : ControllerBase
     [HttpPost("withdraw")]
     public async Task<IActionResult> CreateWithdraw([FromBody] PixWithdrawRequestDto dto)
     {
-        var user = await _session.GetAsync<User>(dto.Token);
+        var user = await _session.GetAsync(dto.Token);
         if (user == null) return BadRequest(new { message = "Sessão inválida" });
 
-        var wallet = await _wallet.GetOrCreateWalletAsync(user.Id);
+        var wallet = await _wallet.GetOrCreateWalletAsync(user.UserId, null, null);
         if (wallet.BalanceWithdrawal < dto.Amount)
             return BadRequest(new { message = "Saldo insuficiente para saque" });
 

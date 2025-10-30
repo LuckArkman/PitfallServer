@@ -1,47 +1,53 @@
 using System.Security.Cryptography;
 using System.Text;
 using Data;
+using Data.Repositories;
 using DTOs;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Services;
 
 public class AuthService
 {
-    readonly AppDbContext _db;
+    private PostgresUserRepository _postgresUserRepository;
     readonly TokenService _tokenService;
     readonly WalletService _walletService;
     readonly SessionService  _sessionService;
-    public AuthService(AppDbContext db,
+    private readonly IConfiguration _cfg;
+    public AuthService(
         TokenService tokenService,
         WalletService walletService,
-        SessionService sessionService)
+        SessionService sessionService,
+        IConfiguration cfg)
     {
-        _db = db;
         _tokenService = tokenService;
         _walletService = walletService;
         _sessionService = sessionService;
+        _cfg = cfg;
+        
+        _postgresUserRepository = new PostgresUserRepository(_cfg["ConnectionStrings:DefaultConnection"]);
     }
 
     public async Task<string> AuthenticateAsync(string email, string password)
     {
         var hash = ComputeSha256Hash(password);
-        var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
+        var user = await _postgresUserRepository.GetByEmailAsync(email);
         // NOTE: in schema original password stored in users? if not, adapt to use credentials table.
         // Here we assume PasswordHash in Admins only. If you store user passwords, add property.
         if (user == null) return null;
         
         
         var token = _tokenService.GenerateToken(user);
-        await _sessionService.SetAsync<User>(token, user);
+        await _sessionService.SetAsync(token, user);
         return token;
     }
     
     public async Task<string?> RegisterAsync(string email, string password)
     {
         // Verifica se já existe um usuário com o mesmo email
-        if (await _db.Users.AnyAsync(u => u.Email == email))
-            return null; // ou lançar uma exceção personalizada
+        var _user = await _postgresUserRepository.GetByEmailAsync(email);
+        if (_user == null) return null;
 
         var hash = ComputeSha256Hash(password);
 
@@ -53,12 +59,11 @@ public class AuthService
             CreatedAt = DateTime.UtcNow
         };
 
-        _db.Users.Add(newUser);
-        await _db.SaveChangesAsync();
-        var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == newUser.Email);
+        await _postgresUserRepository.RegisterAsync(newUser.Email, newUser.Name, newUser.PasswordHash);
+        var user = await _postgresUserRepository.GetByEmailAsync(email);
         if (user != null)
         {
-            var wallet = await _walletService.GetOrCreateWalletAsync(user.Id);
+            var wallet = await _walletService.GetOrCreateWalletAsync(user.Id, null, null );
         }
 
         return _tokenService.GenerateToken(newUser);
@@ -76,7 +81,7 @@ public class AuthService
 
     public async Task<object> GetAccount(long userId)
     {
-        var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        var user = await _postgresUserRepository.GetByIdAsync(userId);
         // NOTE: in schema original password stored in users? if not, adapt to use credentials table.
         // Here we assume PasswordHash in Admins only. If you store user passwords, add property.
         if (user == null) return null;

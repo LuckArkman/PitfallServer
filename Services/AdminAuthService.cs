@@ -3,6 +3,7 @@ using System.Text;
 using Data;
 using DTOs;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Services;
 
@@ -11,13 +12,16 @@ namespace Services;
     /// </summary>
     public class AdminAuthService
     {
-        private readonly AppDbContext _db;
         private readonly AdminTokenService _tokenService;
+        private AdminRepository _adminRepository;
+        private readonly IConfiguration _cfg;
 
-        public AdminAuthService(AppDbContext db, AdminTokenService tokenService)
+        public AdminAuthService(AdminTokenService tokenService,
+            IConfiguration  config)
         {
-            _db = db;
             _tokenService = tokenService;
+            _cfg = config;
+            _adminRepository = new AdminRepository(_cfg["ConnectionStrings:DefaultConnection"]);
         }
 
         /// <summary>
@@ -31,7 +35,7 @@ namespace Services;
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
                 return null;
 
-            var admin = await _db.Admins.FirstOrDefaultAsync(a => a.Email == email);
+            var admin = await _adminRepository.GetByEmailAsync(email);
             if (admin == null)
                 return null;
 
@@ -41,7 +45,6 @@ namespace Services;
 
             // Atualiza data de último login
             admin.LastLoginAt = DateTime.UtcNow;
-            await _db.SaveChangesAsync();
 
             // Gera o token JWT
             return _tokenService.GenerateToken(admin);
@@ -52,8 +55,8 @@ namespace Services;
         /// </summary>
         public async Task<Admin> RegisterAsync(string email, string password)
         {
-            if (await _db.Admins.AnyAsync(a => a.Email == email))
-                throw new InvalidOperationException("E-mail já cadastrado para outro administrador.");
+            var adm =  await _adminRepository.GetByEmailAsync(email);
+            if (adm != null) throw new InvalidOperationException("E-mail já cadastrado para outro administrador.");
 
             var admin = new Admin
             {
@@ -63,8 +66,7 @@ namespace Services;
                 Role = "Administrator"
             };
 
-            _db.Admins.Add(admin);
-            await _db.SaveChangesAsync();
+            await _adminRepository.CreateAdminAsync(email, password, "Administrator");
 
             return admin;
         }
