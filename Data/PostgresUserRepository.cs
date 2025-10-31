@@ -1,4 +1,6 @@
 using Npgsql;
+using System;
+using System.Threading.Tasks;
 using DTOs;
 
 namespace Data.Repositories
@@ -19,10 +21,10 @@ namespace Data.Repositories
         {
             const string sql = @"
                 INSERT INTO public.users 
-                    (""Id"", ""email"", ""name"", ""PasswordHash"", ""is_influencer"", ""status"", ""CreatedAt"", ""UpdatedAt"")
+                    (""id"", ""email"", ""name"", ""PasswordHash"", ""is_influencer"", ""status"", ""CreatedAt"", ""UpdatedAt"")
                 VALUES 
                     (nextval('users_id_seq'), @email, @name, @PasswordHash, FALSE, 'active', NOW(), NOW())
-                RETURNING ""Id"";";
+                RETURNING ""id"";";
 
             await using var connection = new NpgsqlConnection(_connectionString);
             await connection.OpenAsync();
@@ -42,7 +44,7 @@ namespace Data.Repositories
         public async Task<User?> GetByEmailAsync(string email)
         {
             const string sql = @"
-                SELECT ""Id"", ""email"", ""name"", ""PasswordHash"", ""is_influencer"", ""status"", ""CreatedAt"", ""UpdatedAt""
+                SELECT ""id"", ""email"", ""name"", ""PasswordHash"", ""is_influencer"", ""status"", ""CreatedAt"", ""UpdatedAt""
                 FROM public.users
                 WHERE ""email"" = @email
                 LIMIT 1;";
@@ -91,9 +93,9 @@ namespace Data.Repositories
         public async Task<User?> GetByIdAsync(long userId)
         {
             const string sql = @"
-                SELECT ""Id"", ""email"", ""name"", ""PasswordHash"", ""is_influencer"", ""status"", ""CreatedAt"", ""UpdatedAt""
+                SELECT ""id"", ""email"", ""name"", ""PasswordHash"", ""is_influencer"", ""status"", ""CreatedAt"", ""UpdatedAt""
                 FROM public.users
-                WHERE ""Id"" = @id
+                WHERE ""id"" = @id
                 LIMIT 1;";
 
             await using var connection = new NpgsqlConnection(_connectionString);
