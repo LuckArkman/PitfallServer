@@ -34,7 +34,6 @@ public class AuthService
         var user = await _postgresUserRepository.GetByEmailAsync(email);
         if (user == null || password != user.PasswordHash) return null;
         
-        
         var token = _tokenService.GenerateToken(user);
         await _sessionService.SetAsync(token, user);
         return token;
