@@ -30,8 +30,8 @@ namespace Data.Repositories
             await connection.OpenAsync();
 
             await using var command = new NpgsqlCommand(sql, connection);
-            command.Parameters.AddWithValue("Email", email);
-            command.Parameters.AddWithValue("Name", name);
+            command.Parameters.AddWithValue("email", email);
+            command.Parameters.AddWithValue("name", name);
             command.Parameters.AddWithValue("PasswordHash", passwordHash);
 
             var id = await command.ExecuteScalarAsync();
@@ -53,7 +53,7 @@ namespace Data.Repositories
             await connection.OpenAsync();
 
             await using var command = new NpgsqlCommand(sql, connection);
-            command.Parameters.AddWithValue("Email", email);
+            command.Parameters.AddWithValue("email", email);
 
             await using var reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
