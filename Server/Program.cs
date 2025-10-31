@@ -40,10 +40,22 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowWebGL", policy =>
+    {
+        policy.WithOrigins(
+                "https://pitfall-build.vercel.app",
+                "https://feipay.com.br"
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 // --- 🔹 Inicialização ---
 var app = builder.Build();
 
+app.UseCors("AllowWebGL");
 // --- 🔹 Timer para expirar PIX ---
 var timer = new PeriodicTimer(TimeSpan.FromMinutes(5));
 _ = Task.Run(async () =>

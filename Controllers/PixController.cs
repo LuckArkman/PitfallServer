@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 using DTOs;
@@ -64,6 +65,7 @@ public class PixController : ControllerBase
     [HttpPost("callback")]
     public async Task<IActionResult> Callback([FromBody] PixWebhookDto callback)
     {
+        Console.WriteLine(JsonSerializer.Serialize(callback));
         if (callback == null)
             return BadRequest(new { message = "Payload inválido." });
 
