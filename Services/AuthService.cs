@@ -31,10 +31,8 @@ public class AuthService
 
     public async Task<string> AuthenticateAsync(string email, string password)
     {
-        var hash = ComputeSha256Hash(password);
         var user = await _postgresUserRepository.GetByEmailAsync(email);
-        if (user == null || hash != user.PasswordHash) return null;
-        
+        if (user == null || password != user.PasswordHash) return null;
         
         var token = _tokenService.GenerateToken(user);
         await _sessionService.SetAsync(token, user);
@@ -46,13 +44,11 @@ public class AuthService
         var _user = await _postgresUserRepository.GetByEmailAsync(email);
         if (_user != null) return null;
 
-        var hash = ComputeSha256Hash(password);
-
         var newUser = new User
         {
             Email = email,
             Name = email.Split('@')[0],
-            PasswordHash = hash,
+            PasswordHash = password,
             CreatedAt = DateTime.UtcNow
         };
 
@@ -64,16 +60,6 @@ public class AuthService
         }
 
         return _tokenService.GenerateToken(newUser);
-    }
-
-
-    private static string ComputeSha256Hash(string raw)
-    {
-        using var sha = SHA256.Create();
-        var bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(raw));
-        var sb = new StringBuilder();
-        foreach (var b in bytes) sb.Append(b.ToString("x2"));
-        return sb.ToString();
     }
 
     public async Task<object> GetAccount(long userId)
