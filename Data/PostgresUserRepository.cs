@@ -1,6 +1,4 @@
 using Npgsql;
-using System;
-using System.Threading.Tasks;
 using DTOs;
 
 namespace Data.Repositories
@@ -21,7 +19,7 @@ namespace Data.Repositories
         {
             const string sql = @"
                 INSERT INTO public.users 
-                    (""id"", ""email"", ""name"", ""PasswordHash"", ""is_influencer"", ""status"", ""CreatedAt"", ""UpdatedAt"")
+                    (""Id"", ""email"", ""name"", ""PasswordHash"", ""is_influencer"", ""status"", ""CreatedAt"", ""UpdatedAt"")
                 VALUES 
                     (nextval('users_id_seq'), @email, @name, @PasswordHash, FALSE, 'active', NOW(), NOW())
                 RETURNING ""Id"";";
@@ -44,7 +42,7 @@ namespace Data.Repositories
         public async Task<User?> GetByEmailAsync(string email)
         {
             const string sql = @"
-                SELECT ""id"", ""email"", ""name"", ""PasswordHash"", ""is_influencer"", ""status"", ""CreatedAt"", ""UpdatedAt""
+                SELECT ""Id"", ""email"", ""name"", ""PasswordHash"", ""is_influencer"", ""status"", ""CreatedAt"", ""UpdatedAt""
                 FROM public.users
                 WHERE ""email"" = @email
                 LIMIT 1;";
@@ -85,17 +83,17 @@ namespace Data.Repositories
             await connection.OpenAsync();
 
             await using var command = new NpgsqlCommand(sql, connection);
-            command.Parameters.AddWithValue("Email", email);
+            command.Parameters.AddWithValue("email", email);
 
             return await command.ExecuteScalarAsync() != null;
         }
 
-        public async Task<object> GetByIdAsync(long userId)
+        public async Task<User?> GetByIdAsync(long userId)
         {
             const string sql = @"
-                SELECT ""id"", ""email"", ""name"", ""PasswordHash"", ""is_influencer"", ""status"", ""CreatedAt"", ""UpdatedAt""
+                SELECT ""Id"", ""email"", ""name"", ""PasswordHash"", ""is_influencer"", ""status"", ""CreatedAt"", ""UpdatedAt""
                 FROM public.users
-                WHERE ""id"" = @id
+                WHERE ""Id"" = @id
                 LIMIT 1;";
 
             await using var connection = new NpgsqlConnection(_connectionString);
