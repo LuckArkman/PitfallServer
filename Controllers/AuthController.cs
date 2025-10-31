@@ -14,7 +14,12 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Login([FromBody] LoginRequest req)
     {
         var token = await _auth.AuthenticateAsync(req.Email, req.Password);
-        if (token == null) return Ok(new { message = "Credenciais inválidas." });
+        if (token == null)
+        {
+            Console.WriteLine($"{nameof(Login)} >> Credenciais inválidas. ! {req.Email}");
+            return Ok(new { message = "Credenciais inválidas." });
+        }
+        Console.WriteLine($"{nameof(Login)} >> Usuario Logado com Sucesso ! {req.Email}");
         return Ok(new { token });
     }
     
@@ -22,7 +27,13 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Register([FromBody] LoginRequest req)
     {
         var token = await _auth.RegisterAsync(req.Email, req.Password);
-        if (token == null) return Ok(new { message = "Credenciais inválidas." });
+        if (token == null)
+        {
+            Console.WriteLine($"{nameof(Register)} >> Credenciais inválidas. ! {req.Email}");
+            return Ok(new { message = "Credenciais inválidas." });
+        }
+
+        Console.WriteLine($"{nameof(Register)} >> Usuario registrado com Sucesso ! {req.Email}");
         return Ok(new { token });
     }
 }

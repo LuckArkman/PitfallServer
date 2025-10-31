@@ -33,9 +33,7 @@ public class AuthService
     {
         var hash = ComputeSha256Hash(password);
         var user = await _postgresUserRepository.GetByEmailAsync(email);
-        // NOTE: in schema original password stored in users? if not, adapt to use credentials table.
-        // Here we assume PasswordHash in Admins only. If you store user passwords, add property.
-        if (user == null) return null;
+        if (user == null || hash != user.PasswordHash) return null;
         
         
         var token = _tokenService.GenerateToken(user);
@@ -45,7 +43,6 @@ public class AuthService
     
     public async Task<string?> RegisterAsync(string email, string password)
     {
-        // Verifica se já existe um usuário com o mesmo email
         var _user = await _postgresUserRepository.GetByEmailAsync(email);
         if (_user == null) return null;
 
