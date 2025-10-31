@@ -18,15 +18,3 @@
 /home/mplopes/Documentos/GitHub/PitfallServer/Controllers/obj/Debug/net8.0/refint/Controllers.dll
 /home/mplopes/Documentos/GitHub/PitfallServer/Controllers/obj/Debug/net8.0/Controllers.pdb
 /home/mplopes/Documentos/GitHub/PitfallServer/Controllers/obj/Debug/net8.0/ref/Controllers.dll
-/home/mplopes/Documentos/GitHub/PitfallServer/Controllers/bin/Debug/net8.0/Microsoft.AspNetCore.Identity.dll
-/home/mplopes/Documentos/GitHub/PitfallServer/Controllers/bin/Debug/net8.0/Microsoft.Extensions.Identity.Core.dll
-/home/mplopes/Documentos/GitHub/PitfallServer/Controllers/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.Cookies.dll
-/home/mplopes/Documentos/GitHub/PitfallServer/Controllers/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.dll
-/home/mplopes/Documentos/GitHub/PitfallServer/Controllers/bin/Debug/net8.0/Microsoft.AspNetCore.Http.Results.dll
-/home/mplopes/Documentos/GitHub/PitfallServer/Controllers/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.BearerToken.dll
-/home/mplopes/Documentos/GitHub/PitfallServer/Controllers/bin/Debug/net8.0/Microsoft.AspNetCore.Identity.xml
-/home/mplopes/Documentos/GitHub/PitfallServer/Controllers/bin/Debug/net8.0/Microsoft.Extensions.Identity.Core.xml
-/home/mplopes/Documentos/GitHub/PitfallServer/Controllers/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.Cookies.xml
-/home/mplopes/Documentos/GitHub/PitfallServer/Controllers/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.xml
-/home/mplopes/Documentos/GitHub/PitfallServer/Controllers/bin/Debug/net8.0/Microsoft.AspNetCore.Http.Results.xml
-/home/mplopes/Documentos/GitHub/PitfallServer/Controllers/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.BearerToken.xml
