@@ -18,13 +18,26 @@ public class WalletService
     /// <summary>
     /// Retorna a carteira de um usuário ou cria uma nova se não existir.
     /// </summary>
-    public async Task<Wallet> GetOrCreateWalletAsync(long userId, NpgsqlConnection conn, NpgsqlTransaction tx)
+    public async Task<Wallet> GetOrCreateWalletAsync(
+        long userId,
+        NpgsqlConnection? conn = null,
+        NpgsqlTransaction? tx = null)
     {
-        var wallet = await _walletRepository.GetWalletAsync(userId, conn, tx);
-        if (wallet != null) return wallet;
+        if (conn == null)
+        {
+            await using var localConn = new NpgsqlConnection(_connectionString);
+            await localConn.OpenAsync();
+            await using var localTx = await localConn.BeginTransactionAsync();
 
-        // Cria nova carteira com valores padrão
-        return await _walletRepository.CreateWalletAsync(userId, conn, tx);
+            var wallet = await _walletRepository.GetWalletAsync(userId, localConn, localTx)
+                         ?? await _walletRepository.CreateWalletAsync(userId, localConn, localTx);
+
+            await localTx.CommitAsync();
+            return wallet;
+        }
+
+        var existing = await _walletRepository.GetWalletAsync(userId, conn, tx);
+        return existing ?? await _walletRepository.CreateWalletAsync(userId, conn, tx);
     }
 
     /// <summary>

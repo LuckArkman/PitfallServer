@@ -44,7 +44,7 @@ public class AuthService
     public async Task<string?> RegisterAsync(string email, string password)
     {
         var _user = await _postgresUserRepository.GetByEmailAsync(email);
-        if (_user == null) return null;
+        if (_user != null) return null;
 
         var hash = ComputeSha256Hash(password);
 
