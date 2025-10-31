@@ -17,7 +17,7 @@ public class AuthController : ControllerBase
         if (token == null)
         {
             Console.WriteLine($"{nameof(Login)} >> Credenciais inválidas. ! {req.Email}");
-            return Ok(new { message = "Credenciais inválidas." });
+            return Ok(null);
         }
         Console.WriteLine($"{nameof(Login)} >> Usuario Logado com Sucesso ! {req.Email}");
         return Ok(new { token });
