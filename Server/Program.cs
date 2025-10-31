@@ -1,5 +1,7 @@
 using Services;
 using Data;
+using DTOs;
+using Microsoft.AspNetCore.Identity;
 using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,7 @@ var sessionConnection = builder.Configuration.GetConnectionString("SessionConnec
 // --- 🔹 Registrar serviços diretos (sem EF) ---
 builder.Services.AddScoped<SessionService>(_ => new SessionService(sessionConnection));
 builder.Services.AddScoped<PixService>();
+builder.Services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<WalletRepository>(_ => new WalletRepository(defaultConnection));
