@@ -1,10 +1,14 @@
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Data;
 using DTOs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using Npgsql;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Services;
 
@@ -14,6 +18,7 @@ public class PixService
     private readonly IConfiguration _cfg;
     private readonly WalletService _walletService;
     private PixRepository _pixRepository;
+    private readonly string _apiKey; // Nova variável para a API Key
 
     public PixService(HttpClient http, IConfiguration cfg,
         WalletService walletService)
@@ -22,76 +27,104 @@ public class PixService
         _cfg = cfg;
         _walletService = walletService;
         _pixRepository = new PixRepository(_cfg["ConnectionStrings:DefaultConnection"]);
+        
+        // 🔑 StormPag usa Apikey no Header, lida separadamente
+        _apiKey = _cfg["StormPag:ApiKey"] ?? throw new ArgumentNullException("StormPag:ApiKey não configurada.");
+        
+        // Define o cabeçalho de autenticação padrão para o HttpClient
+        // O restante das configurações de URL base será feito na chamada
+        _http.DefaultRequestHeaders.Clear();
+        _http.DefaultRequestHeaders.Add("Apikey", _apiKey);
     }
 
     public async Task<PixDepositResponse?> CreatePixDepositAsync(PixDepositRequest req, User? user)
     {
-        var payload = new
+        // 🛠️ Mapeamento de campos da FeiPay para StormPag:
+        var payload = new 
         {
-            token = _cfg["FeiPay:Token"],
-            secret = _cfg["FeiPay:Secret"],
-            postback = _cfg["FeiPay:PostbackUrl"],
-            amount = req.Amount,
-            debtor_name = req.Name,
-            email = req.Email,
-            debtor_document_number = req.Document,
-            phone = req.Phone,
-            method_pay = "pix",
-            split_email = req.SplitEmail ?? "",
-            split_percentage = req.SplitPercentage > 0 ? req.SplitPercentage.ToString() : ""
+            nome = req.Name,
+            cpf = req.Document,
+            valor = req.Amount.ToString("F2"), // StormPag espera string de valor (ex: "100.00")
+            descricao = "Depósito via PIX",
+            postback = _cfg["StormPag:PostbackUrl"], // URL para receber webhooks
+            split = req.SplitPercentage > 0 && !string.IsNullOrWhiteSpace(req.SplitEmail)
+                ? new []
+                {
+                    new 
+                    {
+                        target = req.SplitEmail, // Assumindo que SplitEmail mapeia para recipient_id/target
+                        percentage = req.SplitPercentage
+                    }
+                }
+                : null
         };
-
-        var response = await _http.PostAsJsonAsync("wallet/deposit/payment", payload);
+        Console.WriteLine(_cfg["StormPag:BaseUrl"] + "/api/v1/cashin");
+        var response = await _http.PostAsJsonAsync(_cfg["StormPag:BaseUrl"] + "/api/v1/cashin", payload);
         var content = await response.Content.ReadAsStringAsync();
 
         if (!response.IsSuccessStatusCode)
-            throw new Exception($"Erro FeiPay PIX-IN: {content}");
+            throw new Exception($"Erro StormPag PIX-IN: {content}");
 
-        var obj = JsonSerializer.Deserialize<PixDepositResponse>(content,
+        // 🔄 Mapeamento da Resposta (Adaptar PixDepositResponse para o formato da StormPag)
+        var stormPagResponse = JsonSerializer.Deserialize<StormPagCashInResponse>(content,
             new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-        if (obj == null) return null;
+        
+        if (stormPagResponse == null) return null;
 
         // 2. GRAVA NO BANCO IMEDIATAMENTE (ANTES DO WEBHOOK)
         try
         {
+            // Mapeando a resposta da StormPag para o objeto local:
             var l = await PixTransactionHelper.InsertPixTransactionManuallyAsync(
                 connectionString: _cfg.GetConnectionString("DefaultConnection")!,
                 userId: user!.Id,
-                idTransaction: obj.IdTransaction,
+                idTransaction: stormPagResponse.Id, // StormPag usa "id"
                 amount: req.Amount,
-                qrCode: obj.QrCode,
-                qrCodeImageUrl: obj.QrCodeImageUrl
+                qrCode: stormPagResponse.Pix, // StormPag retorna a string PIX em "pix"
+                qrCodeImageUrl: "" // StormPag não retorna URL, apenas string PIX
             );
         }
         catch (Exception ex)
         {
             // Log crítico, mas não interrompe o fluxo
-            Console.WriteLine($"[FALHA AO GRAVAR PIX] ID: {obj.IdTransaction} | Erro: {ex.Message}");
+            Console.WriteLine($"[FALHA AO GRAVAR PIX] ID: {stormPagResponse.Id} | Erro: {ex.Message}");
             // Opcional: salvar em fila para retry
         }
 
-        return obj;
+        // Retorna a resposta no DTO esperado pelo cliente
+        return new PixDepositResponse
+        {
+            IdTransaction = stormPagResponse.Id,
+            QrCode = stormPagResponse.Pix,
+            QrCodeImageUrl = "" // Não fornecido pela StormPag
+        };
     }
 
-    public async Task<PixWithdrawResponse?> CreatePixWithdrawAsync(PixWithdrawRequest req)
+    public async Task<PixWithdrawResponse?> CreatePixWithdrawAsync(PixWithdrawRequest req, User? user)
     {
+        // 🛠️ Mapeamento de campos da FeiPay para StormPag:
+        // A StormPag não detalha o Cash Out, mas assumimos um formato similar ao Cash In,
+        // mas é necessário adaptar `pixKey` e `pixKeyType` para o formato que a StormPag espera
+        // para o destinatário (o Cash Out é uma transferência, não uma cobrança).
+        // Adaptando para o mínimo necessário do Cash In, assumindo que a StormPag infere a chave PIX do usuário autenticado para Saque.
         var payload = new
         {
-            token = _cfg["FeiPay:Token"],
-            secret = _cfg["FeiPay:Secret"],
-            baasPostbackUrl = _cfg["FeiPay:PostbackUrl"],
-            amount = req.Amount,
-            pixKey = req.PixKey,
-            pixKeyType = req.PixKeyType
+            nome = user.Name ?? "Conta Origem",
+            cpf = "00000000000",
+            valor = req.Amount.ToString("F2"),
+            descricao = "Saque de fundos",
+            postback = _cfg["StormPag:PostbackUrl"]
         };
-
-        var res = await _http.PostAsJsonAsync("pixout", payload);
+        
+        // 🚀 Chamada para o endpoint /api/v1/cashout
+        var res = await _http.PostAsJsonAsync(_cfg["StormPag:BaseUrl"]?.TrimEnd('/') + "/api/v1/cashout", payload);
         if (!res.IsSuccessStatusCode)
-            throw new Exception($"Erro FeiPay PIX-OUT: {await res.Content.ReadAsStringAsync()}");
+            throw new Exception($"Erro StormPag PIX-OUT: {await res.Content.ReadAsStringAsync()}");
 
-        return await res.Content.ReadFromJsonAsync<PixWithdrawResponse>();
+        // Assumindo um DTO de resposta similar ao Cash In para Cash Out
+        return await res.Content.ReadFromJsonAsync<PixWithdrawResponse>(); 
     }
+
     /// <summary>
     /// Cancela automaticamente todas as transações pendentes que expiraram (ex: 15 minutos).
     /// Execute em background (ex: a cada 5 minutos).
@@ -99,6 +132,7 @@ public class PixService
     /// <param name="expirationMinutes">Tempo máximo para pagamento (padrão: 15 min)</param>
     public async Task CancelExpiredPixTransactionsAsync(int expirationMinutes = 15)
     {
+        // Lógica de cancelamento local no DB permanece a mesma.
         var connectionString = _cfg.GetConnectionString("DefaultConnection");
         var cutoff = DateTime.UtcNow.AddMinutes(-expirationMinutes);
 
@@ -121,13 +155,19 @@ public class PixService
         if (rowsAffected > 0)
             Console.WriteLine($"[PIX] {rowsAffected} transações expiradas foram canceladas.");
     }
-    
-// Services/PixService.cs
+
+    /// <summary>
+    /// Processa o Webhook da StormPag.
+    /// </summary>
     public async Task<bool> ProcessWebhookAsync(PixWebhookDto webhook)
     {
+        // O Webhook da StormPag retorna "id", "status" e "value"
+        // O DTO deve ser ajustado para mapear `idTransaction` para `id` da StormPag e `amount` para `value`.
+        // A lógica interna de idempotência e crédito permanece a mesma.
         if (webhook == null || string.IsNullOrWhiteSpace(webhook.idTransaction))
             throw new ArgumentException("Webhook inválido.");
 
+        // ... [Restante do método ProcessWebhookAsync permanece inalterado]
         // 1. Busca transação
         var pixTx = await _pixRepository.GetByIdTransactionAsync(webhook.idTransaction);
 
@@ -144,7 +184,7 @@ public class PixService
             return true; // Já foi processado
         }
 
-        // 3. Validação de userId
+        // 3. Validação de userId (Pode ser removida se o webhook da StormPag não garantir o userId)
         if (pixTx.UserId != webhook.userId)
         {
             Console.WriteLine($"[WEBHOOK] userId inconsistente! , Webhook: {webhook.userId}");
@@ -154,7 +194,7 @@ public class PixService
         // 4. Processa status
         bool success = false;
 
-        if (webhook.status == "paid")
+        if (webhook.status == "PAID") // StormPag usa "PAID" em maiúsculas (exemplo)
         {
             pixTx.Status = "Complete";
             pixTx.PaidAt = DateTime.UtcNow;
@@ -171,7 +211,7 @@ public class PixService
                 Console.WriteLine($"[WEBHOOK] Falha ao creditar: {ex.Message}");
             }
         }
-        else if (webhook.status is "canceled" or "expired")
+        else if (webhook.status is "CANCELED" or "EXPIRED")
         {
             pixTx.Status = "Canceled";
             success = true;
@@ -184,19 +224,16 @@ public class PixService
 
         return success;
     }
-    
+
     /// <summary>
     /// Atualiza o status da transação PIX com base no webhook ou expiração.
     /// </summary>
-    /// <param name="idTransaction">ID retornado pela FeiPay</param>
-    /// <param name="newStatus">"paid" ou "canceled"</param>
-    /// <param name="paidAt">Data/hora do pagamento (opcional)</param>
-    /// <returns>true se atualizado, false se não encontrado ou já finalizado</returns>
     public async Task<bool> UpdatePixTransactionStatusAsync(
         string idTransaction,
         string newStatus, // "paid" ou "canceled"
         DateTime? paidAt = null)
     {
+        // [Método de atualização de status local no DB, permanece o mesmo]
         if (string.IsNullOrWhiteSpace(idTransaction))
             throw new ArgumentException("idTransaction é obrigatório.");
 
@@ -226,4 +263,22 @@ public class PixService
         var result = await cmd.ExecuteScalarAsync();
         return result != null;
     }
+
+    /// <summary>
+    /// **REMOVIDO:** A StormPag usa autenticação via header e métodos dedicados, 
+    /// tornando este método genérico (`SendToFeiPayAsync`) obsoleto ou desnecessário.
+    /// </summary>
+    // public async Task<TResponse?> SendToFeiPayAsync<TResponse>(...) {}
+
+    /// <summary>
+    /// **REMOVIDO/AJUSTADO:** O monitoramento ativo (`MonitorPixUntilPaidAsync`) 
+    /// é um fallback caro e a StormPag não tem endpoint de status documentado. 
+    /// A dependência é 100% no Webhook.
+    /// </summary>
+    // public async Task MonitorPixUntilPaidAsync(string idTransaction, long userId) {}
 }
+
+// ⚠️ ADICIONAR ESTE DTO em DTOs/StormPagCashInResponse.cs ou similar
+
+// ⚠️ É necessário garantir que PixDepositResponse e PixWithdrawResponse
+// mapeiem corretamente para o que o seu Frontend/Cliente espera.

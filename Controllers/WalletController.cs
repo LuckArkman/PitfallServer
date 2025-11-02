@@ -11,13 +11,16 @@ public class WalletController : ControllerBase
     readonly WalletService _service;
     private readonly AuthService _authService;
     readonly SessionService _sessionService;
+    private readonly GameService _gameService;
 
     public WalletController(WalletService service,
         SessionService sessionService,
+        GameService  gameService,
         AuthService authService)
     {
         _service = service;
         _sessionService = sessionService;
+        _gameService = gameService;
         _authService = authService;
     }
 
@@ -43,7 +46,7 @@ public class WalletController : ControllerBase
             updatedAt = wallet.UpdatedAt
         });
     }
-
+    
     /// <summary>
     /// Rota para debitar o balanço do usuário.
     /// </summary>
@@ -66,11 +69,11 @@ public class WalletController : ControllerBase
         try
         {
             var wallet = await _service.DebitAsync(_wallet.Id, req.Amount, req.type);
-            
+            var room = await _gameService.CreateGameRoom(user.UserId);
             return Ok(new 
             { 
                 success = true,
-                message = "Débito realizado com sucesso.",
+                message = room.GameId,
                 balance = wallet.Balance,
                 balanceBonus = wallet.BalanceBonus,
                 balanceWithdrawal = wallet.BalanceWithdrawal,
@@ -103,13 +106,12 @@ public class WalletController : ControllerBase
 
         var user = await _sessionService.GetAsync(req.token);
         Console.WriteLine($"{nameof(CreditBalance)} >> {user == null}");
-        if (user == null)
-            return Unauthorized();
+        if (user == null) return Unauthorized();
 
         try
         {
             var wallet = await _service.CreditAsync(user.UserId, req.Amount, req.type);
-            
+            var withdraw = wallet.Balance - req.Amount;
             return Ok(new 
             { 
                 success = true,

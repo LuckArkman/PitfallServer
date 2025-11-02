@@ -1,7 +1,9 @@
-using System.Text.Json;
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 using DTOs;
+using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Controllers;
 
@@ -34,8 +36,11 @@ public class PixController : ControllerBase
         if (session == null) return BadRequest(new { message = "Sessão inválida" });
         var user = await _authService.GetAccount(session.UserId) as User;
         var pixReq = new PixDepositRequest(dto.amount, user.Name, user.Email, dto.documentNumber, dto.phone);
+        
+        // Chama o método de depósito que agora utiliza a API StormPag
         var result = await _pixService.CreatePixDepositAsync(pixReq, user);
 
+        // O DTO de resposta (result.Charge) deve ser ajustado para refletir o novo objeto retornado pela StormPag
         return Ok(result.Charge);
     }
 
@@ -43,28 +48,36 @@ public class PixController : ControllerBase
     [HttpPost("withdraw")]
     public async Task<IActionResult> CreateWithdraw([FromBody] PixWithdrawRequestDto dto)
     {
-        var user = await _session.GetAsync(dto.Token);
-        if (user == null) return BadRequest(new { message = "Sessão inválida" });
+        var session = await _session.GetAsync(dto.Token);
+        if (session == null) return BadRequest(new { message = "Sessão inválida" });
 
-        var wallet = await _wallet.GetOrCreateWalletAsync(user.UserId, null, null);
+        var wallet = await _wallet.GetOrCreateWalletAsync(session.UserId, null, null);
+        Console.WriteLine($"{nameof(CreateWithdraw)} >> {wallet.Balance}");
+        Console.WriteLine($"{nameof(CreateWithdraw)} >> {dto.Amount}");
+        var user = await _authService.GetAccount(session.UserId) as User;
         if (wallet.BalanceWithdrawal < dto.Amount)
             return BadRequest(new { message = "Saldo insuficiente para saque" });
 
-        var result = await _pixService.CreatePixWithdrawAsync(new PixWithdrawRequest(dto.Amount, dto.PixKey, dto.PixKeyType));
+        // Chama o método de saque que agora utiliza a API StormPag
+        var result = await _pixService.CreatePixWithdrawAsync(new PixWithdrawRequest(dto.Amount, dto.PixKey, dto.PixKeyType), user);
 
         return Ok(new
         {
             success = true,
-            id = result?.Id,
-            status = result?.WithdrawStatusId,
+            // ⚠️ Os campos de resposta devem ser verificados e ajustados, 
+            // dependendo do DTO de resposta (PixWithdrawResponse) da StormPag.
+            id = result?.Id, 
+            status = result?.WithdrawStatusId, 
             amount = result?.Amount
         });
     }
-    // ================================= CALLBACK PIX-IN =================================
-// Controllers/PixController.cs
+
+    // ================================= CALLBACK PIX-IN (WEBHOOK) =================================
     [HttpPost("callback")]
     public async Task<IActionResult> Callback([FromBody] PixWebhookDto callback)
     {
+        // Este endpoint é o destino do postback da StormPag, a lógica permanece inalterada
+        // e depende do método ProcessWebhookAsync no PixService.cs
         Console.WriteLine(JsonSerializer.Serialize(callback));
         if (callback == null)
             return BadRequest(new { message = "Payload inválido." });
