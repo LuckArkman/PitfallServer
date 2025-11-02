@@ -1,10 +1,13 @@
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
 using Data;
 using DTOs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using Npgsql;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Services;
 
@@ -92,6 +95,7 @@ public class PixService
 
         return await res.Content.ReadFromJsonAsync<PixWithdrawResponse>();
     }
+
     /// <summary>
     /// Cancela automaticamente todas as transações pendentes que expiraram (ex: 15 minutos).
     /// Execute em background (ex: a cada 5 minutos).
@@ -121,7 +125,7 @@ public class PixService
         if (rowsAffected > 0)
             Console.WriteLine($"[PIX] {rowsAffected} transações expiradas foram canceladas.");
     }
-    
+
 // Services/PixService.cs
     public async Task<bool> ProcessWebhookAsync(PixWebhookDto webhook)
     {
@@ -184,7 +188,7 @@ public class PixService
 
         return success;
     }
-    
+
     /// <summary>
     /// Atualiza o status da transação PIX com base no webhook ou expiração.
     /// </summary>
@@ -225,5 +229,129 @@ public class PixService
 
         var result = await cmd.ExecuteScalarAsync();
         return result != null;
+    }
+
+    /// <summary>
+    /// Envia uma requisição genérica para a API FeiPay com token e secret automáticos.
+    /// </summary>
+    /// <param name="endpoint">Rota da API (ex: "/wallet/deposit/status")</param>
+    /// <param name="payload">Objeto com parâmetros adicionais da operação</param>
+    /// <typeparam name="TResponse">Tipo esperado da resposta</typeparam>
+    public async Task<TResponse?> SendToFeiPayAsync<TResponse>(string endpoint, object payload)
+    {
+        // 🔹 Monta o corpo incluindo token e secret do appsettings.json
+        var body = new Dictionary<string, object>(
+            JsonConvert.DeserializeObject<Dictionary<string, object>>(JsonConvert.SerializeObject(payload)))
+        {
+            ["token"] = _cfg["FeiPay:Token"],
+            ["secret"] = _cfg["FeiPay:Secret"]
+        };
+
+        string json = JsonConvert.SerializeObject(body);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        string baseUrl = _cfg["FeiPay:BaseUrl"]?.TrimEnd('/') ?? "https://feipay.com.br/api";
+        string url = $"{baseUrl}{endpoint}";
+
+        try
+        {
+            Console.WriteLine($"[FeiPay] POST → {url}");
+            Console.WriteLine($"Payload: {json}");
+
+            var response = await _http.PostAsync(url, content);
+            var responseBody = await response.Content.ReadAsStringAsync();
+
+            Console.WriteLine($"[FeiPay] Status: {response.StatusCode}");
+            Console.WriteLine($"[FeiPay] Body: {responseBody}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Console.WriteLine($"[FeiPay] Falha: {response.ReasonPhrase}");
+                return default;
+            }
+
+            return JsonConvert.DeserializeObject<TResponse>(responseBody);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[FeiPay] Erro: {ex.Message}");
+            return default;
+        }
+    }
+
+    /// <summary>
+    /// Monitora o status de um PIX específico até ser pago ou expirar.
+    /// </summary>
+    public async Task MonitorPixUntilPaidAsync(string idTransaction, long userId)
+    {
+        const int checkIntervalSeconds = 20; // intervalo entre checagens
+        const int maxAttempts = 60; // até ~20 minutos
+        var baseUrl = _cfg["FeiPay:BaseUrl"]?.TrimEnd('/') ?? "https://feipay.com.br/api";
+
+        Console.WriteLine($"[MonitorPix] Iniciando verificação do PIX {idTransaction}");
+
+        for (int i = 0; i < maxAttempts; i++)
+        {
+            try
+            {
+                var payload = new
+                {
+                    token = _cfg["FeiPay:Token"],
+                    secret = _cfg["FeiPay:Secret"],
+                    idTransaction
+                };
+
+                string json = JsonConvert.SerializeObject(payload);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await _http.PostAsync($"{baseUrl}/wallet/deposit/status", content);
+                var body = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine($"[MonitorPix] {idTransaction} → {response.StatusCode}");
+                    await Task.Delay(TimeSpan.FromSeconds(checkIntervalSeconds));
+                    continue;
+                }
+
+                var statusData = JsonConvert.DeserializeObject<FeiPayResponse>(body);
+                if (statusData == null)
+                {
+                    Console.WriteLine($"[MonitorPix] {idTransaction} → resposta nula.");
+                    await Task.Delay(TimeSpan.FromSeconds(checkIntervalSeconds));
+                    continue;
+                }
+
+                Console.WriteLine($"[MonitorPix] {idTransaction} → {statusData.status}");
+
+                // Se foi pago, atualizar no banco e sair
+                if (statusData.status?.ToLower() is "paid" or "complete" or "approved")
+                {
+                    using var conn = new NpgsqlConnection(_cfg.GetConnectionString("DefaultConnection"));
+                    await conn.OpenAsync();
+
+                    var cmd = new NpgsqlCommand(@"
+                            UPDATE public.pix_transactions
+                            SET status = 'Complete', paid_at = NOW()
+                            WHERE id_transaction = @idTransaction;
+                        ", conn);
+
+                    cmd.Parameters.AddWithValue("@idTransaction", idTransaction);
+                    await cmd.ExecuteNonQueryAsync();
+                    var pixTx = await _pixRepository.GetByIdTransactionAsync(idTransaction);
+                    await _walletService.CreditAsync(pixTx.UserId, pixTx.Amount, "PIX_IN");
+                    Console.WriteLine($"✅ [MonitorPix] PIX {idTransaction} confirmado como pago!");
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ [MonitorPix] Erro: {ex.Message}");
+            }
+
+            await Task.Delay(TimeSpan.FromSeconds(checkIntervalSeconds));
+        }
+
+        Console.WriteLine(
+            $"⚠️ [MonitorPix] PIX {idTransaction} não pago após {maxAttempts * checkIntervalSeconds / 60} minutos.");
     }
 }

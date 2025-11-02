@@ -40,30 +40,83 @@ public class WalletService
         return existing ?? await _walletRepository.CreateWalletAsync(userId, conn, tx);
     }
 
-    /// <summary>
-    /// Credita um valor na carteira do usuário.
-    /// </summary>
-    public async Task<Wallet> CreditAsync(long userId, decimal amount, string reqType)
+    public async Task<Wallet> CreditAsync(long userId, decimal amount, string type)
     {
         if (amount <= 0)
-            throw new ArgumentException("O valor deve ser maior que zero.", nameof(amount));
+            throw new InvalidOperationException("O valor deve ser maior que zero.");
 
         await using var conn = new NpgsqlConnection(_connectionString);
         await conn.OpenAsync();
+
         await using var tx = await conn.BeginTransactionAsync();
 
         try
         {
-            var wallet = await GetOrCreateWalletAsync(userId, conn, tx);
+            var cmdSelect = new NpgsqlCommand(@"
+            SELECT ""Balance"", ""BalanceWithdrawal"", ""BalanceBonus"", ""Currency""
+            FROM public.wallets
+            WHERE ""UserId"" = @p_userId
+            FOR UPDATE", conn, tx);
 
-            wallet.Balance += amount;
-            wallet.UpdatedAt = DateTime.UtcNow;
+            cmdSelect.Parameters.AddWithValue("@p_userId", userId);
 
-            await _walletRepository.UpdateWalletAsync(wallet, conn, tx);
-            await _walletRepository.InsertLedgerAsync(userId, reqType, amount, wallet.Balance, conn, tx);
+            using var reader = await cmdSelect.ExecuteReaderAsync();
+            if (!reader.Read())
+                throw new InvalidOperationException("Carteira não encontrada.");
+
+            decimal balance = reader.GetDecimal(0);
+            decimal balanceWithdrawal = reader.GetDecimal(1);
+            decimal balanceBonus = reader.GetDecimal(2);
+            string currency = reader.GetString(3);
+            reader.Close();
+
+            decimal withdrawalPart = amount * 0.8m;
+            decimal mainBalancePart = amount * 0.2m;
+
+            var cmdUpdate = new NpgsqlCommand(@"
+            UPDATE public.wallets
+            SET 
+                ""Balance"" = ""Balance"" + @p_main,
+                ""BalanceWithdrawal"" = ""BalanceWithdrawal"" + @p_withdraw,
+                ""UpdatedAt"" = NOW()
+            WHERE ""UserId"" = @p_userId", conn, tx);
+
+            cmdUpdate.Parameters.AddWithValue("@p_userId", userId);
+            cmdUpdate.Parameters.AddWithValue("@p_main", mainBalancePart);
+            cmdUpdate.Parameters.AddWithValue("@p_withdraw", withdrawalPart);
+
+            await cmdUpdate.ExecuteNonQueryAsync();
+
+            decimal newBalance = balance + mainBalancePart;
+            decimal newBalanceWithdrawal = balanceWithdrawal + withdrawalPart;
+
+            var cmdLedger = new NpgsqlCommand(@"
+            INSERT INTO public.wallet_ledger 
+            (""UserId"", ""Type"", ""Amount"", ""BalanceAfter"", ""Metadata"", ""CreatedAt"")
+            VALUES (@p_userId, @p_type, @p_amount, @p_balanceAfter, @p_metadata, NOW())", conn, tx);
+
+            decimal balanceAfter = newBalance + newBalanceWithdrawal + balanceBonus;
+
+            cmdLedger.Parameters.AddWithValue("@p_userId", userId);
+            cmdLedger.Parameters.AddWithValue("@p_type", type ?? "credit");
+            cmdLedger.Parameters.AddWithValue("@p_amount", amount);
+            cmdLedger.Parameters.AddWithValue("@p_balanceAfter", balanceAfter);
+            cmdLedger.Parameters.AddWithValue("@p_metadata",
+                $"{{\"split\":\"80/20\",\"withdraw\":{withdrawalPart},\"main\":{mainBalancePart}}}");
+
+            await cmdLedger.ExecuteNonQueryAsync();
 
             await tx.CommitAsync();
-            return wallet;
+
+            return new Wallet
+            {
+                UserId = userId,
+                Balance = newBalance,
+                BalanceWithdrawal = newBalanceWithdrawal,
+                BalanceBonus = balanceBonus,
+                Currency = currency,
+                UpdatedAt = DateTime.UtcNow
+            };
         }
         catch
         {
@@ -127,5 +180,37 @@ public class WalletService
             await tx.RollbackAsync();
             throw;
         }
+    }
+
+    public async Task CreateWithdrawSnapshotAsync(long userId, string gameId)
+    {
+        if (string.IsNullOrWhiteSpace(gameId))
+            throw new ArgumentException("O ID da partida é obrigatório.", nameof(gameId));
+
+        await using var conn = new NpgsqlConnection(_connectionString);
+        await conn.OpenAsync();
+
+        var wallet = await GetOrCreateWalletAsync(userId, conn);
+
+        // 🔹 Salva snapshot do withdraw original
+        var cmd = new NpgsqlCommand(@"
+        INSERT INTO public.wallets_snapshot 
+        (""UserId"", ""GameId"",""OriginalBalance"", ""OriginalWithdraw"", ""CreatedAt"")
+        VALUES (@UserId, @GameId, @OriginalBalance, @OriginalWithdraw, NOW())
+        ON CONFLICT (""UserId"", ""GameId"")
+        DO UPDATE SET 
+            ""OriginalWithdraw"" = EXCLUDED.""OriginalWithdraw"",
+            ""CreatedAt"" = NOW();", conn);
+
+        cmd.Parameters.AddWithValue("@UserId", userId);
+        cmd.Parameters.AddWithValue("@GameId", gameId);
+        cmd.Parameters.AddWithValue("@OriginalBalance", wallet.Balance);
+        cmd.Parameters.AddWithValue("@OriginalWithdraw", wallet.BalanceWithdrawal);
+        cmd.Parameters.AddWithValue("@CreatedAt", DateTime.UtcNow);
+
+        await cmd.ExecuteNonQueryAsync();
+
+        Console.WriteLine(
+            $"[Snapshot] Usuário {userId} → partida {gameId} → withdraw original salvo: {wallet.BalanceWithdrawal}");
     }
 }

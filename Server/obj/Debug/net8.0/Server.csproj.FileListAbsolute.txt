@@ -167,3 +167,6 @@
 /home/mplopes/Documentos/GitHub/PitfallServer/Server/bin/Debug/net8.0/runtimes/win-x64/native/e_sqlite3.dll
 /home/mplopes/Documentos/GitHub/PitfallServer/Server/bin/Debug/net8.0/runtimes/win-x86/native/e_sqlite3.dll
 /home/mplopes/Documentos/GitHub/PitfallServer/Server/bin/Debug/net8.0/Microsoft.Extensions.Logging.dll
+/home/mplopes/Documentos/GitHub/PitfallServer/Server/bin/Debug/net8.0/Microsoft.Extensions.Http.Polly.dll
+/home/mplopes/Documentos/GitHub/PitfallServer/Server/bin/Debug/net8.0/Polly.dll
+/home/mplopes/Documentos/GitHub/PitfallServer/Server/bin/Debug/net8.0/Polly.Extensions.Http.dll

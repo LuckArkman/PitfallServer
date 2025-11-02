@@ -1,7 +1,9 @@
-using System.Text.Json;
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 using DTOs;
+using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Controllers;
 
@@ -47,6 +49,9 @@ public class PixController : ControllerBase
         if (user == null) return BadRequest(new { message = "Sessão inválida" });
 
         var wallet = await _wallet.GetOrCreateWalletAsync(user.UserId, null, null);
+        Console.WriteLine($"{nameof(CreateWithdraw)} >> {wallet.Balance}");
+        Console.WriteLine($"{nameof(CreateWithdraw)} >> {dto.Amount}");
+        
         if (wallet.BalanceWithdrawal < dto.Amount)
             return BadRequest(new { message = "Saldo insuficiente para saque" });
 
@@ -60,6 +65,29 @@ public class PixController : ControllerBase
             amount = result?.Amount
         });
     }
+    
+    [HttpPost("deposit/status")]
+    public async Task<IActionResult> GetPixStatus([FromBody] PixStatusRequestDto dto)
+    {
+        if (string.IsNullOrWhiteSpace(dto.IdTransaction))
+            return BadRequest(new { message = "IdTransaction é obrigatório." });
+
+        var payload = new
+        {
+            token = "8243d189-abec-4ffe-b532-43e98566efb5",
+            secret = "7a2ecf9f-af77-4814-949f-2b4c46253f46",
+            idTransaction = dto.IdTransaction
+        };
+
+        var result = await _pixService.SendToFeiPayAsync<dynamic>("/wallet/deposit/status", payload);
+
+        if (result == null)
+            return StatusCode(502, new { message = "Erro ao consultar a Fei Pay." });
+
+        return Ok(result);
+    }
+
+
     // ================================= CALLBACK PIX-IN =================================
 // Controllers/PixController.cs
     [HttpPost("callback")]
