@@ -34,7 +34,7 @@ builder.Services.AddScoped<AdminTokenService>();
 // --- 🔹 HttpClient (para PixService) ---
 builder.Services.AddHttpClient<PixService>(c =>
     {
-        c.BaseAddress = new Uri(builder.Configuration["FeiPay:BaseUrl"] ?? "https://feipay.com.br/api/");
+        c.BaseAddress = new Uri(builder.Configuration["StormPag:BaseUrl"] ?? "https://kronogate.com.br/api/");
         c.Timeout = TimeSpan.FromSeconds(30);
     })
     .AddPolicyHandler(HttpPolicyExtensions
@@ -44,7 +44,7 @@ builder.Services.AddHttpClient<PixService>(c =>
             sleepDurationProvider: attempt => TimeSpan.FromSeconds(Math.Pow(8, attempt)), // 2s, 4s, 8s
             onRetry: (outcome, timespan, retryAttempt, context) =>
             {
-                Console.WriteLine($"[FeiPay] Tentativa {retryAttempt} falhou. Repetindo em {timespan.TotalSeconds}s...");
+                Console.WriteLine($"[kronogate] Tentativa {retryAttempt} falhou. Repetindo em {timespan.TotalSeconds}s...");
             }
         )
     );

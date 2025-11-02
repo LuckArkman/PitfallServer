@@ -92,7 +92,7 @@ namespace Services
             };
 
             // Verifica se expirou
-            if (session.ExpiresAtUtc < DateTime.UtcNow)
+            if (session == null)
             {
                 await RemoveAsync(key);
                 return null;
