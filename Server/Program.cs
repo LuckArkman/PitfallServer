@@ -20,10 +20,7 @@ builder.Services.AddScoped<SessionService>(_ => new SessionService(sessionConnec
 builder.Services.AddScoped<GameService>(_ => new GameService(defaultConnection));
 builder.Services.AddScoped<ProfileService>(_ => new ProfileService(defaultConnection));
 builder.Services.AddScoped<PixService>();
-// 🔑 MUDANÇA CRÍTICA: Registrar o IPasswordHasher para ser injetado no AuthService
-// Usamos AddSingleton porque a lógica do hasher não tem estado e não precisa ser refeita a cada requisição.
 builder.Services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
-// Registrar AuthService (que agora depende de IPasswordHasher<User>)
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<WalletRepository>(_ => new WalletRepository(defaultConnection));
@@ -68,7 +65,7 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins(
                 "https://pitfall-build.vercel.app",
-                "https://feipay.com.br"
+                "https://kronogate.com.br"
             )
             .AllowAnyHeader()
             .AllowAnyMethod();
@@ -117,6 +114,7 @@ using (var conn = new NpgsqlConnection(defaultConnection))
             pix_key TEXT NOT NULL,
             pix_key_type TEXT NOT NULL,
             qr_code TEXT NOT NULL,
+            cpf TEXT NOT NULL DEFAULT '00000000000',
             qr_code_image_url TEXT NOT NULL,
             created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
             paid_at TIMESTAMP WITH TIME ZONE,
