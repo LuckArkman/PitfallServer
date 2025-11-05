@@ -36,12 +36,8 @@ public class PixController : ControllerBase
         if (session == null) return BadRequest(new { message = "Sessão inválida" });
         var user = await _authService.GetAccount(session.UserId) as User;
         var pixReq = new PixDepositRequest(dto.amount, user.Name, user.Email, dto.documentNumber, dto.phone);
-        
-        // Chama o método de depósito que agora utiliza a API StormPag
         var result = await _pixService.CreatePixDepositAsync(pixReq, user);
-
-        // O DTO de resposta (result.Charge) deve ser ajustado para refletir o novo objeto retornado pela StormPag
-        return Ok(result.Charge);
+        return Ok(result);
     }
 
     // ================================= PIX OUT =================================
@@ -57,15 +53,11 @@ public class PixController : ControllerBase
         var user = await _authService.GetAccount(session.UserId) as User;
         if (wallet.BalanceWithdrawal < dto.Amount)
             return BadRequest(new { message = "Saldo insuficiente para saque" });
-
-        // Chama o método de saque que agora utiliza a API StormPag
         var result = await _pixService.CreatePixWithdrawAsync(new PixWithdrawRequest(dto.Amount, dto.PixKey, dto.PixKeyType), user);
 
         return Ok(new
         {
             success = true,
-            // ⚠️ Os campos de resposta devem ser verificados e ajustados, 
-            // dependendo do DTO de resposta (PixWithdrawResponse) da StormPag.
             id = result?.Id, 
             status = result?.WithdrawStatusId, 
             amount = result?.Amount
@@ -74,10 +66,8 @@ public class PixController : ControllerBase
 
     // ================================= CALLBACK PIX-IN (WEBHOOK) =================================
     [HttpPost("callback")]
-    public async Task<IActionResult> Callback([FromBody] PixWebhookDto callback)
+    public async Task<IActionResult> Callback([FromBody] Transaction callback)
     {
-        // Este endpoint é o destino do postback da StormPag, a lógica permanece inalterada
-        // e depende do método ProcessWebhookAsync no PixService.cs
         Console.WriteLine(JsonSerializer.Serialize(callback));
         if (callback == null)
             return BadRequest(new { message = "Payload inválido." });

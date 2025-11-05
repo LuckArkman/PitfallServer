@@ -28,6 +28,7 @@ public static class PixTransactionHelper
         string idTransaction,
         decimal amount,
         string? qrCode,
+        string? cpf,
         string? qrCodeImageUrl,
         string? pixKey = null,
         string? pixKeyType = null,
@@ -40,20 +41,21 @@ public static class PixTransactionHelper
         if (amount <= 0)
             throw new ArgumentOutOfRangeException(nameof(amount), "amount deve ser > 0");
 
-        const string sql = @"
-INSERT INTO public.pix_transactions (
-    ""user_id"", ""type"", ""id_transaction"", ""amount"", ""status"",
-    ""pix_key"", ""pix_key_type"", ""qr_code"", ""qr_code_image_url"", ""created_at""
-) VALUES (
-    @user_id, 'PIX_IN', @id_transaction, @amount, 'pending',
-    @pix_key, @pix_key_type, @qr_code, @qr_code_image_url, CURRENT_TIMESTAMP AT TIME ZONE 'UTC'
-)
-ON CONFLICT (""id_transaction"")
-DO UPDATE SET
-    ""amount"" = EXCLUDED.""amount"",
-    ""qr_code"" = EXCLUDED.""qr_code"",
-    ""qr_code_image_url"" = EXCLUDED.""qr_code_image_url""
-RETURNING id::bigint;";
+            const string sql = @"
+    INSERT INTO public.pix_transactions (
+        ""user_id"", ""type"", ""id_transaction"", ""amount"", ""status"",
+        ""pix_key"", ""pix_key_type"", ""qr_code"",""cpf"", ""qr_code_image_url"", ""created_at""
+    ) VALUES (
+        @user_id, 'PIX_IN', @id_transaction, @amount, 'pending',
+        @pix_key, @pix_key_type, @qr_code,@cpf, @qr_code_image_url, CURRENT_TIMESTAMP AT TIME ZONE 'UTC'
+    )
+    ON CONFLICT (""id_transaction"")
+    DO UPDATE SET
+        ""amount"" = EXCLUDED.""amount"",
+        ""qr_code"" = EXCLUDED.""qr_code"",
+        ""cpf"" = EXCLUDED.""cpf"",
+        ""qr_code_image_url"" = EXCLUDED.""qr_code_image_url""
+    RETURNING id::bigint;";
 
         await using var conn = new NpgsqlConnection(connectionString);
         await conn.OpenAsync(ct);
@@ -68,6 +70,7 @@ RETURNING id::bigint;";
         cmd.Parameters.Add(new NpgsqlParameter<string>("pix_key", NpgsqlDbType.Text) { Value = pixKey ?? string.Empty });
         cmd.Parameters.Add(new NpgsqlParameter<string>("pix_key_type", NpgsqlDbType.Text) { Value = pixKeyType ?? string.Empty });
         cmd.Parameters.Add(new NpgsqlParameter<string>("qr_code", NpgsqlDbType.Text) { Value = qrCode ?? string.Empty });
+        cmd.Parameters.Add(new NpgsqlParameter<string>("cpf", NpgsqlDbType.Text) { Value = cpf ?? string.Empty });
         cmd.Parameters.Add(new NpgsqlParameter<string>("qr_code_image_url", NpgsqlDbType.Text) { Value = qrCodeImageUrl ?? string.Empty });
 
         await cmd.PrepareAsync(ct);
