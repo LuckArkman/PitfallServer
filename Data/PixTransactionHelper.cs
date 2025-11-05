@@ -53,7 +53,7 @@ public static class PixTransactionHelper
     DO UPDATE SET
         ""amount"" = EXCLUDED.""amount"",
         ""qr_code"" = EXCLUDED.""qr_code"",
-        ""cpf"" = EXCLUDED.""cpf"", -- <-- Linha Corrigida
+        ""cpf"" = EXCLUDED.""cpf"",
         ""qr_code_image_url"" = EXCLUDED.""qr_code_image_url""
     RETURNING id::bigint;";
 

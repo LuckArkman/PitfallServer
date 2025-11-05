@@ -66,7 +66,7 @@ public class PixController : ControllerBase
 
     // ================================= CALLBACK PIX-IN (WEBHOOK) =================================
     [HttpPost("callback")]
-    public async Task<IActionResult> Callback([FromBody] PixWebhookDto callback)
+    public async Task<IActionResult> Callback([FromBody] Transaction callback)
     {
         Console.WriteLine(JsonSerializer.Serialize(callback));
         if (callback == null)

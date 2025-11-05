@@ -133,38 +133,27 @@ public class PixService
     /// <summary>
     /// Processa o Webhook da StormPag.
     /// </summary>
-    public async Task<bool> ProcessWebhookAsync(PixWebhookDto webhook)
+    public async Task<bool> ProcessWebhookAsync(Transaction webhook)
     {
-        // O Webhook da StormPag retorna "id", "status" e "value"
-        // O DTO deve ser ajustado para mapear `idTransaction` para `id` da StormPag e `amount` para `value`.
-        // A lógica interna de idempotência e crédito permanece a mesma.
-        if (webhook == null || string.IsNullOrWhiteSpace(webhook.idTransaction))
+        if (webhook == null || string.IsNullOrWhiteSpace(webhook.id))
             throw new ArgumentException("Webhook inválido.");
 
         // ... [Restante do método ProcessWebhookAsync permanece inalterado]
         // 1. Busca transação
-        var pixTx = await _pixRepository.GetByIdTransactionAsync(webhook.idTransaction);
+        var pixTx = await _pixRepository.GetByIdTransactionAsync(webhook.id);
 
         if (pixTx == null)
         {
-            Console.WriteLine($"[WEBHOOK] Transação não encontrada: {webhook.idTransaction}");
+            Console.WriteLine($"[WEBHOOK] Transação não encontrada: {webhook.id}");
             return false;
         }
 
         // 2. Idempotência
         if (pixTx.Status != "pending")
         {
-            Console.WriteLine($"[WEBHOOK] Já processado: {webhook.idTransaction} | Status: Ok");
+            Console.WriteLine($"[WEBHOOK] Já processado: {webhook.id} | Status: Ok");
             return true; // Já foi processado
         }
-
-        // 3. Validação de userId (Pode ser removida se o webhook da StormPag não garantir o userId)
-        if (pixTx.UserId != webhook.userId)
-        {
-            Console.WriteLine($"[WEBHOOK] userId inconsistente! , Webhook: {webhook.userId}");
-            return false;
-        }
-
         // 4. Processa status
         bool success = false;
 
@@ -172,13 +161,13 @@ public class PixService
         {
             pixTx.Status = "Complete";
             pixTx.PaidAt = DateTime.UtcNow;
-            await _pixRepository.UpdateStatusAsync(webhook.idTransaction, pixTx.Status, pixTx.PaidAt);
+            await _pixRepository.UpdateStatusAsync(webhook.id, pixTx.Status, pixTx.PaidAt);
 
             try
             {
-                await _walletService.CreditAsync(pixTx.UserId, webhook.amount, "PIX_IN");
+                await _walletService.CreditAsync(pixTx.UserId, webhook.value, "PIX_IN");
                 success = true;
-                Console.WriteLine($"[WEBHOOK] Crédito realizado: R$ {webhook.amount} | User: {webhook.userId}");
+                Console.WriteLine($"[WEBHOOK] Crédito realizado: R$ {webhook.value} | User: {pixTx.UserId}");
             }
             catch (Exception ex)
             {
