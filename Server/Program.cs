@@ -27,25 +27,6 @@ builder.Services.AddScoped<WalletRepository>(_ => new WalletRepository(defaultCo
 builder.Services.AddScoped<WalletService>(_ => new WalletService(defaultConnection));
 builder.Services.AddScoped<AdminAuthService>();
 builder.Services.AddScoped<AdminTokenService>();
-
-// --- 🔹 HttpClient (para PixService) ---
-builder.Services.AddHttpClient<PixService>(c =>
-    {
-        c.BaseAddress = new Uri(builder.Configuration["StormPag:BaseUrl"] ?? "https://kronogate.com.br/api/");
-        c.Timeout = TimeSpan.FromSeconds(30);
-    })
-    .AddPolicyHandler(HttpPolicyExtensions
-        .HandleTransientHttpError() // trata 5xx, 408 e erros de rede
-        .WaitAndRetryAsync(
-            retryCount: 3,
-            sleepDurationProvider: attempt => TimeSpan.FromSeconds(Math.Pow(8, attempt)), // 2s, 4s, 8s
-            onRetry: (outcome, timespan, retryAttempt, context) =>
-            {
-                Console.WriteLine($"[kronogate] Tentativa {retryAttempt} falhou. Repetindo em {timespan.TotalSeconds}s...");
-            }
-        )
-    );
-
 // --- 🔹 Configurar CORS ---
 builder.Services.AddCors(options =>
 {
