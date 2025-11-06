@@ -27,38 +27,28 @@ public class PixService
         _cfg = cfg;
         _walletService = walletService;
         _pixRepository = new PixRepository(_cfg["ConnectionStrings:DefaultConnection"]);
-        _apiKey = _cfg["Kronogate:CLIENT_ID"];
+        _apiKey = _cfg["agilizepay:CLIENT_ID"];
         _http.DefaultRequestHeaders.Clear();
-        _http.DefaultRequestHeaders.Add("Apikey", _apiKey);
+        _http.DefaultRequestHeaders.Add("client_id", _apiKey);
     }
 
     public async Task<PixCharge?> CreatePixDepositAsync(PixDepositRequest req, User? user)
     {
         var payload = new 
         {
-            nome = req.Name,
-            cpf = req.Document,
-            valor = req.Amount.ToString("F2"),
-            descricao = "Depósito via PIX",
-            postback = _cfg["Kronogate:PostbackUrl"],
-            split = req.SplitPercentage > 0 && !string.IsNullOrWhiteSpace(req.SplitEmail)
-                ? new []
-                {
-                    new 
-                    {
-                        target = req.SplitEmail,
-                        percentage = req.SplitPercentage
-                    }
-                }
-                : null
+            code = "string",
+            amount = req.Amount,
+            document = req.Document,
+            email = user.Email,
+            url = _cfg["agilizepay:PostbackUrl"]
         };
-        Console.WriteLine(_cfg["Kronogate:BaseUrl"] + "/api/v1/cashin");
-        var response = await _http.PostAsJsonAsync(_cfg["Kronogate:BaseUrl"] + "/api/v1/cashin", payload);
+        Console.WriteLine(_cfg["agilizepay:BaseUrl"]);
+        var response = await _http.PostAsJsonAsync(_cfg["agilizepay:BaseUrl"], payload);
         var content = await response.Content.ReadAsStringAsync();
-        Console.WriteLine($"{nameof(CreatePixDepositAsync)} >> {content}");
+        //Console.WriteLine($"{nameof(CreatePixDepositAsync)} >> {content}");
 
         if (!response.IsSuccessStatusCode)
-            throw new Exception($"Erro Kronogate PIX-IN: {content}");
+            throw new Exception($"Erro AgilizePay PIX-IN: {content}");
         var stormPagResponse = JsonSerializer.Deserialize<PixResponse>(content,
             new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         
@@ -68,22 +58,22 @@ public class PixService
             var l = await PixTransactionHelper.InsertPixTransactionManuallyAsync(
                 connectionString: _cfg.GetConnectionString("DefaultConnection")!,
                 userId: user!.Id,
-                idTransaction: stormPagResponse.id, 
+                idTransaction: stormPagResponse.txid, 
                 amount: req.Amount,
-                qrCode: stormPagResponse.pix,
+                qrCode: stormPagResponse.qrCode,
                 cpf: req.Document,
                 qrCodeImageUrl: ""
             );
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"[FALHA AO GRAVAR PIX] ID: {stormPagResponse.id} | Erro: {ex.Message}");
+            Console.WriteLine($"[FALHA AO GRAVAR PIX] ID: {stormPagResponse.txid} | Erro: {ex.Message}");
         }
         return new PixCharge
         {
-            Id = stormPagResponse.id,
-            QrCodeImageUrl = stormPagResponse.pix,
-            BrCode = ""
+            Id = stormPagResponse.txid,
+            QrCodeImageUrl = stormPagResponse.pixCopiaECola,
+            BrCode = stormPagResponse.qrCode
         };
     }
 
@@ -98,14 +88,14 @@ public class PixService
             descricao = "Saque de fundos",
             postback = _cfg["StormPag:PostbackUrl"]
         };
-        var res = await _http.PostAsJsonAsync(_cfg["StormPag:BaseUrl"]?.TrimEnd('/') + "/api/v1/cashout", payload);
+        var res = await _http.PostAsJsonAsync(_cfg["agilizepay:BaseUrl"]?.TrimEnd('/') + "/api/v1/cashout", payload);
         if (!res.IsSuccessStatusCode)
-            throw new Exception($"Erro StormPag PIX-OUT: {await res.Content.ReadAsStringAsync()}");
+            throw new Exception($"Erro agilizepay PIX-OUT: {await res.Content.ReadAsStringAsync()}");
         
         return await res.Content.ReadFromJsonAsync<PixWithdrawResponse>(); 
     }
     
-    public async Task CancelExpiredPixTransactionsAsync(int expirationMinutes = 15)
+    public async Task CancelExpiredPixTransactionsAsync(int expirationMinutes = 600)
     {
         var connectionString = _cfg.GetConnectionString("DefaultConnection");
         var cutoff = DateTime.UtcNow.AddMinutes(-expirationMinutes);
@@ -131,57 +121,57 @@ public class PixService
     }
 
     /// <summary>
-    /// Processa o Webhook da StormPag.
+    /// Processa o Webhook da agilizepay.
     /// </summary>
     public async Task<bool> ProcessWebhookAsync(Transaction webhook)
     {
-        if (webhook == null || string.IsNullOrWhiteSpace(webhook.id))
+        if (webhook == null || string.IsNullOrWhiteSpace(webhook.IdTransaction))
             throw new ArgumentException("Webhook inválido.");
 
         // ... [Restante do método ProcessWebhookAsync permanece inalterado]
         // 1. Busca transação
-        var pixTx = await _pixRepository.GetByIdTransactionAsync(webhook.id);
+        var pixTx = await _pixRepository.GetByIdTransactionAsync(webhook.IdTransaction);
 
         if (pixTx == null)
         {
-            Console.WriteLine($"[WEBHOOK] Transação não encontrada: {webhook.id}");
+            Console.WriteLine($"[WEBHOOK] Transação não encontrada: {webhook.IdTransaction}");
             return false;
         }
 
         // 2. Idempotência
         if (pixTx.Status != "pending")
         {
-            Console.WriteLine($"[WEBHOOK] Já processado: {webhook.id} | Status: Ok");
+            Console.WriteLine($"[WEBHOOK] Já processado: {webhook.IdTransaction} | Status: Ok");
             return true; // Já foi processado
         }
         // 4. Processa status
         bool success = false;
 
-        if (webhook.status == "PAID") // StormPag usa "PAID" em maiúsculas (exemplo)
+        if (webhook.TypeTransaction == "PAID_IN") // agilizepay usa "PAID" em maiúsculas (exemplo)
         {
             pixTx.Status = "Complete";
             pixTx.PaidAt = DateTime.UtcNow;
-            await _pixRepository.UpdateStatusAsync(webhook.id, pixTx.Status, pixTx.PaidAt);
+            await _pixRepository.UpdateStatusAsync(webhook.IdTransaction, pixTx.Status, pixTx.PaidAt);
 
             try
             {
-                await _walletService.CreditAsync(pixTx.UserId, webhook.value, "PIX_IN");
+                await _walletService.CreditAsync(pixTx.UserId, pixTx.Amount, "PIX_IN");
                 success = true;
-                Console.WriteLine($"[WEBHOOK] Crédito realizado: R$ {webhook.value} | User: {pixTx.UserId}");
+                Console.WriteLine($"[WEBHOOK] Crédito realizado: R$ {pixTx.Amount} | User: {pixTx.UserId}");
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"[WEBHOOK] Falha ao creditar: {ex.Message}");
             }
         }
-        else if (webhook.status is "CANCELED" or "EXPIRED")
+        else if (webhook.StatusTransaction  != "sucesso")
         {
             pixTx.Status = "Canceled";
             success = true;
         }
         else
         {
-            Console.WriteLine($"[WEBHOOK] Status ignorado: {webhook.status}");
+            Console.WriteLine($"[WEBHOOK] Status ignorado: {webhook.StatusTransaction}");
             return true;
         }
 
@@ -228,20 +218,20 @@ public class PixService
     }
 
     /// <summary>
-    /// **REMOVIDO:** A StormPag usa autenticação via header e métodos dedicados, 
+    /// **REMOVIDO:** A agilizepay usa autenticação via header e métodos dedicados, 
     /// tornando este método genérico (`SendToFeiPayAsync`) obsoleto ou desnecessário.
     /// </summary>
     // public async Task<TResponse?> SendToFeiPayAsync<TResponse>(...) {}
 
     /// <summary>
     /// **REMOVIDO/AJUSTADO:** O monitoramento ativo (`MonitorPixUntilPaidAsync`) 
-    /// é um fallback caro e a StormPag não tem endpoint de status documentado. 
+    /// é um fallback caro e a agilizepay não tem endpoint de status documentado. 
     /// A dependência é 100% no Webhook.
     /// </summary>
     // public async Task MonitorPixUntilPaidAsync(string idTransaction, long userId) {}
 }
 
-// ⚠️ ADICIONAR ESTE DTO em DTOs/StormPagCashInResponse.cs ou similar
+// ⚠️ ADICIONAR ESTE DTO em DTOs/agilizepayCashInResponse.cs ou similar
 
 // ⚠️ É necessário garantir que PixDepositResponse e PixWithdrawResponse
 // mapeiem corretamente para o que o seu Frontend/Cliente espera.

@@ -76,14 +76,14 @@ var app = builder.Build();
 
 app.UseCors("AllowWebGL");
 // --- 🔹 Timer para expirar PIX ---
-var timer = new PeriodicTimer(TimeSpan.FromMinutes(5));
+var timer = new PeriodicTimer(TimeSpan.FromMinutes(600));
 _ = Task.Run(async () =>
 {
     while (await timer.WaitForNextTickAsync())
     {
         using var scope = app.Services.CreateScope();
         var pixService = scope.ServiceProvider.GetRequiredService<PixService>();
-        await pixService.CancelExpiredPixTransactionsAsync(15);
+        await pixService.CancelExpiredPixTransactionsAsync(600);
     }
 });
 
