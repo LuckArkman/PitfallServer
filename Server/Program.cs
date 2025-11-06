@@ -65,7 +65,7 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins(
                 "https://pitfall-build.vercel.app",
-                "https://kronogate.com.br"
+                "https://api.agilizepay.com"
             )
             .AllowAnyHeader()
             .AllowAnyMethod();
