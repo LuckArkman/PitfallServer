@@ -86,7 +86,7 @@ public class PixService
             cpf = "00000000000",
             valor = req.Amount.ToString("F2"),
             descricao = "Saque de fundos",
-            postback = _cfg["StormPag:PostbackUrl"]
+            postback = _cfg["agilizepay:PostbackUrl"]
         };
         var res = await _http.PostAsJsonAsync(_cfg["agilizepay:BaseUrl"]?.TrimEnd('/') + "/api/v1/cashout", payload);
         if (!res.IsSuccessStatusCode)
