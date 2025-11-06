@@ -4,24 +4,11 @@ namespace DTOs;
 
 public class PixResponse
 {
-    [JsonPropertyName("statusCode")]
-    public int statusCode { get; set; }
-
-    [JsonPropertyName("id")]
-    public string id { get; set; } = string.Empty;
-
-    [JsonPropertyName("pix")]
-    public string pix { get; set; } = string.Empty;
-
-    // "value" vem como string no JSON ("5.00") — usamos um conversor para decimal
-    [JsonPropertyName("value")]
-    [JsonConverter(typeof(StringToDecimalConverter))]
-    public decimal value { get; set; }
-
-    [JsonPropertyName("status")]
-    [JsonConverter(typeof(JsonStringEnumConverter))] // desserializa "PENDING" para o enum
-    public PixStatus status { get; set; }
-
-    [JsonPropertyName("acquirer_used")]
-    public string acquirer_used { get; set; } = string.Empty;
+    public string? location { get; set; }
+    public string correlationId { get; set; } = "";
+    public string txid { get; set; } = "";
+    public string status { get; set; } = "";
+    public string chave { get; set; } = "";
+    public string pixCopiaECola { get; set; } = "";
+    public string qrCode { get; set; } = "";
 }

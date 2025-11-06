@@ -39,8 +39,6 @@ public class PixController : ControllerBase
         var result = await _pixService.CreatePixDepositAsync(pixReq, user);
         return Ok(result);
     }
-
-    // ================================= PIX OUT =================================
     [HttpPost("withdraw")]
     public async Task<IActionResult> CreateWithdraw([FromBody] PixWithdrawRequestDto dto)
     {
@@ -68,7 +66,6 @@ public class PixController : ControllerBase
     [HttpPost("callback")]
     public async Task<IActionResult> Callback([FromBody] Transaction callback)
     {
-        Console.WriteLine(JsonSerializer.Serialize(callback));
         if (callback == null)
             return BadRequest(new { message = "Payload inválido." });
 
