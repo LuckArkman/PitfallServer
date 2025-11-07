@@ -21,9 +21,9 @@ namespace Data.Repositories
         {
             const string sql = @"
                 INSERT INTO public.users 
-                    (""id"", ""email"", ""name"", ""PasswordHash"", ""is_influencer"", ""status"", ""CreatedAt"", ""UpdatedAt"")
+                    (""id"", ""email"", ""name"", ""password_hash"", ""is_influencer"", ""status"", ""CreatedAt"", ""UpdatedAt"")
                 VALUES 
-                    (nextval('users_id_seq'), @email, @name, @PasswordHash, FALSE, 'active', NOW(), NOW())
+                    (nextval('users_id_seq'), @email, @name, @password_hash, FALSE, 'active', NOW(), NOW())
                 RETURNING ""id"";";
 
             await using var connection = new NpgsqlConnection(_connectionString);
@@ -32,7 +32,7 @@ namespace Data.Repositories
             await using var command = new NpgsqlCommand(sql, connection);
             command.Parameters.AddWithValue("email", email);
             command.Parameters.AddWithValue("name", name);
-            command.Parameters.AddWithValue("PasswordHash", passwordHash);
+            command.Parameters.AddWithValue("password_hash", passwordHash);
 
             var id = await command.ExecuteScalarAsync();
             return Convert.ToInt64(id);
@@ -44,7 +44,7 @@ namespace Data.Repositories
         public async Task<User?> GetByEmailAsync(string email)
         {
             const string sql = @"
-                SELECT ""id"", ""email"", ""name"", ""PasswordHash"", ""is_influencer"", ""status"", ""CreatedAt"", ""UpdatedAt""
+                SELECT ""id"", ""email"", ""name"", ""password_hash"", ""is_influencer"", ""status"", ""CreatedAt"", ""UpdatedAt""
                 FROM public.users
                 WHERE ""email"" = @email
                 LIMIT 1;";
@@ -93,7 +93,7 @@ namespace Data.Repositories
         public async Task<User?> GetByIdAsync(long userId)
         {
             const string sql = @"
-                SELECT ""id"", ""email"", ""name"", ""PasswordHash"", ""is_influencer"", ""status"", ""CreatedAt"", ""UpdatedAt""
+                SELECT ""id"", ""email"", ""name"", ""password_hash"", ""is_influencer"", ""status"", ""CreatedAt"", ""UpdatedAt""
                 FROM public.users
                 WHERE ""id"" = @id
                 LIMIT 1;";
