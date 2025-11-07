@@ -1,20 +1,65 @@
-﻿services:
+﻿version: "3.9"
+
+services:
   server:
     build:
       context: .
       dockerfile: Server/Dockerfile
+
+    container_name: pitfall-server
+    restart: always
+
     environment:
+      # Configura URLs para HTTP e HTTPS
       - ASPNETCORE_URLS=http://+:8080;https://+:443
+
+      # Caminho e senha do certificado
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/certs/certificate.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=3702959
+
+      # Define ambiente de execução (Production = otimizado)
+      - ASPNETCORE_ENVIRONMENT=Production
+
     ports:
-      - "7154:443"
-      - "5162:8080"
+      - "7154:443"   # HTTPS (externo 7154 → interno 443)
+      - "5162:8080"  # HTTP (externo 5162 → interno 8080)
+
     volumes:
-      - /etc/letsencrypt/live/acalatest.com/certificate.pfx:/app/certs/certificate.pfx:ro
+      # Certificado SSL montado no container (somente leitura)
+      - /home/ubuntu/host/PitfallServer/certs/certificate.pfx:/app/certs/certificate.pfx:ro
+      # (Opcional) Sobrepor appsettings.json do host
+      # - ./appsettings.json:/app/appsettings.json:ro
+
+    depends_on:
+      - postgres
+
+    networks:
+      - server_network
+
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    restart: always
+
+    environment:
+      POSTGRES_USER: alangoleiro
+      POSTGRES_PASSWORD: Zelda@8703
+      POSTGRES_DB: mydatabase
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      # Volume nomeado para persistência dos dados do banco
+      - postgres_data:/var/lib/postgresql/data
+
     networks:
       - server_network
 
 networks:
   server_network:
     driver: bridge
+
+volumes:
+  # Volume nomeado persistente para o PostgreSQL
+  postgres_data:
