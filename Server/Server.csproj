@@ -32,6 +32,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="ssl\" />
       <Folder Include="temp\" />
     </ItemGroup>
 
