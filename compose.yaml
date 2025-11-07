@@ -26,32 +26,9 @@ services:
 
     volumes:
       # Certificado SSL montado no container (somente leitura)
-      - /home/ubuntu/host/PitfallServer/certs/certificate.pfx:/app/certs/certificate.pfx:ro
+      - /home/ubuntu/host/certs/certificate.pfx:/app/certs/certificate.pfx:ro
       # (Opcional) Sobrepor appsettings.json do host
       # - ./appsettings.json:/app/appsettings.json:ro
-
-    depends_on:
-      - postgres
-
-    networks:
-      - server_network
-
-  postgres:
-    image: postgres:16
-    container_name: postgres
-    restart: always
-
-    environment:
-      POSTGRES_USER: alangoleiro
-      POSTGRES_PASSWORD: Zelda@8703
-      POSTGRES_DB: mydatabase
-
-    ports:
-      - "5432:5432"
-
-    volumes:
-      # Volume nomeado para persistência dos dados do banco
-      - postgres_data:/var/lib/postgresql/data
 
     networks:
       - server_network
@@ -59,7 +36,3 @@ services:
 networks:
   server_network:
     driver: bridge
-
-volumes:
-  # Volume nomeado persistente para o PostgreSQL
-  postgres_data:
