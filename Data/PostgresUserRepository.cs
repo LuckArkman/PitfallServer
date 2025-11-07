@@ -21,7 +21,7 @@ namespace Data.Repositories
         {
             const string sql = @"
                 INSERT INTO public.users 
-                    (""id"", ""email"", ""name"", ""password_hash"", ""is_influencer"", ""status"", ""CreatedAt"", ""UpdatedAt"")
+                    (""id"", ""email"", ""name"", ""password_hash"", ""is_influencer"", ""status"", ""created_at"", ""updated_at"")
                 VALUES 
                     (nextval('users_id_seq'), @email, @name, @password_hash, FALSE, 'active', NOW(), NOW())
                 RETURNING ""id"";";
@@ -44,7 +44,7 @@ namespace Data.Repositories
         public async Task<User?> GetByEmailAsync(string email)
         {
             const string sql = @"
-                SELECT ""id"", ""email"", ""name"", ""password_hash"", ""is_influencer"", ""status"", ""CreatedAt"", ""UpdatedAt""
+                SELECT ""id"", ""email"", ""name"", ""password_hash"", ""is_influencer"", ""status"", ""created_at"", ""updated_at""
                 FROM public.users
                 WHERE ""email"" = @email
                 LIMIT 1;";
@@ -93,7 +93,7 @@ namespace Data.Repositories
         public async Task<User?> GetByIdAsync(long userId)
         {
             const string sql = @"
-                SELECT ""id"", ""email"", ""name"", ""password_hash"", ""is_influencer"", ""status"", ""CreatedAt"", ""UpdatedAt""
+                SELECT ""id"", ""email"", ""name"", ""password_hash"", ""is_influencer"", ""status"", ""created_at"", ""updated_at""
                 FROM public.users
                 WHERE ""id"" = @id
                 LIMIT 1;";
