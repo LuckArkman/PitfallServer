@@ -11,7 +11,7 @@
       - "7154:443"
       - "5162:8080"
     volumes:
-      - /home/ubuntu/host/PitfallServer/certs/certificate.pfx:/app/certs/certificate.pfx:ro
+      - /home/ubuntu/host/PitfallServer/Server/temp/certificate.pfx:/app/certs/certificate.pfx:ro
     networks:
       - server_network
 
