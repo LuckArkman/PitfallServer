@@ -7,13 +7,6 @@ using Polly;
 using Polly.Extensions.Http;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// --- 🔹 Configurar Kestrel (HTTPS via appsettings.json) ---
-builder.WebHost.ConfigureKestrel((context, options) =>
-{
-    options.Configure(context.Configuration.GetSection("Kestrel"));
-});
-
 // --- 🔹 Obter Connection Strings ---
 var defaultConnection = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' não configurada.");
