@@ -1,12 +1,18 @@
 using Services;
 using Data;
 using Npgsql;
-using Microsoft.AspNetCore.Identity; // Importante para IPasswordHasher
+using Microsoft.AspNetCore.Identity;
 using DTOs;
 using Polly;
-using Polly.Extensions.Http; // Importante para a classe User
+using Polly.Extensions.Http;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// --- 🔹 Configurar Kestrel (HTTPS via appsettings.json) ---
+builder.WebHost.ConfigureKestrel((context, options) =>
+{
+    options.Configure(context.Configuration.GetSection("Kestrel"));
+});
 
 // --- 🔹 Obter Connection Strings ---
 var defaultConnection = builder.Configuration.GetConnectionString("DefaultConnection")
@@ -35,10 +41,10 @@ builder.Services.AddHttpClient<PixService>(c =>
         c.Timeout = TimeSpan.FromSeconds(30);
     })
     .AddPolicyHandler(HttpPolicyExtensions
-        .HandleTransientHttpError() // trata 5xx, 408 e erros de rede
+        .HandleTransientHttpError()
         .WaitAndRetryAsync(
             retryCount: 3,
-            sleepDurationProvider: attempt => TimeSpan.FromSeconds(Math.Pow(8, attempt)), // 2s, 4s, 8s
+            sleepDurationProvider: attempt => TimeSpan.FromSeconds(Math.Pow(8, attempt)), // 8s, 64s, etc.
             onRetry: (outcome, timespan, retryAttempt, context) =>
             {
                 Console.WriteLine($"[kronogate] Tentativa {retryAttempt} falhou. Repetindo em {timespan.TotalSeconds}s...");
@@ -53,14 +59,7 @@ builder.Services.AddCors(options =>
     {
         policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
     });
-});
 
-// --- 🔹 Infraestrutura padrão ---
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddCors(options =>
-{
     options.AddPolicy("AllowWebGL", policy =>
     {
         policy.WithOrigins(
@@ -71,10 +70,30 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod();
     });
 });
-// --- 🔹 Inicialização ---
+
+// --- 🔹 Infraestrutura padrão ---
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// --- 🔹 Construir o app ---
 var app = builder.Build();
 
+// --- 🔹 Middlewares ---
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection(); // força HTTPS automaticamente
 app.UseCors("AllowWebGL");
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
+
 // --- 🔹 Timer para expirar PIX ---
 var timer = new PeriodicTimer(TimeSpan.FromMinutes(600));
 _ = Task.Run(async () =>
@@ -141,6 +160,7 @@ using (var conn = new NpgsqlConnection(defaultConnection))
             ""Metadata"" TEXT DEFAULT '{}',
             ""CreatedAt"" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
         );
+
         CREATE TABLE IF NOT EXISTS public.""Admins"" (
             ""Id"" BIGSERIAL PRIMARY KEY,
             ""Email"" TEXT NOT NULL UNIQUE,
@@ -149,6 +169,7 @@ using (var conn = new NpgsqlConnection(defaultConnection))
             ""CreatedAt"" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
             ""LastLoginAt"" TIMESTAMPTZ NULL
         );
+
         CREATE TABLE IF NOT EXISTS public.wallets_snapshot (
             ""UserId"" BIGINT NOT NULL REFERENCES public.wallets(""UserId""),
             ""GameId"" TEXT NOT NULL,
@@ -157,25 +178,10 @@ using (var conn = new NpgsqlConnection(defaultConnection))
             ""CreatedAt"" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
             PRIMARY KEY (""UserId"", ""GameId"")
         );
-
     ", conn);
 
     await cmd.ExecuteNonQueryAsync();
 }
 
-// --- 🔹 Pipeline HTTP ---
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-app.UseCors("AllowAll");
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapControllers();
-
+// --- 🔹 Executar ---
 app.Run();
