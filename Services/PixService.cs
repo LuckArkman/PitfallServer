@@ -36,7 +36,7 @@ public class PixService
     {
         var payload = new 
         {
-            code = "string",
+            code = _cfg["agilizepay:CLIENT_ID"],
             amount = req.Amount,
             document = req.Document,
             email = user.Email,

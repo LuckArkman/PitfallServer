@@ -1,6 +1,5 @@
 ﻿services:
   server:
-    image: server
     build:
       context: .
       dockerfile: Server/Dockerfile
@@ -9,10 +8,10 @@
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/certs/certificate.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=3702959
     ports:
-      - 7154:443
-      - 5162:8080
+      - "7154:443"
+      - "5162:8080"
     volumes:
-      - ./Server/temp/certificate.pfx:/app/certs/certificate.pfx:ro
+      - /etc/letsencrypt/live/acalatest.com/certificate.pfx:/app/certs/certificate.pfx:ro
     networks:
       - server_network
 
