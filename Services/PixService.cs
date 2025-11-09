@@ -34,7 +34,7 @@ public class PixService
 
     public async Task<PixCharge?> CreatePixDepositAsync(PixDepositRequest req, User? user)
     {
-        var payload = new 
+        var payload = new
         {
             code = _cfg["agilizepay:CLIENT_ID"],
             amount = req.Amount,
@@ -42,8 +42,10 @@ public class PixService
             email = user.Email,
             url = _cfg["agilizepay:PostbackUrl"]
         };
-        Console.WriteLine(_cfg["agilizepay:BaseUrl"]);
-        var response = await _http.PostAsJsonAsync(_cfg["agilizepay:BaseUrl"], payload);
+        Console.WriteLine($"{_cfg["agilizepay:BaseUrl"]
+    } >> {JsonConvert.SerializeObject(payload)}");
+
+    var response = await _http.PostAsJsonAsync(_cfg["agilizepay:BaseUrl"], payload);
         var content = await response.Content.ReadAsStringAsync();
         //Console.WriteLine($"{nameof(CreatePixDepositAsync)} >> {content}");
 
