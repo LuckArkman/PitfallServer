@@ -32,7 +32,7 @@ public class AuthService
         _postgresUserRepository = new PostgresUserRepository(_cfg["ConnectionStrings:DefaultConnection"]);
     }
 
-    public async Task<string> AuthenticateAsync(string email, string password)
+    public async Task<TokenRequest?> AuthenticateAsync(string email, string password)
     {
         var user = await _postgresUserRepository.GetByEmailAsync(email);
         
@@ -47,7 +47,7 @@ public class AuthService
             // Senha correta: procede com a autenticação
             var token = _tokenService.GenerateToken(user);
             await _sessionService.SetAsync(token, user);
-            return token;
+            return new TokenRequest(token, user.IsInfluencer);
         }
         
         // Senha incorreta
