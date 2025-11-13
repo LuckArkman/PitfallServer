@@ -50,17 +50,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
-    });
-
-    options.AddPolicy("AllowWebGL", policy =>
-    {
-        policy.WithOrigins(
-                "https://pitfall-build.vercel.app/game/index.html",
-                "https://api.agilizepay.com"
-            )
+        policy.SetIsOriginAllowed(origin => true) // Aceita QUALQUER origem
             .AllowAnyHeader()
-            .AllowAnyMethod();
+            .AllowAnyMethod()
+            .AllowCredentials(); // Funciona com cookies
     });
 });
 
@@ -80,7 +73,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection(); // força HTTPS automaticamente
-app.UseCors("AllowWebGL");
+app.UseCors("AllowAll");
 
 app.UseAuthentication();
 app.UseAuthorization();
