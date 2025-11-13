@@ -40,7 +40,7 @@ builder.Services.AddHttpClient<PixService>(c =>
             sleepDurationProvider: attempt => TimeSpan.FromSeconds(Math.Pow(8, attempt)), // 8s, 64s, etc.
             onRetry: (outcome, timespan, retryAttempt, context) =>
             {
-                Console.WriteLine($"[kronogate] Tentativa {retryAttempt} falhou. Repetindo em {timespan.TotalSeconds}s...");
+                Console.WriteLine($"[agilizepay] Tentativa {retryAttempt} falhou. Repetindo em {timespan.TotalSeconds}s...");
             }
         )
     );
@@ -56,7 +56,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowWebGL", policy =>
     {
         policy.WithOrigins(
-                "https://pitfall-build.vercel.app",
+                "https://pitfall-build.vercel.app/game/index.html",
                 "https://api.agilizepay.com"
             )
             .AllowAnyHeader()
