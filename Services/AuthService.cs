@@ -54,7 +54,7 @@ public class AuthService
         return null;
     }
     
-    public async Task<string?> RegisterAsync(string email, string password)
+    public async Task<TokenRequest?> RegisterAsync(string email, string password)
     {
         var _user = await _postgresUserRepository.GetByEmailAsync(email);
         if (_user != null) return null;
@@ -78,8 +78,15 @@ public class AuthService
         {
             var wallet = await _walletService.GetOrCreateWalletAsync(user.Id, null, null );
         }
-
-        return _tokenService.GenerateToken(newUser);
+        
+        var _us = await _postgresUserRepository.GetByEmailAsync(email);
+        
+        if (_us == null) 
+            return null;
+        
+        var token = _tokenService.GenerateToken(_us);
+        await _sessionService.SetAsync(token, _us);
+        return new TokenRequest(token, _us.IsInfluencer);
     }
 
     public async Task<object> GetAccount(long userId)
