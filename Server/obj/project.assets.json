@@ -2766,6 +2766,20 @@
           "bin/placeholder/Controllers.dll": {}
         }
       },
+      "Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "DTOs": "1.0.0",
+          "Data": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Core.dll": {}
+        }
+      },
       "Data/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
@@ -6602,6 +6616,11 @@
       "path": "../Controllers/Controllers.csproj",
       "msbuildProject": "../Controllers/Controllers.csproj"
     },
+    "Core/1.0.0": {
+      "type": "project",
+      "path": "../Core/Core.csproj",
+      "msbuildProject": "../Core/Core.csproj"
+    },
     "Data/1.0.0": {
       "type": "project",
       "path": "../Data/Data.csproj",
@@ -6621,6 +6640,7 @@
   "projectFileDependencyGroups": {
     "net8.0": [
       "Controllers >= 1.0.0",
+      "Core >= 1.0.0",
       "Microsoft.AspNetCore.OpenApi >= 8.0.16",
       "Microsoft.EntityFrameworkCore.Design >= 8.0.0",
       "Microsoft.EntityFrameworkCore.InMemory >= 8.0.0",
@@ -6659,6 +6679,9 @@
           "projectReferences": {
             "/home/mplopes/Documentos/GitHub/PitfallServer/Controllers/Controllers.csproj": {
               "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Controllers/Controllers.csproj"
+            },
+            "/home/mplopes/Documentos/GitHub/PitfallServer/Core/Core.csproj": {
+              "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Core/Core.csproj"
             },
             "/home/mplopes/Documentos/GitHub/PitfallServer/Services/Services.csproj": {
               "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Services/Services.csproj"
