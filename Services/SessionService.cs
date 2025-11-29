@@ -1,6 +1,3 @@
-using System;
-using System.Data;
-using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
 using DTOs;
 

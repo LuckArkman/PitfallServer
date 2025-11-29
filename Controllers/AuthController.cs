@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Services;
+using DTOs;
 
 namespace Controllers;
 
@@ -8,8 +9,17 @@ namespace Controllers;
 public class AuthController : ControllerBase
 {
     private readonly AuthService _auth;
-    public AuthController(AuthService auth) => _auth = auth;
+    private readonly ReferralService _referral;
 
+    public AuthController(AuthService auth, ReferralService referral)
+    {
+        _auth = auth;
+        _referral = referral;
+    }
+
+    // ============================================
+    // LOGIN
+    // ============================================
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest req)
     {
@@ -19,23 +29,61 @@ public class AuthController : ControllerBase
             Console.WriteLine($"{nameof(Login)} >> Credenciais inválidas. ! {req.Email}");
             return Ok(null);
         }
+
         Console.WriteLine($"{nameof(Login)} >> Usuario Logado com Sucesso ! {req.Email}");
         return Ok(new { token });
     }
-    
-    [HttpPost("Register")]
-    public async Task<IActionResult> Register([FromBody] LoginRequest req)
+
+
+    // ============================================
+    // REGISTER COM SUPORTE A REFERRAL
+    // ============================================
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] RegisterRequest req)
     {
-        var token = await _auth.RegisterAsync(req.Email, req.Password);
-        if (token == null)
+        // ----------------------------------------------------
+        // 1. Recuperar o REF (body ou cookie)
+        // ----------------------------------------------------
+        string? referralCode = req.RefCode;
+
+        if (string.IsNullOrWhiteSpace(referralCode))
         {
-            Console.WriteLine($"{nameof(Register)} >> Credenciais inválidas. ! {req.Email}");
-            return Ok(new { message = "Credenciais inválidas." });
+            referralCode = Request.Cookies["ref_code"];
         }
 
-        Console.WriteLine($"{nameof(Register)} >> Usuario registrado com Sucesso ! {req.Email}");
-        return Ok(new { token });
+        Guid? l1 = null;
+        Guid? l2 = null;
+        Guid? l3 = null;
+
+        // ----------------------------------------------------
+        // 2. Obter cadeia de afiliados
+        // ----------------------------------------------------
+        if (!string.IsNullOrWhiteSpace(referralCode))
+        {
+            var chain = await _referral.AttachReferralChainFromRefAsync(referralCode);
+            l1 = chain.inviterL1;
+            l2 = chain.inviterL2;
+            l3 = chain.inviterL3;
+        }
+
+        // ----------------------------------------------------
+        // 3. Registrar usuário com cadeia de uplines
+        // ----------------------------------------------------
+        var result = await _auth.RegisterAsync(
+            email: req.Email,
+            password: req.Password,
+            inviterL1: l1,
+            inviterL2: l2,
+            inviterL3: l3
+        );
+
+        if (result == null)
+        {
+            Console.WriteLine($"{nameof(Register)} >> Falha ao registrar ! {req.Email}");
+            return BadRequest(new { message = "Falha ao registrar usuário." });
+        }
+
+        Console.WriteLine($"{nameof(Register)} >> Usuário registrado com sucesso ! {req.Email}");
+        return Ok(new { token = result });
     }
 }
-
-public class LoginRequest { public string Email { get; set; } public string Password { get; set; } }

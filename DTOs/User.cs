@@ -22,7 +22,11 @@ namespace DTOs
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-
+        
+        public Guid? InviterL1 { get; set; }
+        public Guid? InviterL2 { get; set; }
+        public Guid? InviterL3 { get; set; }
+        public string? ReferralCode { get; set; }
         // Navegação
         public Wallet Wallet { get; set; }
     }
