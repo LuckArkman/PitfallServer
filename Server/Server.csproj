@@ -22,18 +22,19 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Controllers\Controllers.csproj" />
+      <ProjectReference Include="..\Core\Core.csproj" />
       <ProjectReference Include="..\Services\Services.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="ssl\" />
+      <Folder Include="temp\" />
     </ItemGroup>
 
     <ItemGroup>
       <Content Include="..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="ssl\" />
-      <Folder Include="temp\" />
     </ItemGroup>
 
 </Project>
