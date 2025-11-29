@@ -34,20 +34,26 @@ public class PixService
 
     public async Task<PixCharge?> CreatePixDepositAsync(PixDepositRequest req, User? user)
     {
-        var payload = new
+        var payload = new PaymentRequest
         {
-            code = _cfg["agilizepay:CLIENT_ID"],
+            token = _cfg["agilizepay:Token"],
+            secret = _cfg["agilizepay:CLIENT_SECRET"],
+            postback = _cfg["agilizepay:PostbackUrl"],
             amount = req.Amount,
-            document = req.Document,
+            debtor_name = user.Name,
             email = user.Email,
-            url = _cfg["agilizepay:PostbackUrl"]
+            debtor_document_number = req.Document,
+            phone = "(00) 00000 - 0000",
+            method_pay = "pix",
+            split_email = user.Email,
+            split_percentage = 0,
         };
         Console.WriteLine($"{_cfg["agilizepay:BaseUrl"]
     } >> {JsonConvert.SerializeObject(payload)}");
 
     var response = await _http.PostAsJsonAsync(_cfg["agilizepay:BaseUrl"], payload);
         var content = await response.Content.ReadAsStringAsync();
-        //Console.WriteLine($"{nameof(CreatePixDepositAsync)} >> {content}");
+        Console.WriteLine($"{nameof(CreatePixDepositAsync)} >> {content}");
 
         if (!response.IsSuccessStatusCode)
             throw new Exception($"Erro AgilizePay PIX-IN: {content}");
