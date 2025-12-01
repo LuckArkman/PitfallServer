@@ -1,4 +1,5 @@
 using DTOs;
+using Microsoft.Extensions.Configuration;
 using Npgsql;
 
 namespace Services;
@@ -7,9 +8,9 @@ public class GameService
 {
     private readonly WalletService _walletService;
     readonly WalletWithdrawSnapshot  _walletWithdrawSnapshot;
-    private readonly string _connectionString;
+    private readonly IConfiguration _connectionString;
 
-    public GameService(string connectionString,
+    public GameService(IConfiguration connectionString,
         WalletWithdrawSnapshot  walletWithdrawSnapshot,
         WalletService  walletService)
     {
@@ -43,37 +44,6 @@ public class GameService
     /// </summary>
     public async Task<object?> RestoreSnapshotAccount(string gameId)
     {
-        await _walletWithdrawSnapshot.RestoreWallet(gameId);
-        await using var conn = new NpgsqlConnection(_connectionString);
-        await conn.OpenAsync();
-
-        // 🔹 Busca snapshot e dados da carteira original
-        var cmd = new NpgsqlCommand(@"
-            SELECT s.""UserId"", s.""OriginalWithdraw"", w.""Balance""
-            FROM public.wallets_snapshot s
-            JOIN public.wallets w ON w.""UserId"" = s.""UserId""
-            WHERE s.""GameId"" = @GameId
-            LIMIT 1;", conn);
-
-        cmd.Parameters.AddWithValue("@GameId", gameId);
-
-        using var reader = await cmd.ExecuteReaderAsync();
-        if (!reader.Read())
-            return null;
-
-        long userId = reader.GetInt64(0);
-        decimal originalWithdraw = reader.GetDecimal(1);
-        decimal currentBalance = reader.GetDecimal(2);
-
-        reader.Close();
-
-        // 🔹 Retorna informações para o cliente
-        return new
-        {
-            UserId = userId,
-            GameId = gameId,
-            Balance = currentBalance,
-            OriginalWithdraw = originalWithdraw
-        };
+        return await _walletWithdrawSnapshot.RestoreWallet(gameId);
     }
 }
