@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/mplopes/Documentos/GitHub/PitfallServer/Server/Server.csproj": {}
+    "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Server/Server.csproj": {}
   },
   "projects": {
-    "/home/mplopes/Documentos/GitHub/PitfallServer/Controllers/Controllers.csproj": {
+    "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Controllers/Controllers.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/mplopes/Documentos/GitHub/PitfallServer/Controllers/Controllers.csproj",
+        "projectUniqueName": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Controllers/Controllers.csproj",
         "projectName": "Controllers",
-        "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Controllers/Controllers.csproj",
+        "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Controllers/Controllers.csproj",
         "packagesPath": "/home/mplopes/.nuget/packages/",
-        "outputPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Controllers/obj/",
+        "outputPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Controllers/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/mplopes/.nuget/NuGet/NuGet.Config"
@@ -27,11 +27,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/home/mplopes/Documentos/GitHub/PitfallServer/Data/Data.csproj": {
-                "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Data/Data.csproj"
+              "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Data/Data.csproj": {
+                "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Data/Data.csproj"
               },
-              "/home/mplopes/Documentos/GitHub/PitfallServer/Services/Services.csproj": {
-                "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Services/Services.csproj"
+              "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Services/Services.csproj": {
+                "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Services/Services.csproj"
               }
             }
           }
@@ -91,87 +91,14 @@
         }
       }
     },
-    "/home/mplopes/Documentos/GitHub/PitfallServer/Core/Core.csproj": {
+    "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/DTOs/DTOs.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/mplopes/Documentos/GitHub/PitfallServer/Core/Core.csproj",
-        "projectName": "Core",
-        "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Core/Core.csproj",
-        "packagesPath": "/home/mplopes/.nuget/packages/",
-        "outputPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Core/obj/",
-        "projectStyle": "PackageReference",
-        "configFilePaths": [
-          "/home/mplopes/.nuget/NuGet/NuGet.Config"
-        ],
-        "originalTargetFrameworks": [
-          "net8.0"
-        ],
-        "sources": {
-          "/usr/share/dotnet/library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
-            "projectReferences": {
-              "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj": {
-                "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj"
-              },
-              "/home/mplopes/Documentos/GitHub/PitfallServer/Data/Data.csproj": {
-                "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Data/Data.csproj"
-              }
-            }
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.300"
-      },
-      "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48",
-            "net481"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.16, 8.0.16]"
-            }
-          ],
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.300/PortableRuntimeIdentifierGraph.json"
-        }
-      }
-    },
-    "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj",
+        "projectUniqueName": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/DTOs/DTOs.csproj",
         "projectName": "DTOs",
-        "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj",
+        "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/DTOs/DTOs.csproj",
         "packagesPath": "/home/mplopes/.nuget/packages/",
-        "outputPath": "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/obj/",
+        "outputPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/DTOs/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/mplopes/.nuget/NuGet/NuGet.Config"
@@ -236,14 +163,14 @@
         }
       }
     },
-    "/home/mplopes/Documentos/GitHub/PitfallServer/Data/Data.csproj": {
+    "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Data/Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/mplopes/Documentos/GitHub/PitfallServer/Data/Data.csproj",
+        "projectUniqueName": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Data/Data.csproj",
         "projectName": "Data",
-        "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Data/Data.csproj",
+        "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Data/Data.csproj",
         "packagesPath": "/home/mplopes/.nuget/packages/",
-        "outputPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Data/obj/",
+        "outputPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Data/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/mplopes/.nuget/NuGet/NuGet.Config"
@@ -259,8 +186,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj": {
-                "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj"
+              "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/DTOs/DTOs.csproj": {
+                "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/DTOs/DTOs.csproj"
               }
             }
           }
@@ -311,6 +238,10 @@
               "target": "Package",
               "version": "[10.0.0-rc.2.25502.107, )"
             },
+            "MongoDB.Driver": {
+              "target": "Package",
+              "version": "[3.5.2, )"
+            },
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
               "version": "[8.0.0, )"
@@ -346,14 +277,14 @@
         }
       }
     },
-    "/home/mplopes/Documentos/GitHub/PitfallServer/Server/Server.csproj": {
+    "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Interfaces/Interfaces.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/mplopes/Documentos/GitHub/PitfallServer/Server/Server.csproj",
-        "projectName": "Server",
-        "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Server/Server.csproj",
+        "projectUniqueName": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Interfaces/Interfaces.csproj",
+        "projectName": "Interfaces",
+        "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Interfaces/Interfaces.csproj",
         "packagesPath": "/home/mplopes/.nuget/packages/",
-        "outputPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Server/obj/",
+        "outputPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Interfaces/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/mplopes/.nuget/NuGet/NuGet.Config"
@@ -369,14 +300,174 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/home/mplopes/Documentos/GitHub/PitfallServer/Controllers/Controllers.csproj": {
-                "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Controllers/Controllers.csproj"
+              "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/DTOs/DTOs.csproj": {
+                "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/DTOs/DTOs.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.16, 8.0.16]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.300/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Repositorios/Repositorios.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Repositorios/Repositorios.csproj",
+        "projectName": "Repositorios",
+        "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Repositorios/Repositorios.csproj",
+        "packagesPath": "/home/mplopes/.nuget/packages/",
+        "outputPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Repositorios/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/mplopes/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "/usr/share/dotnet/library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Data/Data.csproj": {
+                "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Data/Data.csproj"
               },
-              "/home/mplopes/Documentos/GitHub/PitfallServer/Core/Core.csproj": {
-                "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Core/Core.csproj"
+              "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Interfaces/Interfaces.csproj": {
+                "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Interfaces/Interfaces.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Http": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "MongoDB.Driver": {
+              "target": "Package",
+              "version": "[3.5.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.16, 8.0.16]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.300/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Server/Server.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Server/Server.csproj",
+        "projectName": "Server",
+        "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Server/Server.csproj",
+        "packagesPath": "/home/mplopes/.nuget/packages/",
+        "outputPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Server/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/mplopes/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "/usr/share/dotnet/library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Controllers/Controllers.csproj": {
+                "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Controllers/Controllers.csproj"
               },
-              "/home/mplopes/Documentos/GitHub/PitfallServer/Services/Services.csproj": {
-                "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Services/Services.csproj"
+              "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Interfaces/Interfaces.csproj": {
+                "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Interfaces/Interfaces.csproj"
+              },
+              "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Repositorios/Repositorios.csproj": {
+                "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Repositorios/Repositorios.csproj"
+              },
+              "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Services/Services.csproj": {
+                "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Services/Services.csproj"
               }
             }
           }
@@ -457,14 +548,14 @@
         }
       }
     },
-    "/home/mplopes/Documentos/GitHub/PitfallServer/Services/Services.csproj": {
+    "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Services/Services.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/mplopes/Documentos/GitHub/PitfallServer/Services/Services.csproj",
+        "projectUniqueName": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Services/Services.csproj",
         "projectName": "Services",
-        "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Services/Services.csproj",
+        "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Services/Services.csproj",
         "packagesPath": "/home/mplopes/.nuget/packages/",
-        "outputPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Services/obj/",
+        "outputPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Services/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/mplopes/.nuget/NuGet/NuGet.Config"
@@ -480,11 +571,14 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj": {
-                "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj"
+              "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/DTOs/DTOs.csproj": {
+                "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/DTOs/DTOs.csproj"
               },
-              "/home/mplopes/Documentos/GitHub/PitfallServer/Data/Data.csproj": {
-                "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Data/Data.csproj"
+              "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Data/Data.csproj": {
+                "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Data/Data.csproj"
+              },
+              "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Interfaces/Interfaces.csproj": {
+                "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Interfaces/Interfaces.csproj"
               }
             }
           }

@@ -4,6 +4,7 @@ namespace DTOs;
 
 public class Transaction
 {
+    public Guid _id { get; set; } = Guid.NewGuid();
     [JsonPropertyName("typeTransaction")]
     public string TypeTransaction { get; set; }
 

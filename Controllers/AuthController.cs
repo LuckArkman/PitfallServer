@@ -72,9 +72,7 @@ public class AuthController : ControllerBase
         var result = await _auth.RegisterAsync(
             email: req.Email,
             password: req.Password,
-            inviterL1: l1,
-            inviterL2: l2,
-            inviterL3: l3
+            code: req.RefCode
         );
 
         if (result == null)
@@ -86,4 +84,24 @@ public class AuthController : ControllerBase
         Console.WriteLine($"{nameof(Register)} >> Usuário registrado com sucesso ! {req.Email}");
         return Ok(new { token = result });
     }
+}
+
+
+// =========================================
+// REQUESTS
+// =========================================
+
+public class LoginRequest
+{
+    public string Email { get; set; }
+    public string Password { get; set; }
+}
+
+public class RegisterRequest
+{
+    public string Email { get; set; }
+    public string Password { get; set; }
+
+    // opcional: enviado pelo front
+    public string? RefCode { get; set; }
 }

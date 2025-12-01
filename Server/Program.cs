@@ -3,8 +3,10 @@ using Data;
 using Npgsql;
 using Microsoft.AspNetCore.Identity;
 using DTOs;
+using Interfaces;
 using Polly;
 using Polly.Extensions.Http;
+using Repositorios;
 
 var builder = WebApplication.CreateBuilder(args);
 // --- 🔹 Obter Connection Strings ---
@@ -16,16 +18,17 @@ var sessionConnection = builder.Configuration.GetConnectionString("SessionConnec
 
 // --- 🔹 Registrar serviços diretos (sem EF) ---
 builder.Services.AddScoped<SessionService>(_ => new SessionService(sessionConnection));
-builder.Services.AddScoped<GameService>(_ => new GameService(defaultConnection));
-builder.Services.AddScoped<ProfileService>(_ => new ProfileService(defaultConnection));
+builder.Services.AddScoped<GameService>();
+builder.Services.AddScoped<ProfileService>();
 builder.Services.AddScoped<PixService>();
 builder.Services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<TokenService>();
-builder.Services.AddScoped<WalletRepository>(_ => new WalletRepository(defaultConnection));
-builder.Services.AddScoped<WalletService>(_ => new WalletService(defaultConnection));
+builder.Services.AddScoped<WalletService>();
 builder.Services.AddScoped<AdminAuthService>();
 builder.Services.AddScoped<AdminTokenService>();
+builder.Services.AddSingleton(typeof(IRepositorio<>), typeof(Repositorio<>));
+builder.Services.AddScoped<UserRankingService>();
 builder.Services.AddScoped<ReferralService>(provider => 
     new ReferralService(
         provider.GetRequiredService<AppDbContext>(),

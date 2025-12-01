@@ -1,35 +1,39 @@
-using Data.Repositories;
 using DTOs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
-using System.Threading.Tasks;
+using Interfaces;
 
 namespace Services;
 
 public class AuthService
 {
-    private readonly PostgresUserRepository _postgresUserRepository;
+    private readonly IRepositorio<User> _repositorio;
     private readonly TokenService _tokenService;
     private readonly WalletService _walletService;
     private readonly SessionService _sessionService;
+    private readonly UserRankingService _rankingService;
     private readonly IConfiguration _cfg;
     private readonly IPasswordHasher<User> _passwordHasher;
 
     public AuthService(
+        UserRankingService  rankingService,
+        IRepositorio<User> repositorio,
         TokenService tokenService,
         WalletService walletService,
         SessionService sessionService,
         IConfiguration cfg,
         IPasswordHasher<User> passwordHasher)
     {
+        _rankingService =  rankingService;
         _tokenService = tokenService;
         _walletService = walletService;
         _sessionService = sessionService;
         _cfg = cfg;
         _passwordHasher = passwordHasher;
 
-        _postgresUserRepository =
-            new PostgresUserRepository(_cfg["ConnectionStrings:DefaultConnection"]);
+        _repositorio.InitializeCollection(_cfg["MongoDbSettings:ConnectionString"],
+            _cfg["MongoDbSettings:DataBaseName"],
+            "Users");
     }
 
     // ======================================================
@@ -37,7 +41,9 @@ public class AuthService
     // ======================================================
     public async Task<TokenRequest?> AuthenticateAsync(string email, string password)
     {
-        var user = await _postgresUserRepository.GetByEmailAsync(email);
+        var user = await _repositorio.GetByMailAsync(
+            email: email,
+            none: CancellationToken.None);
         if (user == null) return null;
 
         var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
@@ -58,57 +64,117 @@ public class AuthService
     public async Task<TokenRequest?> RegisterAsync(
         string email,
         string password,
-        Guid? inviterL1,
-        Guid? inviterL2,
-        Guid? inviterL3
+        string? code
     )
     {
-        var existing = await _postgresUserRepository.GetByEmailAsync(email);
-        if (existing != null) return null;
-
-        var hashedPassword = _passwordHasher.HashPassword(new User(), password);
-
-        var newUser = new User
+        if (code == null)
         {
-            Email = email,
-            Name = email.Split('@')[0],
-            PasswordHash = hashedPassword,
-            CreatedAt = DateTime.UtcNow,
-            InviterL1 = inviterL1,
-            InviterL2 = inviterL2,
-            InviterL3 = inviterL3
-        };
+            var existing = await _repositorio.GetByMailAsync(
+                email: email,
+                none: CancellationToken.None);
+            if (existing != null) return null;
 
-        // Novo método específico para registrar afiliados
-        var newUserId = await _postgresUserRepository.RegisterAsync(
-            newUser.Email,
-            newUser.Name,
-            newUser.PasswordHash,
-            inviterL1,
-            inviterL2, 
-            inviterL3 
-        );
+            var hashedPassword = _passwordHasher.HashPassword(new User(), password);
 
-        // Criar carteira
-        var user = await _postgresUserRepository.GetByEmailAsync(email);
-        if (user != null)
-            await _walletService.GetOrCreateWalletAsync(user.Id, null, null);
+            var newUser = new User
+            {
+                Email = email,
+                Name = email.Split('@')[0],
+                PasswordHash = hashedPassword,
+                CreatedAt = DateTime.UtcNow,
+            };
 
-        if (user == null)
-            return null;
+            // Novo método específico para registrar afiliados
+            var newUserId = await _repositorio.InsertOneAsync(
+                new User
+                {
+                    Email = email,
+                    IsInfluencer = false,
+                    Name =  email.Split('@')[0],
+                    PasswordHash = hashedPassword,
+                    ReferralCode = Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper(),
+                    Status = "active",
+                    
+                }
+                
+            );
 
-        var token = _tokenService.GenerateToken(user);
-        await _sessionService.SetAsync(token, user);
+            // Criar carteira
+            var user = await _repositorio.GetByMailAsync(
+                email: email,
+                none: CancellationToken.None);
+            if (user != null)
+                await _walletService.GetOrCreateWalletAsync(user.Id);
 
-        return new TokenRequest(token, user.IsInfluencer);
+            if (user == null)
+                return null;
+
+            var token = _tokenService.GenerateToken(user);
+            await _sessionService.SetAsync(token, user);
+            await _rankingService.InsertRanking(user);
+            return new TokenRequest(token, user.IsInfluencer);
+        }
+        else
+        {
+            var user = await _repositorio.getUserByCode(code);
+            await _rankingService.UpdateRanking(user!);
+            
+            var existing = await _repositorio.GetByMailAsync(
+                email: email,
+                none: CancellationToken.None);
+            if (existing != null) return null;
+
+            var hashedPassword = _passwordHasher.HashPassword(new User(), password);
+
+            var newUser = new User
+            {
+                Email = email,
+                Name = email.Split('@')[0],
+                PasswordHash = hashedPassword,
+                CreatedAt = DateTime.UtcNow,
+            };
+
+            // Novo método específico para registrar afiliados
+            var newUserId = await _repositorio.InsertOneAsync(
+                new User
+                {
+                    Email = email,
+                    IsInfluencer = false,
+                    Name =  email.Split('@')[0],
+                    PasswordHash = hashedPassword,
+                    registerCode = code,
+                    ReferralCode = Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper(),
+                    Status = "active",
+                    
+                }
+                
+            );
+
+            // Criar carteira
+            var _user = await _repositorio.GetByMailAsync(
+                email: email,
+                none: CancellationToken.None);
+            if (user != null)
+                await _walletService.GetOrCreateWalletAsync(_user.Id);
+
+            if (user == null)
+                return null;
+
+            var token = _tokenService.GenerateToken(user);
+            await _sessionService.SetAsync(token, user);
+
+            return new TokenRequest(token, user.IsInfluencer);
+        }
     }
 
     // ======================================================
     // GET ACCOUNT
     // ======================================================
-    public async Task<object> GetAccount(long userId)
+    public async Task<object> GetAccount(Guid userId)
     {
-        var user = await _postgresUserRepository.GetByIdAsync(userId);
+        var user = await _repositorio.GetByIdAsync(
+            id: userId,
+            none: CancellationToken.None);
         return user ?? null;
     }
 }

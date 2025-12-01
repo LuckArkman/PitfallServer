@@ -1,19 +1,43 @@
-﻿services:
+﻿version: "3.9"
+
+services:
   server:
+    container_name: aspnet_server
     build:
       context: .
       dockerfile: Server/Dockerfile
     environment:
-      - ASPNETCORE_URLS=http://+:8080;https://+:443
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/certs/certificate.pfx
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=3702959
+      ASPNETCORE_URLS: "http://+:8080;https://+:443"
+      ASPNETCORE_Kestrel__Certificates__Default__Path: "/app/certs/certificate.pfx"
+      ASPNETCORE_Kestrel__Certificates__Default__Password: "3702959"
     ports:
       - "7154:443"
       - "5162:8080"
     volumes:
       - /home/ubuntu/host/certs/certificate.pfx:/app/certs/certificate.pfx:ro
+    restart: always
+    depends_on:
+      - mongo
     networks:
       - server_network
+
+  mongo:
+    image: mongo:latest
+    container_name: mongodb_db
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mplopes
+      MONGO_INITDB_ROOT_PASSWORD: 3702959
+    volumes:
+      - mongodb_data:/data/db
+    restart: always
+    networks:
+      - server_network
+
+volumes:
+  mongodb_data:
+    driver: local
 
 networks:
   server_network:

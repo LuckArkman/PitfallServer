@@ -4,16 +4,14 @@ namespace DTOs
 {
     public class User
     {
-        public long Id { get; set; }
-
-        [Required, MaxLength(255)]
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string Email { get; set; }
 
         [Required, MaxLength(255)]
         public string Name { get; set; }
 
         [Required]
-        public string PasswordHash { get; set; }  // 🔒 necessário para autenticação
+        public string PasswordHash { get; set; } 
 
         public bool IsInfluencer { get; set; } = false;
 
@@ -22,10 +20,7 @@ namespace DTOs
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-        
-        public Guid? InviterL1 { get; set; }
-        public Guid? InviterL2 { get; set; }
-        public Guid? InviterL3 { get; set; }
+        public string? registerCode { get; set; } = string.Empty;
         public string? ReferralCode { get; set; }
         // Navegação
         public Wallet Wallet { get; set; }

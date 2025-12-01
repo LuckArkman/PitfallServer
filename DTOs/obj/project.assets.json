@@ -1184,11 +1184,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj",
+      "projectUniqueName": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/DTOs/DTOs.csproj",
       "projectName": "DTOs",
-      "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj",
+      "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/DTOs/DTOs.csproj",
       "packagesPath": "/home/mplopes/.nuget/packages/",
-      "outputPath": "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/obj/",
+      "outputPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/DTOs/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/mplopes/.nuget/NuGet/NuGet.Config"
