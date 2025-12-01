@@ -9,11 +9,11 @@ public class UserSession
     public string SessionToken { get; set; }
 
     [Required]
-    public long UserId { get; set; }
+    public Guid UserId { get; set; }
 
     public DateTime ExpiresAtUtc { get; set; }
 
-    public UserSession(string sessionToken, long userId, DateTime expiresAtUtc)
+    public UserSession(string sessionToken, Guid userId, DateTime expiresAtUtc)
     {
         SessionToken = sessionToken;
         UserId = userId;

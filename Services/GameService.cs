@@ -8,20 +8,20 @@ public class GameService
     private readonly WalletService _walletService;
     private readonly string _connectionString;
 
-    public GameService(string connectionString)
+    public GameService(string connectionString,
+        WalletService  walletService)
     {
         _connectionString = connectionString;
-        _walletService = new WalletService(connectionString);
+        _walletService = walletService;
     }
     
     /// <summary>
     /// Cria uma nova sala de jogo e gera snapshot da carteira do usuário.
     /// </summary>
-    public async Task<StartRoundRequest> CreateGameRoom(long userId)
+    public async Task<StartRoundRequest> CreateGameRoom(Guid userId)
     {
         // 🔹 Cria um novo GUID para a partida
         string gameId = Guid.NewGuid().ToString();
-        // 🔹 Cria o snapshot da carteira do usuário (com GameId)
         await _walletService.CreateWithdrawSnapshotAsync(userId, gameId);
 
         // 🔹 Retorna o DTO para o cliente
@@ -30,7 +30,7 @@ public class GameService
             UserId = userId,
             GameId = gameId
         };
-
+        
         Console.WriteLine($"[GameRoom] Snapshot criado para usuário {userId}, partida {gameId}");
         return response;
     }

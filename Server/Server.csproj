@@ -22,11 +22,13 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Controllers\Controllers.csproj" />
-      <ProjectReference Include="..\Core\Core.csproj" />
+      <ProjectReference Include="..\Interfaces\Interfaces.csproj" />
+      <ProjectReference Include="..\Repositorios\Repositorios.csproj" />
       <ProjectReference Include="..\Services\Services.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="certs\" />
       <Folder Include="ssl\" />
       <Folder Include="temp\" />
     </ItemGroup>

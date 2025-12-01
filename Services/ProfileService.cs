@@ -1,65 +1,45 @@
-using Npgsql;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Data.Repositories;
+using DTOs;
+using Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace Services;
 
 public class ProfileService
 {
-    private readonly string _connectionString;
-    private readonly PostgresUserRepository _authService;
-    readonly WalletService  _walletService;
+    private readonly IRepositorio<User> _repositorio;
+    private readonly WalletService _walletService;
+    private readonly WalletLedgerService _ledgerService;
+    private readonly IConfiguration _cfg;
+    readonly HttpClient _http;
 
-    public ProfileService(string connectionString)
+    public ProfileService(
+        IRepositorio<User> repositorio,
+        WalletService walletService,
+        WalletLedgerService ledgerService,
+        HttpClient http,
+        IConfiguration cfg)
     {
-        _connectionString = connectionString;
-        _authService = new PostgresUserRepository(connectionString);
-        _walletService = new WalletService(connectionString);
+        _repositorio = repositorio;
+        _walletService = walletService;
+        _ledgerService = ledgerService;
+        _http = http;
+        _cfg = cfg;
+        _walletService = walletService;
+        _repositorio.InitializeCollection(_cfg["MongoDbSettings:ConnectionString"],
+            _cfg["MongoDbSettings:DataBaseName"],
+            "WalletLedger");
     }
 
     /// <summary>
     /// Retorna o perfil completo do usuário: dados pessoais, carteira e histórico de transações.
     /// </summary>
-    public async Task<object?> GetProfile(long userId)
+    public async Task<object?> GetProfile(Guid userId)
     {
-        var user = await _authService.GetByIdAsync(userId);
-        object? wallet = await _walletService.GetOrCreateWalletAsync(userId);
-        await using var conn = new NpgsqlConnection(_connectionString);
-        await conn.OpenAsync();
-        
-        // 🔹 3. Buscar histórico de transações
-        var cmdLedger = new NpgsqlCommand(@"
-            SELECT 
-                ""id"",
-                ""UserId"",
-                ""Type"",
-                ""Amount"",
-                ""BalanceAfter"",
-                ""GameRoundId"",
-                ""Metadata"",
-                ""CreatedAt""
-            FROM public.wallet_ledger
-            WHERE ""UserId"" = @UserId
-            ORDER BY ""CreatedAt"" DESC;", conn);
-        cmdLedger.Parameters.AddWithValue("@UserId", userId);
-
-        var ledgerList = new List<object>();
-        using var ledgerReader = await cmdLedger.ExecuteReaderAsync();
-        while (await ledgerReader.ReadAsync())
-        {
-            ledgerList.Add(new
-            {
-                id = ledgerReader.GetInt64(0),
-                userId = ledgerReader.GetInt64(1),
-                Type = ledgerReader.IsDBNull(2) ? "" : ledgerReader.GetString(2),
-                Amount = ledgerReader.GetDecimal(3),
-                BalanceAfter = ledgerReader.GetDecimal(4),
-                GameRoundId = ledgerReader.IsDBNull(5) ? (long?)null : ledgerReader.GetInt64(5),
-                Metadata = ledgerReader.IsDBNull(6) ? "{}" : ledgerReader.GetString(6),
-                CreatedAt = ledgerReader.GetDateTime(7)
-            });
-        }
+        var user = await _repositorio.GetByIdAsync(
+            id: userId,
+            none: CancellationToken.None);
+        var wallet = await _walletService.GetOrCreateWalletAsync(userId);
+        var ledgerList = await _ledgerService.GetAllLedger(wallet.Id);
 
         // 🔹 4. Retornar tudo junto
         return new

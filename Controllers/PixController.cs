@@ -45,7 +45,7 @@ public class PixController : ControllerBase
         var session = await _session.GetAsync(dto.Token);
         if (session == null) return BadRequest(new { message = "Sessão inválida" });
 
-        var wallet = await _wallet.GetOrCreateWalletAsync(session.UserId, null, null);
+        var wallet = await _wallet.GetOrCreateWalletAsync(session.UserId);
         Console.WriteLine($"{nameof(CreateWithdraw)} >> {wallet.Balance}");
         Console.WriteLine($"{nameof(CreateWithdraw)} >> {dto.Amount}");
         var user = await _authService.GetAccount(session.UserId) as User;

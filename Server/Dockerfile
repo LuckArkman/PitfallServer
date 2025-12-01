@@ -9,10 +9,11 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Server/Server.csproj", "Server/"]
 COPY ["Controllers/Controllers.csproj", "Controllers/"]
-COPY ["Services/Services.csproj", "Services/"]
-COPY ["DTOs/DTOs.csproj", "DTOs/"]
 COPY ["Data/Data.csproj", "Data/"]
-COPY ["Core/Core.csproj", "Core/"]
+COPY ["DTOs/DTOs.csproj", "DTOs/"]
+COPY ["Services/Services.csproj", "Services/"]
+COPY ["Interfaces/Interfaces.csproj", "Interfaces/"]
+COPY ["Repositorios/Repositorios.csproj", "Repositorios/"]
 RUN dotnet restore "Server/Server.csproj"
 COPY . .
 WORKDIR "/src/Server"

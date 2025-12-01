@@ -34,7 +34,7 @@ public class WalletController : ControllerBase
         if (user == null)
             return Ok(new { message = "Sessão inválida ou expirada." });
 
-        var wallet = await _service.GetOrCreateWalletAsync(user.UserId, null, null);
+        var wallet = await _service.GetOrCreateWalletAsync(user.UserId);
 
         return Ok(new
         {
