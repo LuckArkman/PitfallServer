@@ -7,7 +7,7 @@ public interface IRepositorio<T>
     Task<T> InsertOneAsync(T document);
     Task<T> GetByIdAsync(Guid id, CancellationToken none);
     void InitializeCollection(string connectionString, string databaseName, string collectionName);
-    Task<T> GetByMailAsync(string email, CancellationToken none);
+    Task<User?> GetByMailAsync(string email, CancellationToken none);
     Task<Wallet> UpdateWallet(Wallet wallet, CancellationToken none);
     Task<T> GetByUserIdAsync(Guid userId, CancellationToken none);
     Task<T> GetByIdTransactionAsync(string id);
@@ -16,4 +16,5 @@ public interface IRepositorio<T>
     Task<T?> getUserByCode(string code);
     Task<UserRanking?> GetUserIdAsync(Guid id, CancellationToken none);
     Task UpdateRanking(UserRanking? rk, CancellationToken none);
+    Task<WithdrawSnapshot?> GetRoomIdAsync(string gameId, CancellationToken none);
 }

@@ -6,12 +6,15 @@ namespace Services;
 public class GameService
 {
     private readonly WalletService _walletService;
+    readonly WalletWithdrawSnapshot  _walletWithdrawSnapshot;
     private readonly string _connectionString;
 
     public GameService(string connectionString,
+        WalletWithdrawSnapshot  walletWithdrawSnapshot,
         WalletService  walletService)
     {
         _connectionString = connectionString;
+        _walletWithdrawSnapshot = walletWithdrawSnapshot;
         _walletService = walletService;
     }
     
@@ -40,6 +43,7 @@ public class GameService
     /// </summary>
     public async Task<object?> RestoreSnapshotAccount(string gameId)
     {
+        await _walletWithdrawSnapshot.RestoreWallet(gameId);
         await using var conn = new NpgsqlConnection(_connectionString);
         await conn.OpenAsync();
 

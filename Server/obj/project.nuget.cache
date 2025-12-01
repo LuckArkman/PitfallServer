@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "zmWoG5/C6Qo=",
+  "dgSpecHash": "PDrG226M+0Y=",
   "success": true,
-  "projectFilePath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Server/Server.csproj",
+  "projectFilePath": "/home/mplopes/Documentos/GitHub/PitfallServer/Server/Server.csproj",
   "expectedPackageFiles": [
     "/home/mplopes/.nuget/packages/dnsclient/1.6.1/dnsclient.1.6.1.nupkg.sha512",
     "/home/mplopes/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",

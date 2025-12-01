@@ -3,7 +3,7 @@ namespace DTOs;
 public class WithdrawSnapshot
 {
     public Guid _id { get; set; } = Guid.NewGuid();
-    public Guid? _walletId { get; set; }
+    public Guid _walletId { get; set; }
     public string? _gameRoom  { get; set; }
     
     public decimal _originalBalance { get; set; }

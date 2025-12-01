@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ASvFurR93T4=",
+  "dgSpecHash": "rVU3mRFy+Vc=",
   "success": true,
-  "projectFilePath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Services/Services.csproj",
+  "projectFilePath": "/home/mplopes/Documentos/GitHub/PitfallServer/Services/Services.csproj",
   "expectedPackageFiles": [
     "/home/mplopes/.nuget/packages/dnsclient/1.6.1/dnsclient.1.6.1.nupkg.sha512",
     "/home/mplopes/.nuget/packages/microsoft.aspnetcore.authentication/2.3.0/microsoft.aspnetcore.authentication.2.3.0.nupkg.sha512",
