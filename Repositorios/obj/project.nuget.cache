@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "PvOr/j7tHdY=",
+  "dgSpecHash": "aOL0xw5hZyE=",
   "success": true,
-  "projectFilePath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Repositorios/Repositorios.csproj",
+  "projectFilePath": "/home/mplopes/Documentos/GitHub/PitfallServer/Repositorios/Repositorios.csproj",
   "expectedPackageFiles": [
     "/home/mplopes/.nuget/packages/dnsclient/1.6.1/dnsclient.1.6.1.nupkg.sha512",
     "/home/mplopes/.nuget/packages/microsoft.data.sqlite.core/8.0.0/microsoft.data.sqlite.core.8.0.0.nupkg.sha512",

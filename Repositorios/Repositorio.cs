@@ -52,10 +52,11 @@ public class Repositorio<T> : IRepositorio<T>
         return await _collection.Find(filter).FirstOrDefaultAsync();
     }
 
-    public async Task<T> GetByMailAsync(string email, CancellationToken none)
+    public async Task<User?> GetByMailAsync(string email, CancellationToken none)
     {
-        var filter = Builders<T>.Filter.Eq("Email", email);
-        return await _collection.Find(filter).FirstOrDefaultAsync(none);
+        var collection = _db.GetDatabase().GetCollection<User>("Users");
+        var filter = Builders<User>.Filter.Eq(u => u.Email, email);
+        return await collection.Find(filter).FirstOrDefaultAsync(none);
     }
 
     public async Task<Wallet?> UpdateWallet(Wallet wallet, CancellationToken none)
@@ -140,6 +141,14 @@ public class Repositorio<T> : IRepositorio<T>
             .Set(a => a._pointsNextLevel, rk._pointsNextLevel);
 
         var result = await collection.UpdateOneAsync(filter, update, cancellationToken: CancellationToken.None);
+    }
+
+    public async Task<WithdrawSnapshot?> GetRoomIdAsync(string gameId, CancellationToken none)
+    {
+        var collection = _db.GetDatabase().GetCollection<WithdrawSnapshot>("UserRanking");
+        // Assume que o ID é mapeado para a propriedade padrão '_id'
+        var filter = Builders<WithdrawSnapshot>.Filter.Eq(r => r._gameRoom,gameId);
+        return await collection.Find(filter).FirstOrDefaultAsync();
     }
 
     private async Task<T> GetTransactionByIdAsync(string id, CancellationToken none)

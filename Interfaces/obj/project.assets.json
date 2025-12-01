@@ -1202,11 +1202,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Interfaces/Interfaces.csproj",
+      "projectUniqueName": "/home/mplopes/Documentos/GitHub/PitfallServer/Interfaces/Interfaces.csproj",
       "projectName": "Interfaces",
-      "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Interfaces/Interfaces.csproj",
+      "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Interfaces/Interfaces.csproj",
       "packagesPath": "/home/mplopes/.nuget/packages/",
-      "outputPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Interfaces/obj/",
+      "outputPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Interfaces/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/mplopes/.nuget/NuGet/NuGet.Config"
@@ -1222,8 +1222,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/DTOs/DTOs.csproj": {
-              "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/DTOs/DTOs.csproj"
+            "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj": {
+              "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj"
             }
           }
         }

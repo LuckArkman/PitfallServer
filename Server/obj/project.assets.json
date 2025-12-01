@@ -6895,11 +6895,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Server/Server.csproj",
+      "projectUniqueName": "/home/mplopes/Documentos/GitHub/PitfallServer/Server/Server.csproj",
       "projectName": "Server",
-      "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Server/Server.csproj",
+      "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Server/Server.csproj",
       "packagesPath": "/home/mplopes/.nuget/packages/",
-      "outputPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Server/obj/",
+      "outputPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Server/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/mplopes/.nuget/NuGet/NuGet.Config"
@@ -6915,17 +6915,17 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Controllers/Controllers.csproj": {
-              "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Controllers/Controllers.csproj"
+            "/home/mplopes/Documentos/GitHub/PitfallServer/Controllers/Controllers.csproj": {
+              "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Controllers/Controllers.csproj"
             },
-            "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Interfaces/Interfaces.csproj": {
-              "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Interfaces/Interfaces.csproj"
+            "/home/mplopes/Documentos/GitHub/PitfallServer/Interfaces/Interfaces.csproj": {
+              "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Interfaces/Interfaces.csproj"
             },
-            "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Repositorios/Repositorios.csproj": {
-              "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Repositorios/Repositorios.csproj"
+            "/home/mplopes/Documentos/GitHub/PitfallServer/Repositorios/Repositorios.csproj": {
+              "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Repositorios/Repositorios.csproj"
             },
-            "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Services/Services.csproj": {
-              "projectPath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Services/Services.csproj"
+            "/home/mplopes/Documentos/GitHub/PitfallServer/Services/Services.csproj": {
+              "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Services/Services.csproj"
             }
           }
         }

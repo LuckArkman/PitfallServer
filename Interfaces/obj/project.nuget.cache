@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "HYtz9YitLkg=",
+  "dgSpecHash": "Lc0jIFMxWh4=",
   "success": true,
-  "projectFilePath": "/home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Interfaces/Interfaces.csproj",
+  "projectFilePath": "/home/mplopes/Documentos/GitHub/PitfallServer/Interfaces/Interfaces.csproj",
   "expectedPackageFiles": [
     "/home/mplopes/.nuget/packages/microsoft.data.sqlite.core/8.0.0/microsoft.data.sqlite.core.8.0.0.nupkg.sha512",
     "/home/mplopes/.nuget/packages/microsoft.entityframeworkcore/8.0.0/microsoft.entityframeworkcore.8.0.0.nupkg.sha512",
