@@ -36,7 +36,7 @@ public class WalletWithdrawSnapshot
         return insert;
     }
 
-    public async Task RestoreWallet(string gameId)
+    public async Task<Wallet?> RestoreWallet(string gameId)
     {
         var insert = await _repositorio.GetRoomIdAsync(gameId, CancellationToken.None);
         if (insert != null)
@@ -50,7 +50,10 @@ public class WalletWithdrawSnapshot
                 BalanceWithdrawal = insert._balanceWithdrawal,
                 UpdatedAt = DateTime.UtcNow
             };
-            await _repositorio.UpdateWallet(w, CancellationToken.None);
+            var wallet = await _repositorio.UpdateWallet(w, CancellationToken.None);
+            return wallet;
         }
+
+        return null;
     }
 }

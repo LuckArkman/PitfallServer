@@ -34,3 +34,5 @@
 /home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Services/obj/Debug/net8.0/refint/Services.dll
 /home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Services/obj/Debug/net8.0/Services.pdb
 /home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Services/obj/Debug/net8.0/ref/Services.dll
+/home/mplopes/Documentos/GitHub/PitfallServer/Services/bin/Debug/net8.0/Interfaces.dll
+/home/mplopes/Documentos/GitHub/PitfallServer/Services/bin/Debug/net8.0/Interfaces.pdb

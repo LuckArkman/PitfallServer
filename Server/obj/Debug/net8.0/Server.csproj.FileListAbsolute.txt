@@ -342,3 +342,13 @@
 /home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Server/obj/Debug/net8.0/Server.pdb
 /home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Server/obj/Debug/net8.0/Server.genruntimeconfig.cache
 /home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Server/obj/Debug/net8.0/ref/Server.dll
+/home/mplopes/Documentos/GitHub/PitfallServer/Server/bin/Debug/net8.0/DnsClient.dll
+/home/mplopes/Documentos/GitHub/PitfallServer/Server/bin/Debug/net8.0/MongoDB.Bson.dll
+/home/mplopes/Documentos/GitHub/PitfallServer/Server/bin/Debug/net8.0/MongoDB.Driver.dll
+/home/mplopes/Documentos/GitHub/PitfallServer/Server/bin/Debug/net8.0/SharpCompress.dll
+/home/mplopes/Documentos/GitHub/PitfallServer/Server/bin/Debug/net8.0/Snappier.dll
+/home/mplopes/Documentos/GitHub/PitfallServer/Server/bin/Debug/net8.0/ZstdSharp.dll
+/home/mplopes/Documentos/GitHub/PitfallServer/Server/bin/Debug/net8.0/Interfaces.dll
+/home/mplopes/Documentos/GitHub/PitfallServer/Server/bin/Debug/net8.0/Repositorios.dll
+/home/mplopes/Documentos/GitHub/PitfallServer/Server/bin/Debug/net8.0/Interfaces.pdb
+/home/mplopes/Documentos/GitHub/PitfallServer/Server/bin/Debug/net8.0/Repositorios.pdb

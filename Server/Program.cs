@@ -14,6 +14,8 @@ var sessionConnection = builder.Configuration.GetConnectionString("SessionConnec
     ?? "Data Source=sessions.db"; // fallback para SQLite
 
 // --- 🔹 Registrar serviços diretos (sem EF) ---
+builder.Services.AddScoped<WalletService>();
+builder.Services.AddScoped<WalletWithdrawSnapshot>();
 builder.Services.AddScoped<SessionService>(_ => new SessionService(sessionConnection));
 builder.Services.AddScoped<GameService>();
 builder.Services.AddScoped<ProfileService>();
@@ -21,11 +23,12 @@ builder.Services.AddScoped<PixService>();
 builder.Services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<TokenService>();
-builder.Services.AddScoped<WalletService>();
+builder.Services.AddScoped<WalletLedgerService>();
 builder.Services.AddScoped<AdminAuthService>();
 builder.Services.AddScoped<AdminTokenService>();
 builder.Services.AddSingleton(typeof(IRepositorio<>), typeof(Repositorio<>));
 builder.Services.AddScoped<UserRankingService>();
+
 
 // --- 🔹 HttpClient (para PixService) ---
 builder.Services.AddHttpClient<PixService>(c =>
@@ -68,10 +71,6 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-}
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 }
 app.UseHttpsRedirection(); // força HTTPS automaticamente
 app.UseCors("AllowAll");
