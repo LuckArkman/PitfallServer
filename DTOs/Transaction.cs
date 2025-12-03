@@ -1,9 +1,11 @@
 using System.Text.Json.Serialization;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace DTOs;
 
 public class Transaction
 {
+    [BsonId]
     public Guid _id { get; set; } = Guid.NewGuid();
     [JsonPropertyName("typeTransaction")]
     public string TypeTransaction { get; set; }

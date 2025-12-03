@@ -33,7 +33,6 @@ public class WalletController : ControllerBase
         var user = await _sessionService.GetAsync(req.token) as UserSession;
         if (user == null)
             return Ok(new { message = "Sessão inválida ou expirada." });
-
         var wallet = await _service.GetOrCreateWalletAsync(user.UserId);
 
         return Ok(new
@@ -61,14 +60,9 @@ public class WalletController : ControllerBase
 
         var user = await _sessionService.GetAsync(req.token);
         if (user == null)return Unauthorized();
-        
-        var _wallet = await _authService.GetAccount(user.UserId) as User;
-        // Debug: Log do UserId
-        Console.WriteLine($"[DEBUG] UserId: {user.UserId}, Email: {_wallet.Email}");
-
         try
         {
-            var wallet = await _service.DebitAsync(_wallet.Id, req.Amount, req.type);
+            var wallet = await _service.DebitAsync(user.UserId, req.Amount, req.type);
             var room = await _gameService.CreateGameRoom(user.UserId);
             return Ok(new 
             { 
@@ -88,7 +82,7 @@ public class WalletController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, new { message = "Erro interno ao processar débito.", error = ex.Message });
+            return StatusCode(500, new { message = "Erro interno ao processar débito."});
         }
     }
 

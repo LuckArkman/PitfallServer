@@ -980,7 +980,8 @@
       },
       "DTOs/1.0.0": {
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.Sqlite": "8.0.0"
+          "Microsoft.EntityFrameworkCore.Sqlite": "8.0.0",
+          "MongoDB.Driver": "3.5.2"
         },
         "runtime": {
           "DTOs.dll": {

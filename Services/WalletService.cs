@@ -13,6 +13,7 @@ public class WalletService
 
     public WalletService(IConfiguration connectionString,
         WalletWithdrawSnapshot  walletWithdrawSnapshot,
+        
         IRepositorio<Wallet> repositorio,
         WalletLedgerService service)
     {
@@ -28,11 +29,12 @@ public class WalletService
     /// <summary>
     /// Retorna a carteira de um usuário ou cria uma nova se não existir.
     /// </summary>
-    public async Task<Wallet> GetOrCreateWalletAsync(
+    public async Task<Wallet?> GetOrCreateWalletAsync(
         Guid userId)
     {
-        Wallet? wallet = await _repositorio.GetByIdAsync(
-            id: userId,
+        
+        Wallet? wallet = await _repositorio.GetWalletByUserIdAsync(
+            userId: userId,
             none: CancellationToken.None);
         if (wallet == null){
             wallet = await _repositorio.InsertOneAsync(
@@ -80,7 +82,6 @@ public class WalletService
             Metadata = $"{{\"split\":\"80/20\",\"withdraw\":{withdrawalPart},\"main\":{mainBalancePart}}}",
             CreatedAt = DateTime.UtcNow
         };
-
         var insert = await _ledgerService.CreditService(ledger);
 
         return wallet;
@@ -94,10 +95,9 @@ public class WalletService
         if (amount <= 0)
             throw new ArgumentException("O valor deve ser maior que zero.", nameof(amount));
 
-        var wallet = await _repositorio.GetByIdAsync(
-            id: userId,
-            none: CancellationToken.None);
-        
+        var wallet = await GetOrCreateWalletAsync(
+            userId: userId);
+        Console.WriteLine($"{nameof(DebitAsync)} >> {wallet == null}");
         decimal withdrawalPart = amount * 0.8m;
         decimal mainBalancePart = amount * 0.2m;
         decimal newBalance = wallet.Balance - amount;
@@ -106,10 +106,11 @@ public class WalletService
         if (wallet != null)
         {
             wallet.UpdatedAt = DateTime.UtcNow;
+            wallet.Balance = newBalance;
 
             var update = await _repositorio.UpdateWallet(wallet, CancellationToken.None);
         }
-        
+
         WalletLedger ledger = new WalletLedger
         {
             WalletId = wallet.Id,
@@ -121,6 +122,8 @@ public class WalletService
             CreatedAt = DateTime.UtcNow
         };
         
+        await _ledgerService.CreditService(ledger);
+        
         return wallet;
     }
 
@@ -129,15 +132,12 @@ public class WalletService
         if (string.IsNullOrWhiteSpace(gameId))
             throw new ArgumentException("O ID da partida é obrigatório.", nameof(gameId));
         
-        var wallet = await _repositorio.GetByUserIdAsync(
-            userId: userId,
-            none: CancellationToken.None) as Wallet;
+        var wallet = await GetOrCreateWalletAsync(
+            userId: userId) as Wallet;
         var snap = await _walletWithdrawSnapshot.CreateSnap(wallet, gameId);
         Console.WriteLine(
                     $"[Snapshot] Usuário {userId} → partida {gameId} → withdraw original salvo: {wallet.BalanceWithdrawal}");
         
-        return snap != null ? wallet : null;
-
-        
+        return wallet;
     }
 }

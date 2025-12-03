@@ -1,9 +1,11 @@
 using System.ComponentModel.DataAnnotations;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace DTOs
 {
     public class User
     {
+        [BsonId]
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Email { get; set; }
 

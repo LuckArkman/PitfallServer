@@ -16,6 +16,7 @@
           "Microsoft.EntityFrameworkCore.Sqlite": "8.0.0",
           "Microsoft.Extensions.Caching.StackExchangeRedis": "8.0.0",
           "Microsoft.Extensions.Http.Polly": "8.0.0",
+          "MongoDB.Driver": "3.5.2",
           "Repositorios": "1.0.0",
           "Services": "1.0.0",
           "Swashbuckle.AspNetCore": "6.6.2"
@@ -1577,7 +1578,8 @@
       },
       "DTOs/1.0.0": {
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.Sqlite": "8.0.0"
+          "Microsoft.EntityFrameworkCore.Sqlite": "8.0.0",
+          "MongoDB.Driver": "3.5.2"
         },
         "runtime": {
           "DTOs.dll": {

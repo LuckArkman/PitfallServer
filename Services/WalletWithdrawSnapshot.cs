@@ -51,7 +51,7 @@ public class WalletWithdrawSnapshot
                 UpdatedAt = DateTime.UtcNow
             };
             var wallet = await _repositorio.UpdateWallet(w, CancellationToken.None);
-            return wallet;
+            return w;
         }
 
         return null;

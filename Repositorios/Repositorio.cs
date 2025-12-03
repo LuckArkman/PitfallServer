@@ -59,7 +59,7 @@ public class Repositorio<T> : IRepositorio<T>
         return await collection.Find(filter).FirstOrDefaultAsync(none);
     }
 
-    public async Task<Wallet?> UpdateWallet(Wallet wallet, CancellationToken none)
+    public async Task<bool> UpdateWallet(Wallet wallet, CancellationToken none)
     {
         
         var collection = _db.GetDatabase().GetCollection<Wallet>("Wallets");
@@ -71,7 +71,7 @@ public class Repositorio<T> : IRepositorio<T>
             .Set(a => a.UpdatedAt, wallet.UpdatedAt);
 
         var result = await collection.UpdateOneAsync(filter, update, cancellationToken: none);
-        return result.ModifiedCount > 0 ? await GetByIdAsync(wallet.Id, none) as Wallet : null;
+        return true;
     }
 
     public async Task<T> GetByUserIdAsync(Guid userId, CancellationToken none)
@@ -149,6 +149,12 @@ public class Repositorio<T> : IRepositorio<T>
         // Assume que o ID é mapeado para a propriedade padrão '_id'
         var filter = Builders<WithdrawSnapshot>.Filter.Eq(r => r._gameRoom,gameId);
         return await collection.Find(filter).FirstOrDefaultAsync();
+    }
+
+    public async Task<T?> GetWalletByUserIdAsync(Guid userId, CancellationToken none)
+    {
+        var filter = Builders<T>.Filter.Eq("UserId", userId);
+        return await _collection.Find(filter).FirstOrDefaultAsync();
     }
 
     private async Task<T> GetTransactionByIdAsync(string id, CancellationToken none)

@@ -1,7 +1,10 @@
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace DTOs;
 
 public class WithdrawSnapshot
 {
+    [BsonId]
     public Guid _id { get; set; } = Guid.NewGuid();
     public Guid _walletId { get; set; }
     public string? _gameRoom  { get; set; }
