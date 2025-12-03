@@ -1,9 +1,11 @@
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace DTOs;
 
 public class UserRanking
 {
+    [BsonId]
     public Guid id { get; set; } = Guid.NewGuid();
-    
     public Guid _userId { get; set; }
     public int _level { get; set; } = 1;
     public long _points { get; set; } = 0;

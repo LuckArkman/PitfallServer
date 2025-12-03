@@ -1,9 +1,10 @@
 using Services;
-using Data;
-using Npgsql;
 using Microsoft.AspNetCore.Identity;
 using DTOs;
 using Interfaces;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using Polly;
 using Polly.Extensions.Http;
 using Repositorios;
@@ -14,6 +15,7 @@ var sessionConnection = builder.Configuration.GetConnectionString("SessionConnec
     ?? "Data Source=sessions.db"; // fallback para SQLite
 
 // --- 🔹 Registrar serviços diretos (sem EF) ---
+BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
 builder.Services.AddScoped<WalletService>();
 builder.Services.AddScoped<WalletWithdrawSnapshot>();
 builder.Services.AddScoped<SessionService>(_ => new SessionService(sessionConnection));

@@ -24,6 +24,7 @@ public class AuthService
         IConfiguration cfg,
         IPasswordHasher<User> passwordHasher)
     {
+        _repositorio = repositorio;
         _rankingService =  rankingService;
         _tokenService = tokenService;
         _walletService = walletService;
@@ -57,17 +58,15 @@ public class AuthService
 
         return null;
     }
-
-    // ======================================================
-    // REGISTER COM SUPORTE A 3 NÍVEIS DE AFILIADOS
-    // ======================================================
+    
+    
     public async Task<TokenRequest?> RegisterAsync(
         string email,
         string password,
         string? code
     )
     {
-        if (code == null)
+        if (string.IsNullOrWhiteSpace(code))
         {
             var existing = await _repositorio.GetByMailAsync(
                 email: email,
@@ -117,54 +116,58 @@ public class AuthService
         else
         {
             var user = await _repositorio.getUserByCode(code);
-            await _rankingService.UpdateRanking(user!);
-            
-            var existing = await _repositorio.GetByMailAsync(
-                email: email,
-                none: CancellationToken.None);
-            if (existing != null) return null;
-
-            var hashedPassword = _passwordHasher.HashPassword(new User(), password);
-
-            var newUser = new User
+            if (user != null)
             {
-                Email = email,
-                Name = email.Split('@')[0],
-                PasswordHash = hashedPassword,
-                CreatedAt = DateTime.UtcNow,
-            };
+                await _rankingService.UpdateRanking(user!);
 
-            // Novo método específico para registrar afiliados
-            var newUserId = await _repositorio.InsertOneAsync(
-                new User
+                var existing = await _repositorio.GetByMailAsync(
+                    email: email,
+                    none: CancellationToken.None);
+                if (existing != null) return null;
+
+                var hashedPassword = _passwordHasher.HashPassword(new User(), password);
+
+                var newUser = new User
                 {
                     Email = email,
-                    IsInfluencer = false,
-                    Name =  email.Split('@')[0],
+                    Name = email.Split('@')[0],
                     PasswordHash = hashedPassword,
-                    registerCode = code,
-                    ReferralCode = Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper(),
-                    Status = "active",
-                    
-                }
-                
-            );
+                    CreatedAt = DateTime.UtcNow,
+                };
 
-            // Criar carteira
-            var _user = await _repositorio.GetByMailAsync(
-                email: email,
-                none: CancellationToken.None);
-            if (user != null)
-                await _walletService.GetOrCreateWalletAsync(_user.Id);
+                // Novo método específico para registrar afiliados
+                var newUserId = await _repositorio.InsertOneAsync(
+                    new User
+                    {
+                        Email = email,
+                        IsInfluencer = false,
+                        Name = email.Split('@')[0],
+                        PasswordHash = hashedPassword,
+                        registerCode = code,
+                        ReferralCode = Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper(),
+                        Status = "active",
 
-            if (user == null)
-                return null;
+                    }
 
-            var token = _tokenService.GenerateToken(user);
-            await _sessionService.SetAsync(token, user);
+                );
 
-            return new TokenRequest(token, user.IsInfluencer);
+                // Criar carteira
+                var _user = await _repositorio.GetByMailAsync(
+                    email: email,
+                    none: CancellationToken.None);
+                if (user != null)
+                    await _walletService.GetOrCreateWalletAsync(_user.Id);
+
+                if (user == null)
+                    return null;
+
+                var token = _tokenService.GenerateToken(user);
+                await _sessionService.SetAsync(token, user);
+
+                return new TokenRequest(token, user.IsInfluencer);
+            }
         }
+        return null;
     }
 
     // ======================================================

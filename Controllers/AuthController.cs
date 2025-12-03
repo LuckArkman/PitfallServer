@@ -9,12 +9,10 @@ namespace Controllers;
 public class AuthController : ControllerBase
 {
     private readonly AuthService _auth;
-    private readonly ReferralService _referral;
 
-    public AuthController(AuthService auth, ReferralService referral)
+    public AuthController(AuthService auth)
     {
         _auth = auth;
-        _referral = referral;
     }
 
     // ============================================
@@ -49,21 +47,6 @@ public class AuthController : ControllerBase
         if (string.IsNullOrWhiteSpace(referralCode))
         {
             referralCode = Request.Cookies["ref_code"];
-        }
-
-        Guid? l1 = null;
-        Guid? l2 = null;
-        Guid? l3 = null;
-
-        // ----------------------------------------------------
-        // 2. Obter cadeia de afiliados
-        // ----------------------------------------------------
-        if (!string.IsNullOrWhiteSpace(referralCode))
-        {
-            var chain = await _referral.AttachReferralChainFromRefAsync(referralCode);
-            l1 = chain.inviterL1;
-            l2 = chain.inviterL2;
-            l3 = chain.inviterL3;
         }
 
         // ----------------------------------------------------

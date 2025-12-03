@@ -1,8 +1,10 @@
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace DTOs;
 
 public class WalletLedger
 {
-    public WalletLedger(){}
+    [BsonId]
     public Guid Id { get; set; } =  Guid.NewGuid();
     public Guid WalletId { get; set; }
     public string Type { get; set; } 
