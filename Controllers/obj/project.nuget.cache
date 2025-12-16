@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "2FCXDS4KZ2M=",
+  "dgSpecHash": "bAPiZl4oIXQ=",
   "success": true,
-  "projectFilePath": "/home/mplopes/Documentos/GitHub/PitfallServer/Controllers/Controllers.csproj",
+  "projectFilePath": "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Controllers/Controllers.csproj",
   "expectedPackageFiles": [
     "/home/mplopes/.nuget/packages/dnsclient/1.6.1/dnsclient.1.6.1.nupkg.sha512",
     "/home/mplopes/.nuget/packages/microsoft.aspnetcore.antiforgery/2.3.0/microsoft.aspnetcore.antiforgery.2.3.0.nupkg.sha512",
@@ -94,8 +94,8 @@
     "/home/mplopes/.nuget/packages/microsoft.netcore.platforms/5.0.0/microsoft.netcore.platforms.5.0.0.nupkg.sha512",
     "/home/mplopes/.nuget/packages/microsoft.netcore.targets/1.1.0/microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "/home/mplopes/.nuget/packages/microsoft.win32.registry/5.0.0/microsoft.win32.registry.5.0.0.nupkg.sha512",
-    "/home/mplopes/.nuget/packages/mongodb.bson/3.5.2/mongodb.bson.3.5.2.nupkg.sha512",
-    "/home/mplopes/.nuget/packages/mongodb.driver/3.5.2/mongodb.driver.3.5.2.nupkg.sha512",
+    "/home/mplopes/.nuget/packages/mongodb.bson/3.5.1/mongodb.bson.3.5.1.nupkg.sha512",
+    "/home/mplopes/.nuget/packages/mongodb.driver/3.5.1/mongodb.driver.3.5.1.nupkg.sha512",
     "/home/mplopes/.nuget/packages/newtonsoft.json/13.0.4/newtonsoft.json.13.0.4.nupkg.sha512",
     "/home/mplopes/.nuget/packages/newtonsoft.json.bson/1.0.2/newtonsoft.json.bson.1.0.2.nupkg.sha512",
     "/home/mplopes/.nuget/packages/npgsql/8.0.0/npgsql.8.0.0.nupkg.sha512",

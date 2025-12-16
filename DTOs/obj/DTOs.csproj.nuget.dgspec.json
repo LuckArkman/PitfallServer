@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj": {}
+    "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj": {}
   },
   "projects": {
-    "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj": {
+    "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj",
+        "projectUniqueName": "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj",
         "projectName": "DTOs",
-        "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj",
+        "projectPath": "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj",
         "packagesPath": "/home/mplopes/.nuget/packages/",
-        "outputPath": "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/obj/",
+        "outputPath": "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/DTOs/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/mplopes/.nuget/NuGet/NuGet.Config"
@@ -51,7 +51,7 @@
             },
             "MongoDB.Driver": {
               "target": "Package",
-              "version": "[3.5.2, )"
+              "version": "[3.5.1, )"
             }
           },
           "imports": [

@@ -29,13 +29,14 @@ builder.Services.AddScoped<WalletLedgerService>();
 builder.Services.AddScoped<AdminAuthService>();
 builder.Services.AddScoped<AdminTokenService>();
 builder.Services.AddSingleton(typeof(IRepositorio<>), typeof(Repositorio<>));
+builder.Services.AddSingleton(typeof(IPixTransactionRepositorio<PixTransaction>), typeof(PixTransactionRepositorio));
+builder.Services.AddSingleton(typeof(IWalletRepositorio<Wallet>), typeof(WalletRepositorio));
+builder.Services.AddSingleton(typeof(IWalletLedgerRepositorio<WalletLedger>), typeof(WalletLedgerRepositorio));
 builder.Services.AddScoped<UserRankingService>();
 
-
-// --- 🔹 HttpClient (para PixService) ---
 builder.Services.AddHttpClient<PixService>(c =>
     {
-        c.BaseAddress = new Uri(builder.Configuration["agilizepay:BaseUrl"] ?? "https://api.agilizepay.com/pix");
+        c.BaseAddress = new Uri(builder.Configuration["agilizepay:BaseUrl"] ?? "https://kortexpay.com/api/wallet/deposit/payment");
         c.Timeout = TimeSpan.FromSeconds(30);
     })
     .AddPolicyHandler(HttpPolicyExtensions

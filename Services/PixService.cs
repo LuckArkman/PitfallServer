@@ -13,7 +13,7 @@ namespace Services;
 
 public class PixService
 {
-    private readonly IRepositorio<PixTransaction> _repositorio;
+    private readonly IPixTransactionRepositorio<PixTransaction> _repositorio;
     private readonly HttpClient _http;
     private readonly IConfiguration _cfg;
     private readonly WalletService _walletService;
@@ -22,7 +22,7 @@ public class PixService
     private readonly ECDsa _ecdsa;
 
     public PixService(
-        IRepositorio<PixTransaction> repositorio,
+        IPixTransactionRepositorio<PixTransaction> repositorio,
         HttpClient http,
         IConfiguration cfg,
         WalletService walletService)
@@ -34,35 +34,6 @@ public class PixService
         _repositorio.InitializeCollection(_cfg["MongoDbSettings:ConnectionString"],
             _cfg["MongoDbSettings:DataBaseName"],
             "Transactions");
-
-        // =======================================================
-        // 1. Carregar chave privada EC (secp256k1)
-        // =======================================================
-        var privateKeyPath = _cfg["agilizepay:Cert:PrivateKeyPath"];
-
-
-        if (!File.Exists(privateKeyPath))
-            throw new Exception($"Chave privada não encontrada em: {privateKeyPath}");
-
-        var privateKeyPem = File.ReadAllText(privateKeyPath);
-        Console.WriteLine("🔍 [AGILIZEPAY] Lendo chave privada em: " + privateKeyPath);
-
-        if (!File.Exists(privateKeyPath))
-        {
-            Console.WriteLine("❌ ERRO: Arquivo PEM não encontrado!");
-            throw new Exception($"Chave privada não encontrada em: {privateKeyPath}");
-        }
-
-        _ecdsa = ECDsa.Create();
-        // A curva secp256k1 é inferida pelo conteúdo do PEM.
-        _ecdsa.ImportFromPem(privateKeyPem);
-
-        // =======================================================
-        // Headers fixos
-        // =======================================================
-        // O client_id é adicionado aqui e não será removido
-        _http.DefaultRequestHeaders.Clear();
-        _http.DefaultRequestHeaders.Add("client_id", _apiKey);
     }
 
     // =======================================================
@@ -70,8 +41,6 @@ public class PixService
     // =======================================================
     private string SignPayload(object payload)
     {
-        // Opções para garantir JSON compactado (canônico para assinatura)
-        // Não precisamos mais do PropertyNamingPolicy, pois o Dictionary garante as chaves
         var options = new JsonSerializerOptions
         {
             Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
@@ -80,15 +49,11 @@ public class PixService
 
         var json = JsonSerializer.Serialize(payload, options);
         var bytes = Encoding.UTF8.GetBytes(json);
-
-        // Uso do formato IeeeP1363FixedFieldConcatenation (.NET 8+)
         var signature = _ecdsa.SignData(
             bytes,
             HashAlgorithmName.SHA256,
             DSASignatureFormat.IeeeP1363FixedFieldConcatenation
         );
-
-        // Converte o array de bytes (R||S) para hexadecimal e minúsculas.
         return Convert.ToHexString(signature).ToLower();
     }
 // .
@@ -101,86 +66,65 @@ public class PixService
     {
         var amountString = req.Amount.ToString("F2", CultureInfo.InvariantCulture);
 
-        // Ordem Alfabética (Lexicográfica) para canonicalização estrita:
-        // amount, code, document, email, url
-        var canonicalJson = "{" +
-            $"\"amount\":\"{amountString}\"," +
-            $"\"code\":\"{_cfg["agilizepay:CLIENT_ID"]}\"," +
-            $"\"document\":\"{req.Document}\"," +
-            $"\"email\":\"{user.Email}\"," +
-            $"\"url\":\"{_cfg["agilizepay:PostbackUrl"]}\"" +
-            "}";
-
-        // Cria o objeto de payload (para o Content body)
-        var payloadForBody = new Dictionary<string, object>
+        var request = new PaymentRequestDto
         {
-            { "amount", amountString },
-            { "code", _cfg["agilizepay:CLIENT_ID"] },
-            { "document", req.Document },
-            { "email", user.Email },
-            { "url", _cfg["agilizepay:PostbackUrl"] }
+            Token = _cfg["kortexpay:token"],
+            Secret = _cfg["kortexpay:secret_Key"],
+            Postback = _cfg["kortexpay:PostbackUrl"],
+            Amount = req.Amount,
+            DebtorName = user.Name,
+            DebtorDocumentNumber = req.Document,
+            Email = user.Email,
+            MethodPay = "pix",
+            Phone = "00 90000-0000",
+            SplitEmail = user.Email,
+            SplitPercentage = 0,
+            
+            
         };
-        
-        Console.WriteLine("📦 [AGILIZEPAY] Payload enviado:");
-        Console.WriteLine(canonicalJson); 
-        
-        var sign = SignPayload(canonicalJson);
-        
-        var url = _cfg["agilizepay:BaseUrl"];
-        var request = new HttpRequestMessage(HttpMethod.Post, url)
+        var json = JsonSerializer.Serialize(request);
+
+        using var content = new StringContent(
+            json,
+            Encoding.UTF8,
+            "application/json");
+
+        using var _response = await _http.PostAsync(
+            _cfg["kortexpay:BaseUrl"],
+            content,
+            CancellationToken.None);
+
+        if (!_response.IsSuccessStatusCode)
         {
-            Content = JsonContent.Create(payloadForBody) 
-        };
-        
-        request.Headers.Add("client_sign", sign);
-        
-        Console.WriteLine("📤 [AGILIZEPAY] Enviando headers:");
-        Console.WriteLine($"  - client_id: {_apiKey}");
-        Console.WriteLine($"  - client_sign: {sign}");
-        Console.WriteLine($"{_cfg["agilizepay:BaseUrl"]} >> {canonicalJson}");
-
-        var response = await _http.SendAsync(request);
-        var content = await response.Content.ReadAsStringAsync();
-        Console.WriteLine($"{nameof(CreatePixDepositAsync)} >> {content}");
-
-        if (!response.IsSuccessStatusCode)
-            throw new Exception($"Erro AgilizePay PIX-IN: {content}");
-
-        var pixResponse = System.Text.Json.JsonSerializer.Deserialize<PixResponse>(content,
-            new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-        if (pixResponse == null) return null;
-
-        try
-        {
-            var insert = await _repositorio.InsertOneAsync(
-                new PixTransaction
-                {
-                    UserId = user!.Id,
-                    IdTransaction = pixResponse.txid,
-                    Amount = req.Amount,
-                    QrCode = pixResponse.qrCode,
-                    QrCodeImageUrl = "",
-                    PaidAt = null
-                });
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"[FALHA AO GRAVAR PIX] ID: {pixResponse.txid} | Erro: {ex.Message}");
+            var error = await _response.Content.ReadAsStringAsync(CancellationToken.None);
+            throw new HttpRequestException(
+                $"Erro ao chamar API de pagamento: {_response.StatusCode} - {error}");
         }
 
+        var responseJson = await _response.Content.ReadAsStringAsync(CancellationToken.None);
+        Console.WriteLine(responseJson);
+        var response = JsonSerializer.Deserialize<PixChargeResponse>(
+            responseJson,
+            new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+        var insert = await _repositorio.InsertOneAsync(new PixTransaction
+        {
+            Id = Guid.NewGuid(),
+            UserId = user.Id,
+            IdTransaction = response.IdTransaction,
+            Amount = req.Amount,
+            QrCode = response.QrCode,
+            QrCodeImageUrl = response.QrCodeImageUrl,
+        });
         return new PixCharge
         {
-            Id = pixResponse.txid,
-            QrCodeImageUrl = pixResponse.pixCopiaECola,
-            BrCode = pixResponse.qrCode
+            Id = response.Charge.Id,
+            QrCodeImageUrl = response.Charge.QrCode,
+            BrCode = response.Charge.BrCode
         };
     }
-
-
-    // =======================================================
-    // PIX-OUT
-    // =======================================================
     public async Task<PixWithdrawResponse?> CreatePixWithdrawAsync(PixWithdrawRequest req, User? user)
     {
         var payload = new
@@ -211,7 +155,7 @@ public class PixService
     // =======================================================
     // Webhook + Rotinas existentes (sem alteração)
     // =======================================================
-    public async Task<bool> ProcessWebhookAsync(Transaction webhook)
+    public async Task<bool> ProcessWebhookAsync(PaymentStatusDto webhook)
     {
         if (webhook == null || string.IsNullOrWhiteSpace(webhook.IdTransaction))
             throw new ArgumentException("Webhook inválido.");
@@ -224,15 +168,7 @@ public class PixService
             return false;
         }
 
-        if (pixTx.Status != "pending")
-        {
-            Console.WriteLine($"[WEBHOOK] Já processado: {webhook.IdTransaction}");
-            return true;
-        }
-
-        bool success = false;
-
-        if (webhook.TypeTransaction == "PAID_IN")
+        if (webhook.TypeTransaction == "PAYMENT")
         {
             pixTx.Status = "Complete";
             pixTx.PaidAt = DateTime.UtcNow;
@@ -241,24 +177,24 @@ public class PixService
             try
             {
                 await _walletService.CreditAsync(pixTx.UserId, pixTx.Amount, "PIX_IN");
-                success = true;
+                return true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"[WEBHOOK] Falha ao creditar: {ex.Message}");
             }
         }
-        else if (webhook.StatusTransaction != "sucesso")
+        else if (webhook.Status != "paid")
         {
             pixTx.Status = "Canceled";
-            success = true;
+            return true;
         }
         else
         {
             return true;
         }
 
-        return success;
+        return false;
     }
 
     public async Task CancelExpiredPixTransactionsAsync(int i)

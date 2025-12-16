@@ -24,3 +24,16 @@
 /home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/DTOs/obj/Debug/net8.0/refint/DTOs.dll
 /home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/DTOs/obj/Debug/net8.0/DTOs.pdb
 /home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/DTOs/obj/Debug/net8.0/ref/DTOs.dll
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/DTOs/bin/Debug/net8.0/DTOs.deps.json
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/DTOs/bin/Debug/net8.0/DTOs.dll
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/DTOs/bin/Debug/net8.0/DTOs.pdb
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/DTOs/obj/Debug/net8.0/DTOs.csproj.AssemblyReference.cache
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/DTOs/obj/Debug/net8.0/DTOs.GeneratedMSBuildEditorConfig.editorconfig
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/DTOs/obj/Debug/net8.0/DTOs.AssemblyInfoInputs.cache
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/DTOs/obj/Debug/net8.0/DTOs.AssemblyInfo.cs
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/DTOs/obj/Debug/net8.0/DTOs.csproj.CoreCompileInputs.cache
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/DTOs/obj/Debug/net8.0/DTOs.sourcelink.json
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/DTOs/obj/Debug/net8.0/DTOs.dll
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/DTOs/obj/Debug/net8.0/refint/DTOs.dll
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/DTOs/obj/Debug/net8.0/DTOs.pdb
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/DTOs/obj/Debug/net8.0/ref/DTOs.dll

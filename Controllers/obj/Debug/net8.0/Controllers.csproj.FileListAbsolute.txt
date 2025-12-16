@@ -40,3 +40,25 @@
 /home/mplopes/Documentos/GitHub/pitfallServer Version2/PitfallServer/Controllers/obj/Debug/net8.0/ref/Controllers.dll
 /home/mplopes/Documentos/GitHub/PitfallServer/Controllers/bin/Debug/net8.0/Interfaces.dll
 /home/mplopes/Documentos/GitHub/PitfallServer/Controllers/bin/Debug/net8.0/Interfaces.pdb
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Controllers/bin/Debug/net8.0/Controllers.deps.json
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Controllers/bin/Debug/net8.0/Controllers.dll
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Controllers/bin/Debug/net8.0/Controllers.pdb
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Controllers/bin/Debug/net8.0/Data.dll
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Controllers/bin/Debug/net8.0/DTOs.dll
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Controllers/bin/Debug/net8.0/Interfaces.dll
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Controllers/bin/Debug/net8.0/Services.dll
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Controllers/bin/Debug/net8.0/Data.pdb
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Controllers/bin/Debug/net8.0/Services.pdb
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Controllers/bin/Debug/net8.0/DTOs.pdb
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Controllers/bin/Debug/net8.0/Interfaces.pdb
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Controllers/obj/Debug/net8.0/Controllers.csproj.AssemblyReference.cache
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Controllers/obj/Debug/net8.0/Controllers.GeneratedMSBuildEditorConfig.editorconfig
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Controllers/obj/Debug/net8.0/Controllers.AssemblyInfoInputs.cache
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Controllers/obj/Debug/net8.0/Controllers.AssemblyInfo.cs
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Controllers/obj/Debug/net8.0/Controllers.csproj.CoreCompileInputs.cache
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Controllers/obj/Debug/net8.0/Controllers.sourcelink.json
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Controllers/obj/Debug/net8.0/Controll.01F35609.Up2Date
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Controllers/obj/Debug/net8.0/Controllers.dll
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Controllers/obj/Debug/net8.0/refint/Controllers.dll
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Controllers/obj/Debug/net8.0/Controllers.pdb
+/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Controllers/obj/Debug/net8.0/ref/Controllers.dll

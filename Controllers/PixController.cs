@@ -64,7 +64,7 @@ public class PixController : ControllerBase
 
     // ================================= CALLBACK PIX-IN (WEBHOOK) =================================
     [HttpPost("callback")]
-    public async Task<IActionResult> Callback([FromBody] Transaction callback)
+    public async Task<IActionResult> Callback([FromBody] PaymentStatusDto callback)
     {
         if (callback == null)
             return BadRequest(new { message = "Payload inválido." });
@@ -72,6 +72,7 @@ public class PixController : ControllerBase
         try
         {
             var processed = await _pixService.ProcessWebhookAsync(callback);
+            if(processed) Console.WriteLine($"Webhook processado com sucesso.{callback.IdTransaction}");
 
             return Ok(new
             {
