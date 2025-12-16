@@ -2,7 +2,7 @@
 
 services:
   server:
-    container_name: aspnet_server
+    container_name: server
     build:
       context: .
       dockerfile: Server/Dockerfile
@@ -16,28 +16,8 @@ services:
     volumes:
       - /home/ubuntu/host/certs/certificate.pfx:/app/certs/certificate.pfx:ro
     restart: always
-    depends_on:
-      - mongo
     networks:
       - server_network
-
-  mongo:
-    image: mongo:latest
-    container_name: mongodb_db
-    ports:
-      - "27017:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: mplopes
-      MONGO_INITDB_ROOT_PASSWORD: 3702959
-    volumes:
-      - mongodb_data:/data/db
-    restart: always
-    networks:
-      - server_network
-
-volumes:
-  mongodb_data:
-    driver: local
 
 networks:
   server_network:
