@@ -36,10 +36,6 @@ public class AuthService
             _cfg["MongoDbSettings:DataBaseName"],
             "Users");
     }
-
-    // ======================================================
-    // LOGIN
-    // ======================================================
     public async Task<TokenRequest?> AuthenticateAsync(string email, string password)
     {
         var user = await _repositorio.GetByMailAsync(

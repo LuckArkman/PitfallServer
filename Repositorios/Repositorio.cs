@@ -39,7 +39,7 @@ public class Repositorio<T> : IRepositorio<T>
 
     public async Task<T> InsertOneAsync(T document)
     {
-        _collection.InsertOne(document);
+        await _collection.InsertOneAsync(document);
         return document;
     }
     
@@ -81,23 +81,23 @@ public class Repositorio<T> : IRepositorio<T>
         return await _collection.Find(filter).FirstOrDefaultAsync();
     }
 
-    public async Task<T> GetByIdTransactionAsync(string id)
+    public async Task<PixTransaction?> GetByIdTransactionAsync(string id)
     {
-        if (_collection == null) throw new InvalidOperationException("A coleção não foi inicializada.");
-        var filter = Builders<T>.Filter.Eq("idTransaction", id);
-        return await _collection.Find(filter).FirstOrDefaultAsync();
+        var collection = _mongoDatabase.GetCollection<PixTransaction>("Transactions");
+        var filter = Builders<PixTransaction>.Filter.Eq(p => p.IdTransaction, id);
+        return await collection.Find(filter).FirstOrDefaultAsync();
     }
 
-    public  async Task<T?> UpdateStatusAsync(string id, string pixTxStatus, DateTime? pixTxPaidAt)
+    public  async Task<PixTransaction?> UpdateStatusAsync(string id, string pixTxStatus, DateTime? pixTxPaidAt)
     {
         var collection = _db.GetDatabase().GetCollection<PixTransaction>("Transactions");
-        var filter = Builders<PixTransaction>.Filter.Eq(a => a.IdTransaction, id);
+        var filter = Builders<PixTransaction>.Filter.Eq(p => p.IdTransaction, id);
         var update = Builders<PixTransaction>.Update
             .Set(a => a.Status, pixTxStatus)
             .Set(a => a.CreatedAt, pixTxPaidAt);
 
         var result = await collection.UpdateOneAsync(filter, update, cancellationToken: CancellationToken.None);
-        return await GetTransactionByIdAsync(id, CancellationToken.None);
+        return await GetByIdTransactionAsync(id);
     }
 
     public async Task<List<WalletLedger>?> GetAllWalletLedger(Guid id, CancellationToken none)
@@ -154,13 +154,6 @@ public class Repositorio<T> : IRepositorio<T>
     public async Task<T?> GetWalletByUserIdAsync(Guid userId, CancellationToken none)
     {
         var filter = Builders<T>.Filter.Eq("UserId", userId);
-        return await _collection.Find(filter).FirstOrDefaultAsync();
-    }
-
-    private async Task<T> GetTransactionByIdAsync(string id, CancellationToken none)
-    {
-        if (_collection == null) throw new InvalidOperationException("A coleção não foi inicializada.");
-        var filter = Builders<T>.Filter.Eq("idTransaction", id);
         return await _collection.Find(filter).FirstOrDefaultAsync();
     }
 }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/mplopes/Documentos/GitHub/PitfallServer/Repositorios/Repositorios.csproj": {}
+    "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Repositorios/Repositorios.csproj": {}
   },
   "projects": {
-    "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj": {
+    "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj",
+        "projectUniqueName": "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj",
         "projectName": "DTOs",
-        "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj",
+        "projectPath": "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj",
         "packagesPath": "/home/mplopes/.nuget/packages/",
-        "outputPath": "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/obj/",
+        "outputPath": "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/DTOs/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/mplopes/.nuget/NuGet/NuGet.Config"
@@ -51,7 +51,7 @@
             },
             "MongoDB.Driver": {
               "target": "Package",
-              "version": "[3.5.2, )"
+              "version": "[3.5.1, )"
             }
           },
           "imports": [
@@ -80,14 +80,14 @@
         }
       }
     },
-    "/home/mplopes/Documentos/GitHub/PitfallServer/Data/Data.csproj": {
+    "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Data/Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/mplopes/Documentos/GitHub/PitfallServer/Data/Data.csproj",
+        "projectUniqueName": "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Data/Data.csproj",
         "projectName": "Data",
-        "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Data/Data.csproj",
+        "projectPath": "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Data/Data.csproj",
         "packagesPath": "/home/mplopes/.nuget/packages/",
-        "outputPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Data/obj/",
+        "outputPath": "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Data/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/mplopes/.nuget/NuGet/NuGet.Config"
@@ -103,8 +103,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj": {
-                "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj"
+              "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj": {
+                "projectPath": "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj"
               }
             }
           }
@@ -157,7 +157,7 @@
             },
             "MongoDB.Driver": {
               "target": "Package",
-              "version": "[3.5.2, )"
+              "version": "[3.5.1, )"
             },
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
@@ -194,14 +194,14 @@
         }
       }
     },
-    "/home/mplopes/Documentos/GitHub/PitfallServer/Interfaces/Interfaces.csproj": {
+    "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Interfaces/Interfaces.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/mplopes/Documentos/GitHub/PitfallServer/Interfaces/Interfaces.csproj",
+        "projectUniqueName": "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Interfaces/Interfaces.csproj",
         "projectName": "Interfaces",
-        "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Interfaces/Interfaces.csproj",
+        "projectPath": "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Interfaces/Interfaces.csproj",
         "packagesPath": "/home/mplopes/.nuget/packages/",
-        "outputPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Interfaces/obj/",
+        "outputPath": "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Interfaces/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/mplopes/.nuget/NuGet/NuGet.Config"
@@ -217,8 +217,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj": {
-                "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj"
+              "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj": {
+                "projectPath": "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/DTOs/DTOs.csproj"
               }
             }
           }
@@ -264,14 +264,14 @@
         }
       }
     },
-    "/home/mplopes/Documentos/GitHub/PitfallServer/Repositorios/Repositorios.csproj": {
+    "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Repositorios/Repositorios.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/mplopes/Documentos/GitHub/PitfallServer/Repositorios/Repositorios.csproj",
+        "projectUniqueName": "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Repositorios/Repositorios.csproj",
         "projectName": "Repositorios",
-        "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Repositorios/Repositorios.csproj",
+        "projectPath": "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Repositorios/Repositorios.csproj",
         "packagesPath": "/home/mplopes/.nuget/packages/",
-        "outputPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Repositorios/obj/",
+        "outputPath": "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Repositorios/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/mplopes/.nuget/NuGet/NuGet.Config"
@@ -287,11 +287,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/home/mplopes/Documentos/GitHub/PitfallServer/Data/Data.csproj": {
-                "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Data/Data.csproj"
+              "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Data/Data.csproj": {
+                "projectPath": "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Data/Data.csproj"
               },
-              "/home/mplopes/Documentos/GitHub/PitfallServer/Interfaces/Interfaces.csproj": {
-                "projectPath": "/home/mplopes/Documentos/GitHub/PitfallServer/Interfaces/Interfaces.csproj"
+              "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Interfaces/Interfaces.csproj": {
+                "projectPath": "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Interfaces/Interfaces.csproj"
               }
             }
           }
@@ -322,7 +322,7 @@
             },
             "MongoDB.Driver": {
               "target": "Package",
-              "version": "[3.5.2, )"
+              "version": "[3.5.1, )"
             }
           },
           "imports": [

@@ -6,10 +6,10 @@ namespace Services;
 
 public class WalletLedgerService
 {
-    private readonly IRepositorio<WalletLedger> _repositorio;
+    private readonly IWalletLedgerRepositorio<WalletLedger> _repositorio;
     private readonly IConfiguration _cfg;
     public WalletLedgerService(IConfiguration connectionString,
-        IRepositorio<WalletLedger> repositorio)
+        IWalletLedgerRepositorio<WalletLedger> repositorio)
     {
         _repositorio = repositorio;
         _cfg = connectionString;
@@ -24,9 +24,9 @@ public class WalletLedgerService
         return wallet;
     }
 
-    public async Task<List<WalletLedger?>> GetAllLedger(Guid userId)
+    public async Task<List<WalletLedger?>> GetAllLedger(Guid Id)
     {
-       var all = await _repositorio.GetAllWalletLedger(userId, CancellationToken.None);
+       var all = await _repositorio.GetAllWalletLedger(Id, CancellationToken.None);
        return all;
     }
 }

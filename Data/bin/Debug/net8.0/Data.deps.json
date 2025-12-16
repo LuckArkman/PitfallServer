@@ -16,10 +16,9 @@
           "Microsoft.Extensions.Configuration.Json": "8.0.0",
           "Microsoft.Extensions.DependencyInjection": "8.0.0",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.0-rc.2.25502.107",
-          "MongoDB.Driver": "3.5.2",
+          "MongoDB.Driver": "3.5.1",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "8.0.0",
-          "Zenit.EntityFrameworkCore.Migrations.Postgresql": "1.0.7",
-          "Microsoft.AspNetCore": "8.0.0.0"
+          "Zenit.EntityFrameworkCore.Migrations.Postgresql": "1.0.7"
         },
         "runtime": {
           "Data.dll": {}
@@ -546,23 +545,23 @@
           "System.Security.Principal.Windows": "5.0.0"
         }
       },
-      "MongoDB.Bson/3.5.2": {
+      "MongoDB.Bson/3.5.1": {
         "dependencies": {
           "System.Memory": "4.5.5",
           "System.Runtime.CompilerServices.Unsafe": "6.0.0"
         },
         "runtime": {
           "lib/net6.0/MongoDB.Bson.dll": {
-            "assemblyVersion": "3.5.2.0",
-            "fileVersion": "3.5.2.0"
+            "assemblyVersion": "3.5.1.0",
+            "fileVersion": "3.5.1.0"
           }
         }
       },
-      "MongoDB.Driver/3.5.2": {
+      "MongoDB.Driver/3.5.1": {
         "dependencies": {
           "DnsClient": "1.6.1",
           "Microsoft.Extensions.Logging.Abstractions": "8.0.0",
-          "MongoDB.Bson": "3.5.2",
+          "MongoDB.Bson": "3.5.1",
           "SharpCompress": "0.30.1",
           "Snappier": "1.0.0",
           "System.Buffers": "4.5.1",
@@ -570,8 +569,8 @@
         },
         "runtime": {
           "lib/net6.0/MongoDB.Driver.dll": {
-            "assemblyVersion": "3.5.2.0",
-            "fileVersion": "3.5.2.0"
+            "assemblyVersion": "3.5.1.0",
+            "fileVersion": "3.5.1.0"
           }
         }
       },
@@ -911,188 +910,12 @@
       "DTOs/1.0.0": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore.Sqlite": "8.0.0",
-          "MongoDB.Driver": "3.5.2"
+          "MongoDB.Driver": "3.5.1"
         },
         "runtime": {
           "DTOs.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
-          }
-        }
-      },
-      "Microsoft.AspNetCore/8.0.0.0": {
-        "runtime": {
-          "Microsoft.AspNetCore.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.1625.21611"
-          }
-        }
-      },
-      "Microsoft.Extensions.Hosting.Abstractions/8.0.0.0": {
-        "runtime": {
-          "Microsoft.Extensions.Hosting.Abstractions.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.1625.21506"
-          }
-        }
-      },
-      "Microsoft.AspNetCore.Hosting.Abstractions/8.0.0.0": {
-        "runtime": {
-          "Microsoft.AspNetCore.Hosting.Abstractions.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.1625.21611"
-          }
-        }
-      },
-      "Microsoft.AspNetCore.Hosting/8.0.0.0": {
-        "runtime": {
-          "Microsoft.AspNetCore.Hosting.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.1625.21611"
-          }
-        }
-      },
-      "Microsoft.AspNetCore.HttpOverrides/8.0.0.0": {
-        "runtime": {
-          "Microsoft.AspNetCore.HttpOverrides.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.1625.21611"
-          }
-        }
-      },
-      "Microsoft.AspNetCore.Http.Abstractions/8.0.0.0": {
-        "runtime": {
-          "Microsoft.AspNetCore.Http.Abstractions.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.1625.21611"
-          }
-        }
-      },
-      "Microsoft.AspNetCore.Routing/8.0.0.0": {
-        "runtime": {
-          "Microsoft.AspNetCore.Routing.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.1625.21611"
-          }
-        }
-      },
-      "Microsoft.AspNetCore.Server.Kestrel.Core/8.0.0.0": {
-        "runtime": {
-          "Microsoft.AspNetCore.Server.Kestrel.Core.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.1625.21611"
-          }
-        }
-      },
-      "Microsoft.AspNetCore.HostFiltering/8.0.0.0": {
-        "runtime": {
-          "Microsoft.AspNetCore.HostFiltering.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.1625.21611"
-          }
-        }
-      },
-      "Microsoft.Extensions.Hosting/8.0.0.0": {
-        "runtime": {
-          "Microsoft.Extensions.Hosting.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.1625.21506"
-          }
-        }
-      },
-      "Microsoft.Extensions.Features/8.0.0.0": {
-        "runtime": {
-          "Microsoft.Extensions.Features.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.1625.21611"
-          }
-        }
-      },
-      "Microsoft.AspNetCore.Http/8.0.0.0": {
-        "runtime": {
-          "Microsoft.AspNetCore.Http.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.1625.21611"
-          }
-        }
-      },
-      "Microsoft.Extensions.Diagnostics.Abstractions/8.0.0.0": {
-        "runtime": {
-          "Microsoft.Extensions.Diagnostics.Abstractions.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.1625.21506"
-          }
-        }
-      },
-      "Microsoft.AspNetCore.Hosting.Server.Abstractions/8.0.0.0": {
-        "runtime": {
-          "Microsoft.AspNetCore.Hosting.Server.Abstractions.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.1625.21611"
-          }
-        }
-      },
-      "Microsoft.AspNetCore.Http.Features/8.0.0.0": {
-        "runtime": {
-          "Microsoft.AspNetCore.Http.Features.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.1625.21611"
-          }
-        }
-      },
-      "System.IO.Pipelines.Reference/8.0.0.0": {
-        "runtime": {
-          "System.IO.Pipelines.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.1625.21506"
-          }
-        }
-      },
-      "Microsoft.Extensions.ObjectPool/8.0.0.0": {
-        "runtime": {
-          "Microsoft.Extensions.ObjectPool.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.1625.21611"
-          }
-        }
-      },
-      "Microsoft.AspNetCore.Http.Extensions/8.0.0.0": {
-        "runtime": {
-          "Microsoft.AspNetCore.Http.Extensions.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.1625.21611"
-          }
-        }
-      },
-      "Microsoft.AspNetCore.Routing.Abstractions/8.0.0.0": {
-        "runtime": {
-          "Microsoft.AspNetCore.Routing.Abstractions.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.1625.21611"
-          }
-        }
-      },
-      "Microsoft.AspNetCore.Connections.Abstractions/8.0.0.0": {
-        "runtime": {
-          "Microsoft.AspNetCore.Connections.Abstractions.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.1625.21611"
-          }
-        }
-      },
-      "Microsoft.AspNetCore.WebUtilities/8.0.0.0": {
-        "runtime": {
-          "Microsoft.AspNetCore.WebUtilities.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.1625.21611"
-          }
-        }
-      },
-      "Microsoft.Net.Http.Headers/8.0.0.0": {
-        "runtime": {
-          "Microsoft.Net.Http.Headers.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.1625.21611"
           }
         }
       }
@@ -1342,19 +1165,19 @@
       "path": "microsoft.win32.registry/5.0.0",
       "hashPath": "microsoft.win32.registry.5.0.0.nupkg.sha512"
     },
-    "MongoDB.Bson/3.5.2": {
+    "MongoDB.Bson/3.5.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-aTlbKclBjXi4j3AkrHiaeuKCvdoGA029VbvXJUmmsCXDz+DEfBFq6n9uOvXJu2YXcJiW9Vay1ZctY5Iu0JRXdw==",
-      "path": "mongodb.bson/3.5.2",
-      "hashPath": "mongodb.bson.3.5.2.nupkg.sha512"
+      "sha512": "sha512-7+ZYBqOqzkzx/BK+vT47aFRpLxrTNw6pTV9uv2lOAQbAIpXjUpkJ/4pSs9dhJxnnryuSu4GskYW0xzy071U6og==",
+      "path": "mongodb.bson/3.5.1",
+      "hashPath": "mongodb.bson.3.5.1.nupkg.sha512"
     },
-    "MongoDB.Driver/3.5.2": {
+    "MongoDB.Driver/3.5.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Z1EW+CI18wOQqyAnhZkQXvUVXycrHoOb8/dlJzPHKFfNp9XPB6sEJJR67GUVYyB03B5xzt1RlwSyLXAx9B5+yQ==",
-      "path": "mongodb.driver/3.5.2",
-      "hashPath": "mongodb.driver.3.5.2.nupkg.sha512"
+      "sha512": "sha512-p++X0PJOAeSJKavNnoc+P8mnLt4YOD7Sv5wIruKGVPDf3MyNAOKh0gcwrOBLJklByV+fKfKVsMIZkeVXGvtE9w==",
+      "path": "mongodb.driver/3.5.1",
+      "hashPath": "mongodb.driver.3.5.1.nupkg.sha512"
     },
     "Mono.TextTemplating/2.2.1": {
       "type": "package",
@@ -1575,116 +1398,6 @@
     },
     "DTOs/1.0.0": {
       "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Microsoft.AspNetCore/8.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Microsoft.Extensions.Hosting.Abstractions/8.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Microsoft.AspNetCore.Hosting.Abstractions/8.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Microsoft.AspNetCore.Hosting/8.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Microsoft.AspNetCore.HttpOverrides/8.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Microsoft.AspNetCore.Http.Abstractions/8.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Microsoft.AspNetCore.Routing/8.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Microsoft.AspNetCore.Server.Kestrel.Core/8.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Microsoft.AspNetCore.HostFiltering/8.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Microsoft.Extensions.Hosting/8.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Microsoft.Extensions.Features/8.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Microsoft.AspNetCore.Http/8.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Microsoft.Extensions.Diagnostics.Abstractions/8.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Microsoft.AspNetCore.Hosting.Server.Abstractions/8.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Microsoft.AspNetCore.Http.Features/8.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "System.IO.Pipelines.Reference/8.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Microsoft.Extensions.ObjectPool/8.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Microsoft.AspNetCore.Http.Extensions/8.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Microsoft.AspNetCore.Routing.Abstractions/8.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Microsoft.AspNetCore.Connections.Abstractions/8.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Microsoft.AspNetCore.WebUtilities/8.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Microsoft.Net.Http.Headers/8.0.0.0": {
-      "type": "reference",
       "serviceable": false,
       "sha512": ""
     }

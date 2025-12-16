@@ -6,7 +6,7 @@ namespace Services;
 
 public class WalletService
 {
-    private readonly IRepositorio<Wallet> _repositorio;
+    private readonly IWalletRepositorio<Wallet> _repositorio;
     private readonly WalletLedgerService _ledgerService;
     private readonly WalletWithdrawSnapshot _walletWithdrawSnapshot;
     private readonly IConfiguration _cfg;
@@ -14,7 +14,7 @@ public class WalletService
     public WalletService(IConfiguration connectionString,
         WalletWithdrawSnapshot  walletWithdrawSnapshot,
         
-        IRepositorio<Wallet> repositorio,
+        IWalletRepositorio<Wallet> repositorio,
         WalletLedgerService service)
     {
         _ledgerService  = service;
@@ -34,7 +34,7 @@ public class WalletService
     {
         
         Wallet? wallet = await _repositorio.GetWalletByUserIdAsync(
-            userId: userId,
+            id: userId,
             none: CancellationToken.None);
         if (wallet == null){
             wallet = await _repositorio.InsertOneAsync(
@@ -56,7 +56,7 @@ public class WalletService
     {
         if (amount <= 0)
             throw new InvalidOperationException("O valor deve ser maior que zero.");
-        var wallet = await _repositorio.GetByIdAsync(
+        var wallet = await _repositorio.GetWalletByUserIdAsync(
             id: userId,
             none: CancellationToken.None);
         
@@ -67,7 +67,10 @@ public class WalletService
         decimal balanceAfter = wallet.Balance + newBalanceWithdrawal + wallet.BalanceBonus;
         if (wallet != null)
         {
+            wallet.Balance = newBalance;
+            wallet.BalanceWithdrawal = newBalanceWithdrawal;
             wallet.UpdatedAt = DateTime.UtcNow;
+            
 
             var update = await _repositorio.UpdateWallet(wallet, CancellationToken.None);
         }
