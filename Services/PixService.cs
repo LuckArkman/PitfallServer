@@ -168,7 +168,7 @@ public class PixService
             return false;
         }
 
-        if (webhook.TypeTransaction == "PAYMENT")
+        if (webhook.TypeTransaction == "RECEIVEPIX")
         {
             pixTx.Status = "Complete";
             pixTx.PaidAt = DateTime.UtcNow;
