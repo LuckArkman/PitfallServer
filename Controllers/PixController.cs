@@ -71,6 +71,10 @@ public class PixController : ControllerBase
 
         try
         {
+            Console.WriteLine($"{nameof(Callback)} >> " +
+                              $"{callback.IdTransaction} >> " +
+                              $"{callback.Status} >> " +
+                              $"{callback.TypeTransaction}");
             var processed = await _pixService.ProcessWebhookAsync(callback);
             if(processed) Console.WriteLine($"Webhook processado com sucesso.{callback.IdTransaction}");
 
