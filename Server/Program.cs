@@ -30,9 +30,11 @@ builder.Services.AddScoped<AdminAuthService>();
 builder.Services.AddScoped<AdminTokenService>();
 builder.Services.AddSingleton(typeof(IRepositorio<>), typeof(Repositorio<>));
 builder.Services.AddSingleton(typeof(IPixTransactionRepositorio<PixTransaction>), typeof(PixTransactionRepositorio));
+builder.Services.AddSingleton(typeof(IUserRepositorio<User>), typeof(UserRepositorio));
 builder.Services.AddSingleton(typeof(IWalletRepositorio<Wallet>), typeof(WalletRepositorio));
 builder.Services.AddSingleton(typeof(IWalletLedgerRepositorio<WalletLedger>), typeof(WalletLedgerRepositorio));
 builder.Services.AddScoped<UserRankingService>();
+builder.Services.AddSingleton(typeof(IRequestTransactionRepositorio<RequestTransaction>), typeof(RequestTransactionRepositorio));
 
 builder.Services.AddHttpClient<PixService>(c =>
     {
@@ -55,8 +57,9 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.SetIsOriginAllowed(origin => true) // Aceita QUALQUER origem
+        policy.SetIsOriginAllowed(origin => true)
             .AllowAnyHeader()
+            .AllowCredentials()
             .AllowAnyMethod();
     });
 });
@@ -69,13 +72,15 @@ builder.Services.AddSwaggerGen();
 // --- 🔹 Construir o app ---
 var app = builder.Build();
 
-// --- 🔹 Middlewares ---
+// ADICIONE ESTAS LINHAS AQUI:
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(); // Isso habilita a interface gráfica em /swagger
 }
-app.UseHttpsRedirection(); // força HTTPS automaticamente
+
+app.UseHttpsRedirection();
+
 app.UseCors("AllowAll");
 
 app.UseAuthentication();

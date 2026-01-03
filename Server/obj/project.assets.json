@@ -6893,42 +6893,49 @@
     ]
   },
   "packageFolders": {
-    "/home/mplopes/.nuget/packages/": {}
+    "C:\\Users\\MPLopes\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Server/Server.csproj",
+      "projectUniqueName": "H:\\Documentos\\GitHub\\PitfallServer\\Server\\Server.csproj",
       "projectName": "Server",
-      "projectPath": "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Server/Server.csproj",
-      "packagesPath": "/home/mplopes/.nuget/packages/",
-      "outputPath": "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Server/obj/",
+      "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\Server\\Server.csproj",
+      "packagesPath": "C:\\Users\\MPLopes\\.nuget\\packages\\",
+      "outputPath": "H:\\Documentos\\GitHub\\PitfallServer\\Server\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "/home/mplopes/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\MPLopes\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "/usr/share/dotnet/library-packs": {},
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Controllers/Controllers.csproj": {
-              "projectPath": "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Controllers/Controllers.csproj"
+            "H:\\Documentos\\GitHub\\PitfallServer\\Controllers\\Controllers.csproj": {
+              "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\Controllers\\Controllers.csproj"
             },
-            "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Interfaces/Interfaces.csproj": {
-              "projectPath": "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Interfaces/Interfaces.csproj"
+            "H:\\Documentos\\GitHub\\PitfallServer\\Interfaces\\Interfaces.csproj": {
+              "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\Interfaces\\Interfaces.csproj"
             },
-            "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Repositorios/Repositorios.csproj": {
-              "projectPath": "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Repositorios/Repositorios.csproj"
+            "H:\\Documentos\\GitHub\\PitfallServer\\Repositorios\\Repositorios.csproj": {
+              "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\Repositorios\\Repositorios.csproj"
             },
-            "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Services/Services.csproj": {
-              "projectPath": "/mnt/wwn-0x5000c500e3635241-part1/Documentos/GitHub/PitfallServer/Services/Services.csproj"
+            "H:\\Documentos\\GitHub\\PitfallServer\\Services\\Services.csproj": {
+              "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\Services\\Services.csproj"
             }
           }
         }
@@ -6943,7 +6950,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.300"
+      "SdkAnalysisLevel": "10.0.100"
     },
     "frameworks": {
       "net8.0": {
@@ -6995,12 +7002,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[8.0.16, 8.0.16]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -7009,7 +7010,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.300/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

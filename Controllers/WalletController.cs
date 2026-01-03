@@ -9,16 +9,19 @@ namespace Controllers;
 public class WalletController : ControllerBase
 {
     readonly WalletService _service;
+    readonly WalletLedgerService _ledgerService;
     private readonly AuthService _authService;
     readonly SessionService _sessionService;
     private readonly GameService _gameService;
 
     public WalletController(WalletService service,
+        WalletLedgerService ledgerService,
         SessionService sessionService,
         GameService  gameService,
         AuthService authService)
     {
         _service = service;
+        _ledgerService = ledgerService;
         _sessionService = sessionService;
         _gameService = gameService;
         _authService = authService;
@@ -126,5 +129,36 @@ public class WalletController : ControllerBase
         {
             return StatusCode(500, new { message = "Erro interno ao processar crédito.", error = ex.Message });
         }
+    }
+    
+    [HttpGet("AllWalletLedgerBalance")]
+    public async Task<List<WalletLedger>> AllWalletLedgerBalance()
+    {
+        return new List<WalletLedger>();
+    }
+    [HttpPost("WalletLedgerBalance")]
+    public async Task<IActionResult> GetWalletLedgerBalance([FromBody] RequestWallet req)
+    {
+        if (string.IsNullOrWhiteSpace(req.token))
+            return BadRequest(new { message = "Token não fornecido." });
+
+        var user = await _sessionService.GetAsync(req.token) as UserSession;
+        if (user == null)
+            return Ok(new { message = "Sessão inválida ou expirada." });
+        var wallet = await _service.GetOrCreateWalletAsync(user.UserId);
+        if (wallet == null) return BadRequest();
+        var ledger = await _ledgerService.GetAllLedger(wallet.Id);
+        return Ok(ledger);
+    }
+    [HttpPost("WalletLedgerFromId")]
+    public async Task<IActionResult> WalletLedgerFromId([FromBody] RequestWallet req)
+    {
+        if (string.IsNullOrWhiteSpace(req.token))
+            return BadRequest(new { message = "Token não fornecido." });
+        Guid.TryParse(req.token, out var Id);
+        var wallet = await _service.GetOrCreateWalletAsync(Id);
+        if (wallet == null) return BadRequest();
+        var ledger = await _ledgerService.GetAllLedger(wallet.Id);
+        return Ok(ledger);
     }
 }

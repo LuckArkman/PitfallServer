@@ -17,8 +17,8 @@ services:
       - /home/ubuntu/host/certs/certificate.pfx:/app/certs/certificate.pfx:ro
     restart: always
     networks:
-      - server_network
+      - pitfallserver_server_network
 
 networks:
-  server_network:
-    driver: bridge
+  pitfallserver_server_network:
+    external: true

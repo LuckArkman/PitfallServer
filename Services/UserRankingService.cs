@@ -36,4 +36,7 @@ public class UserRankingService
         await _repositorio.UpdateRanking(rk, CancellationToken.None);
         
     }
+
+    public async Task<UserRanking?> GetRanking(Guid userId)
+    =>await _repositorio.GetUserIdAsync(userId, CancellationToken.None);
 }

@@ -34,7 +34,6 @@ public class WalletRepositorio : IWalletRepositorio<Wallet>
 
     public async Task<Wallet?> GetWalletByUserIdAsync(Guid id, CancellationToken none)
     {
-        if (_collection == null) throw new InvalidOperationException("A coleção não foi inicializada.");
         var filter = Builders<Wallet>.Filter.Eq(w => w.UserId, id);
         return await _collection.Find(filter).FirstOrDefaultAsync();
     }

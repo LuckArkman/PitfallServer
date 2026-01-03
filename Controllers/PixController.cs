@@ -26,8 +26,6 @@ public class PixController : ControllerBase
         _wallet = wallet;
         _authService = authService;
     }
-
-    // ================================= PIX IN =================================
     [HttpPost("deposit")]
     public async Task<IActionResult> CreateDeposit([FromBody] PixDepositRequestDto dto)
     {
@@ -51,7 +49,7 @@ public class PixController : ControllerBase
         var user = await _authService.GetAccount(session.UserId) as User;
         if (wallet.BalanceWithdrawal < dto.Amount)
             return BadRequest(new { message = "Saldo insuficiente para saque" });
-        var result = await _pixService.CreatePixWithdrawAsync(new PixWithdrawRequest(dto.Amount, dto.PixKey, dto.PixKeyType), user);
+        var result = await _pixService.CreatePixWithdrawAsync(new PixWithdrawRequest(dto.Amount,dto.cpf, dto.PixKey, dto.PixKeyType), user);
 
         return Ok(new
         {
@@ -61,8 +59,6 @@ public class PixController : ControllerBase
             amount = result?.Amount
         });
     }
-
-    // ================================= CALLBACK PIX-IN (WEBHOOK) =================================
     [HttpPost("callback")]
     public async Task<IActionResult> Callback([FromBody] PaymentStatusDto callback)
     {

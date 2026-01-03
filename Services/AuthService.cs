@@ -7,7 +7,7 @@ namespace Services;
 
 public class AuthService
 {
-    private readonly IRepositorio<User> _repositorio;
+    private readonly IUserRepositorio<User> _repositorio;
     private readonly TokenService _tokenService;
     private readonly WalletService _walletService;
     private readonly SessionService _sessionService;
@@ -17,7 +17,7 @@ public class AuthService
 
     public AuthService(
         UserRankingService  rankingService,
-        IRepositorio<User> repositorio,
+        IUserRepositorio<User> repositorio,
         TokenService tokenService,
         WalletService walletService,
         SessionService sessionService,

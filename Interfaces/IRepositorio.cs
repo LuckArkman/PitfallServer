@@ -1,3 +1,4 @@
+using System.Collections;
 using DTOs;
 
 namespace Interfaces;
@@ -18,4 +19,5 @@ public interface IRepositorio<T>
     Task UpdateRanking(UserRanking? rk, CancellationToken none);
     Task<WithdrawSnapshot?> GetRoomIdAsync(string gameId, CancellationToken none);
     Task<T?> GetWalletByUserIdAsync(Guid userId, CancellationToken none);
+    Task<List<User>> GetUsersByRegisterCode(string? requesterReferralCode);
 }

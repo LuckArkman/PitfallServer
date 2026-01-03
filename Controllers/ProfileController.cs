@@ -23,4 +23,11 @@ public class ProfileController : ControllerBase
         var profile = await _service.GetProfile(user.UserId);
         return Ok(profile);
     }
+    [HttpPost("Invite-profile")]
+    public async Task<IActionResult?> Invite_ProfileAccount([FromBody] RequestWallet req)
+    {
+        var user = await _sessionService.GetAsync(req.token) as UserSession;
+        var profile = await _service.GetInvite_Profile(user.UserId);
+        return Ok(profile);
+    }
 }

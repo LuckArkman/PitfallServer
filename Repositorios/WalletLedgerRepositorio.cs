@@ -29,13 +29,9 @@ public class WalletLedgerRepositorio : IWalletLedgerRepositorio<WalletLedger>
         return document;
     }
 
-    public async Task<List<WalletLedger?>> GetAllWalletLedger(Guid id, CancellationToken none)
+    public async Task<List<WalletLedger>?> GetAllWalletLedger(Guid id, CancellationToken none)
     {
-
-        // Cria um filtro para pegar todos os documentos onde o campo "walletId" é igual ao id informado
         var filter = Builders<WalletLedger>.Filter.Eq(x => x.WalletId, id);
-
-        // Busca todos os registros correspondentes
         var result = await _collection
             .Find(filter)
             .ToListAsync(none);

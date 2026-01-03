@@ -1,3 +1,4 @@
+using System.Collections;
 using Data;
 using DTOs;
 using Interfaces;
@@ -155,5 +156,22 @@ public class Repositorio<T> : IRepositorio<T>
     {
         var filter = Builders<T>.Filter.Eq("UserId", userId);
         return await _collection.Find(filter).FirstOrDefaultAsync();
+    }
+
+    public async Task<List<User>> GetUsersByRegisterCode(string registerCode)
+    {
+        if (string.IsNullOrWhiteSpace(registerCode))
+            return new List<User>();
+    
+        var collection = _db.GetDatabase().GetCollection<User>("Users");
+    
+        // Busca todos os usuários onde o campo "registerCode" é igual ao código informado
+        var filter = Builders<User>.Filter.Eq(u => u.registerCode, registerCode);
+    
+        var users = await collection
+            .Find(filter)
+            .ToListAsync();
+    
+        return users ?? new List<User>();
     }
 }

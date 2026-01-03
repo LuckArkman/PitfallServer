@@ -14,6 +14,7 @@ namespace Services;
 public class PixService
 {
     private readonly IPixTransactionRepositorio<PixTransaction> _repositorio;
+    private readonly IRequestTransactionRepositorio<RequestTransaction> _repositorioRequestTransaction;
     private readonly HttpClient _http;
     private readonly IConfiguration _cfg;
     private readonly WalletService _walletService;
@@ -23,17 +24,22 @@ public class PixService
 
     public PixService(
         IPixTransactionRepositorio<PixTransaction> repositorio,
+        IRequestTransactionRepositorio<RequestTransaction> repositorioRequestTransaction,
         HttpClient http,
         IConfiguration cfg,
         WalletService walletService)
     {
         _repositorio = repositorio;
+        _repositorioRequestTransaction = repositorioRequestTransaction;
         _http = http;
         _cfg = cfg;
         _walletService = walletService;
         _repositorio.InitializeCollection(_cfg["MongoDbSettings:ConnectionString"],
             _cfg["MongoDbSettings:DataBaseName"],
             "Transactions");
+        _repositorioRequestTransaction.InitializeCollection(_cfg["MongoDbSettings:ConnectionString"],
+            _cfg["MongoDbSettings:DataBaseName"],
+            "RequestTransactions");
     }
 
     // =======================================================
@@ -125,30 +131,23 @@ public class PixService
             BrCode = response.Charge.BrCode
         };
     }
-    public async Task<PixWithdrawResponse?> CreatePixWithdrawAsync(PixWithdrawRequest req, User? user)
+    public async Task<PixWithdrawResponse?> CreatePixWithdrawAsync(PixWithdrawRequest? req, User? user)
     {
-        var payload = new
+        var wallet = await _walletService.GetOrCreateWalletAsync(user.Id);
+        var request = new RequestTransaction
         {
-            nome = user.Name ?? "Conta Origem",
-            cpf = "00000000000",
-            valor = req.Amount.ToString("F2"),
-            descricao = "Saque de fundos",
-            postback = _cfg["agilizepay:WithdrawCallbackUrl"]
+            userId = user.Id,
+            walletId = wallet.Id,
+            name = user.Name,
+            email = user.Email,
+            document = req.cpf,
+            amount  = req.Amount,
+            Status = "pending",
+            CreatedAt = DateTime.UtcNow,
         };
-
-        // Assinar request
-        var sign = SignPayload(payload);
-        _http.DefaultRequestHeaders.Remove("client_sign");
-        _http.DefaultRequestHeaders.Add("client_sign", sign);
-
-        var url = _cfg["agilizepay:BaseUrl"]!.TrimEnd('/') + "/api/v1/cashout";
-
-        var res = await _http.PostAsJsonAsync(url, payload);
-
-        if (!res.IsSuccessStatusCode)
-            throw new Exception($"Erro AgilizePay PIX-OUT: {await res.Content.ReadAsStringAsync()}");
-
-        return await res.Content.ReadFromJsonAsync<PixWithdrawResponse>();
+        var _rt = await _repositorioRequestTransaction.InsertOneAsync(request);
+        if (_rt == null) return null;
+        return new PixWithdrawResponse(_rt.id, _rt.amount, _rt.Status);
     }
 
 

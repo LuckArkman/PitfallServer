@@ -7,23 +7,28 @@ namespace Services;
 public class WalletService
 {
     private readonly IWalletRepositorio<Wallet> _repositorio;
+    private readonly IUserRepositorio<User> _repositorioUser;
     private readonly WalletLedgerService _ledgerService;
     private readonly WalletWithdrawSnapshot _walletWithdrawSnapshot;
     private readonly IConfiguration _cfg;
 
     public WalletService(IConfiguration connectionString,
         WalletWithdrawSnapshot  walletWithdrawSnapshot,
-        
+        IUserRepositorio<User> repositorioUser,
         IWalletRepositorio<Wallet> repositorio,
         WalletLedgerService service)
     {
         _ledgerService  = service;
         _walletWithdrawSnapshot = walletWithdrawSnapshot;
+        _repositorioUser = repositorioUser;
         _repositorio = repositorio;
         _cfg = connectionString;
         _repositorio.InitializeCollection(_cfg["MongoDbSettings:ConnectionString"],
             _cfg["MongoDbSettings:DataBaseName"],
             "Wallets");
+        _repositorioUser.InitializeCollection(_cfg["MongoDbSettings:ConnectionString"],
+            _cfg["MongoDbSettings:DataBaseName"],
+            "Users");
     }
 
     /// <summary>
@@ -56,9 +61,12 @@ public class WalletService
     {
         if (amount <= 0)
             throw new InvalidOperationException("O valor deve ser maior que zero.");
+        var _user = await _repositorioUser.GetByIdAsync(userId, CancellationToken.None);
         var wallet = await _repositorio.GetWalletByUserIdAsync(
             id: userId,
             none: CancellationToken.None);
+
+        var user = await _repositorio.GetWalletByUserIdAsync(userId, CancellationToken.None);
         
         decimal withdrawalPart = amount * 0.8m;
         decimal mainBalancePart = amount * 0.2m;
@@ -78,8 +86,10 @@ public class WalletService
         WalletLedger ledger = new WalletLedger
         {
             WalletId = wallet.Id,
+            IsInfluencer = _user.IsInfluencer,
             Type = type ?? "credit",
             Amount = amount,
+            BalanceBefore = wallet.Balance,
             BalanceAfter = balanceAfter,
             GameRoundId = 0,
             Metadata = $"{{\"split\":\"80/20\",\"withdraw\":{withdrawalPart},\"main\":{mainBalancePart}}}",
