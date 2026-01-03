@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "H:\\Documentos\\GitHub\\PitfallServer\\DTOs\\DTOs.csproj": {}
+    "D:\\PitfallServer\\DTOs\\DTOs.csproj": {}
   },
   "projects": {
-    "H:\\Documentos\\GitHub\\PitfallServer\\DTOs\\DTOs.csproj": {
+    "D:\\PitfallServer\\DTOs\\DTOs.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "H:\\Documentos\\GitHub\\PitfallServer\\DTOs\\DTOs.csproj",
+        "projectUniqueName": "D:\\PitfallServer\\DTOs\\DTOs.csproj",
         "projectName": "DTOs",
-        "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\DTOs\\DTOs.csproj",
+        "projectPath": "D:\\PitfallServer\\DTOs\\DTOs.csproj",
         "packagesPath": "C:\\Users\\MPLopes\\.nuget\\packages\\",
-        "outputPath": "H:\\Documentos\\GitHub\\PitfallServer\\DTOs\\obj\\",
+        "outputPath": "D:\\PitfallServer\\DTOs\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

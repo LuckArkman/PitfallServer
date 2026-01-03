@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "H:\\Documentos\\GitHub\\PitfallServer\\Controllers\\Controllers.csproj": {}
+    "D:\\PitfallServer\\Controllers\\Controllers.csproj": {}
   },
   "projects": {
-    "H:\\Documentos\\GitHub\\PitfallServer\\Controllers\\Controllers.csproj": {
+    "D:\\PitfallServer\\Controllers\\Controllers.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "H:\\Documentos\\GitHub\\PitfallServer\\Controllers\\Controllers.csproj",
+        "projectUniqueName": "D:\\PitfallServer\\Controllers\\Controllers.csproj",
         "projectName": "Controllers",
-        "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\Controllers\\Controllers.csproj",
+        "projectPath": "D:\\PitfallServer\\Controllers\\Controllers.csproj",
         "packagesPath": "C:\\Users\\MPLopes\\.nuget\\packages\\",
-        "outputPath": "H:\\Documentos\\GitHub\\PitfallServer\\Controllers\\obj\\",
+        "outputPath": "D:\\PitfallServer\\Controllers\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -33,11 +33,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "H:\\Documentos\\GitHub\\PitfallServer\\Data\\Data.csproj": {
-                "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\Data\\Data.csproj"
+              "D:\\PitfallServer\\Data\\Data.csproj": {
+                "projectPath": "D:\\PitfallServer\\Data\\Data.csproj"
               },
-              "H:\\Documentos\\GitHub\\PitfallServer\\Services\\Services.csproj": {
-                "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\Services\\Services.csproj"
+              "D:\\PitfallServer\\Services\\Services.csproj": {
+                "projectPath": "D:\\PitfallServer\\Services\\Services.csproj"
               }
             }
           }
@@ -91,14 +91,14 @@
         }
       }
     },
-    "H:\\Documentos\\GitHub\\PitfallServer\\Data\\Data.csproj": {
+    "D:\\PitfallServer\\Data\\Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "H:\\Documentos\\GitHub\\PitfallServer\\Data\\Data.csproj",
+        "projectUniqueName": "D:\\PitfallServer\\Data\\Data.csproj",
         "projectName": "Data",
-        "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\Data\\Data.csproj",
+        "projectPath": "D:\\PitfallServer\\Data\\Data.csproj",
         "packagesPath": "C:\\Users\\MPLopes\\.nuget\\packages\\",
-        "outputPath": "H:\\Documentos\\GitHub\\PitfallServer\\Data\\obj\\",
+        "outputPath": "D:\\PitfallServer\\Data\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -120,8 +120,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "H:\\Documentos\\GitHub\\PitfallServer\\DTOs\\DTOs.csproj": {
-                "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\DTOs\\DTOs.csproj"
+              "D:\\PitfallServer\\DTOs\\DTOs.csproj": {
+                "projectPath": "D:\\PitfallServer\\DTOs\\DTOs.csproj"
               }
             }
           }
@@ -205,14 +205,14 @@
         }
       }
     },
-    "H:\\Documentos\\GitHub\\PitfallServer\\DTOs\\DTOs.csproj": {
+    "D:\\PitfallServer\\DTOs\\DTOs.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "H:\\Documentos\\GitHub\\PitfallServer\\DTOs\\DTOs.csproj",
+        "projectUniqueName": "D:\\PitfallServer\\DTOs\\DTOs.csproj",
         "projectName": "DTOs",
-        "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\DTOs\\DTOs.csproj",
+        "projectPath": "D:\\PitfallServer\\DTOs\\DTOs.csproj",
         "packagesPath": "C:\\Users\\MPLopes\\.nuget\\packages\\",
-        "outputPath": "H:\\Documentos\\GitHub\\PitfallServer\\DTOs\\obj\\",
+        "outputPath": "D:\\PitfallServer\\DTOs\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -281,14 +281,14 @@
         }
       }
     },
-    "H:\\Documentos\\GitHub\\PitfallServer\\Interfaces\\Interfaces.csproj": {
+    "D:\\PitfallServer\\Interfaces\\Interfaces.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "H:\\Documentos\\GitHub\\PitfallServer\\Interfaces\\Interfaces.csproj",
+        "projectUniqueName": "D:\\PitfallServer\\Interfaces\\Interfaces.csproj",
         "projectName": "Interfaces",
-        "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\Interfaces\\Interfaces.csproj",
+        "projectPath": "D:\\PitfallServer\\Interfaces\\Interfaces.csproj",
         "packagesPath": "C:\\Users\\MPLopes\\.nuget\\packages\\",
-        "outputPath": "H:\\Documentos\\GitHub\\PitfallServer\\Interfaces\\obj\\",
+        "outputPath": "D:\\PitfallServer\\Interfaces\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -310,8 +310,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "H:\\Documentos\\GitHub\\PitfallServer\\DTOs\\DTOs.csproj": {
-                "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\DTOs\\DTOs.csproj"
+              "D:\\PitfallServer\\DTOs\\DTOs.csproj": {
+                "projectPath": "D:\\PitfallServer\\DTOs\\DTOs.csproj"
               }
             }
           }
@@ -351,14 +351,14 @@
         }
       }
     },
-    "H:\\Documentos\\GitHub\\PitfallServer\\Services\\Services.csproj": {
+    "D:\\PitfallServer\\Services\\Services.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "H:\\Documentos\\GitHub\\PitfallServer\\Services\\Services.csproj",
+        "projectUniqueName": "D:\\PitfallServer\\Services\\Services.csproj",
         "projectName": "Services",
-        "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\Services\\Services.csproj",
+        "projectPath": "D:\\PitfallServer\\Services\\Services.csproj",
         "packagesPath": "C:\\Users\\MPLopes\\.nuget\\packages\\",
-        "outputPath": "H:\\Documentos\\GitHub\\PitfallServer\\Services\\obj\\",
+        "outputPath": "D:\\PitfallServer\\Services\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -380,14 +380,14 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "H:\\Documentos\\GitHub\\PitfallServer\\Data\\Data.csproj": {
-                "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\Data\\Data.csproj"
+              "D:\\PitfallServer\\Data\\Data.csproj": {
+                "projectPath": "D:\\PitfallServer\\Data\\Data.csproj"
               },
-              "H:\\Documentos\\GitHub\\PitfallServer\\DTOs\\DTOs.csproj": {
-                "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\DTOs\\DTOs.csproj"
+              "D:\\PitfallServer\\DTOs\\DTOs.csproj": {
+                "projectPath": "D:\\PitfallServer\\DTOs\\DTOs.csproj"
               },
-              "H:\\Documentos\\GitHub\\PitfallServer\\Interfaces\\Interfaces.csproj": {
-                "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\Interfaces\\Interfaces.csproj"
+              "D:\\PitfallServer\\Interfaces\\Interfaces.csproj": {
+                "projectPath": "D:\\PitfallServer\\Interfaces\\Interfaces.csproj"
               }
             }
           }

@@ -6899,11 +6899,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "H:\\Documentos\\GitHub\\PitfallServer\\Server\\Server.csproj",
+      "projectUniqueName": "D:\\PitfallServer\\Server\\Server.csproj",
       "projectName": "Server",
-      "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\Server\\Server.csproj",
+      "projectPath": "D:\\PitfallServer\\Server\\Server.csproj",
       "packagesPath": "C:\\Users\\MPLopes\\.nuget\\packages\\",
-      "outputPath": "H:\\Documentos\\GitHub\\PitfallServer\\Server\\obj\\",
+      "outputPath": "D:\\PitfallServer\\Server\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -6925,17 +6925,17 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "H:\\Documentos\\GitHub\\PitfallServer\\Controllers\\Controllers.csproj": {
-              "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\Controllers\\Controllers.csproj"
+            "D:\\PitfallServer\\Controllers\\Controllers.csproj": {
+              "projectPath": "D:\\PitfallServer\\Controllers\\Controllers.csproj"
             },
-            "H:\\Documentos\\GitHub\\PitfallServer\\Interfaces\\Interfaces.csproj": {
-              "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\Interfaces\\Interfaces.csproj"
+            "D:\\PitfallServer\\Interfaces\\Interfaces.csproj": {
+              "projectPath": "D:\\PitfallServer\\Interfaces\\Interfaces.csproj"
             },
-            "H:\\Documentos\\GitHub\\PitfallServer\\Repositorios\\Repositorios.csproj": {
-              "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\Repositorios\\Repositorios.csproj"
+            "D:\\PitfallServer\\Repositorios\\Repositorios.csproj": {
+              "projectPath": "D:\\PitfallServer\\Repositorios\\Repositorios.csproj"
             },
-            "H:\\Documentos\\GitHub\\PitfallServer\\Services\\Services.csproj": {
-              "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\Services\\Services.csproj"
+            "D:\\PitfallServer\\Services\\Services.csproj": {
+              "projectPath": "D:\\PitfallServer\\Services\\Services.csproj"
             }
           }
         }

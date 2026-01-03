@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "52MpMfb2EKg=",
+  "dgSpecHash": "D9TVWQJe9Oo=",
   "success": true,
-  "projectFilePath": "H:\\Documentos\\GitHub\\PitfallServer\\Controllers\\Controllers.csproj",
+  "projectFilePath": "D:\\PitfallServer\\Controllers\\Controllers.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\MPLopes\\.nuget\\packages\\dnsclient\\1.6.1\\dnsclient.1.6.1.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\microsoft.aspnetcore.antiforgery\\2.3.0\\microsoft.aspnetcore.antiforgery.2.3.0.nupkg.sha512",

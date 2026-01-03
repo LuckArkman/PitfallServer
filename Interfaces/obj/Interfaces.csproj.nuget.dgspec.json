@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "H:\\Documentos\\GitHub\\PitfallServer\\Interfaces\\Interfaces.csproj": {}
+    "D:\\PitfallServer\\Interfaces\\Interfaces.csproj": {}
   },
   "projects": {
-    "H:\\Documentos\\GitHub\\PitfallServer\\DTOs\\DTOs.csproj": {
+    "D:\\PitfallServer\\DTOs\\DTOs.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "H:\\Documentos\\GitHub\\PitfallServer\\DTOs\\DTOs.csproj",
+        "projectUniqueName": "D:\\PitfallServer\\DTOs\\DTOs.csproj",
         "projectName": "DTOs",
-        "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\DTOs\\DTOs.csproj",
+        "projectPath": "D:\\PitfallServer\\DTOs\\DTOs.csproj",
         "packagesPath": "C:\\Users\\MPLopes\\.nuget\\packages\\",
-        "outputPath": "H:\\Documentos\\GitHub\\PitfallServer\\DTOs\\obj\\",
+        "outputPath": "D:\\PitfallServer\\DTOs\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -80,14 +80,14 @@
         }
       }
     },
-    "H:\\Documentos\\GitHub\\PitfallServer\\Interfaces\\Interfaces.csproj": {
+    "D:\\PitfallServer\\Interfaces\\Interfaces.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "H:\\Documentos\\GitHub\\PitfallServer\\Interfaces\\Interfaces.csproj",
+        "projectUniqueName": "D:\\PitfallServer\\Interfaces\\Interfaces.csproj",
         "projectName": "Interfaces",
-        "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\Interfaces\\Interfaces.csproj",
+        "projectPath": "D:\\PitfallServer\\Interfaces\\Interfaces.csproj",
         "packagesPath": "C:\\Users\\MPLopes\\.nuget\\packages\\",
-        "outputPath": "H:\\Documentos\\GitHub\\PitfallServer\\Interfaces\\obj\\",
+        "outputPath": "D:\\PitfallServer\\Interfaces\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -109,8 +109,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "H:\\Documentos\\GitHub\\PitfallServer\\DTOs\\DTOs.csproj": {
-                "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\DTOs\\DTOs.csproj"
+              "D:\\PitfallServer\\DTOs\\DTOs.csproj": {
+                "projectPath": "D:\\PitfallServer\\DTOs\\DTOs.csproj"
               }
             }
           }

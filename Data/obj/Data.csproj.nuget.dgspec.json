@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "H:\\Documentos\\GitHub\\PitfallServer\\Data\\Data.csproj": {}
+    "D:\\PitfallServer\\Data\\Data.csproj": {}
   },
   "projects": {
-    "H:\\Documentos\\GitHub\\PitfallServer\\Data\\Data.csproj": {
+    "D:\\PitfallServer\\Data\\Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "H:\\Documentos\\GitHub\\PitfallServer\\Data\\Data.csproj",
+        "projectUniqueName": "D:\\PitfallServer\\Data\\Data.csproj",
         "projectName": "Data",
-        "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\Data\\Data.csproj",
+        "projectPath": "D:\\PitfallServer\\Data\\Data.csproj",
         "packagesPath": "C:\\Users\\MPLopes\\.nuget\\packages\\",
-        "outputPath": "H:\\Documentos\\GitHub\\PitfallServer\\Data\\obj\\",
+        "outputPath": "D:\\PitfallServer\\Data\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -33,8 +33,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "H:\\Documentos\\GitHub\\PitfallServer\\DTOs\\DTOs.csproj": {
-                "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\DTOs\\DTOs.csproj"
+              "D:\\PitfallServer\\DTOs\\DTOs.csproj": {
+                "projectPath": "D:\\PitfallServer\\DTOs\\DTOs.csproj"
               }
             }
           }
@@ -118,14 +118,14 @@
         }
       }
     },
-    "H:\\Documentos\\GitHub\\PitfallServer\\DTOs\\DTOs.csproj": {
+    "D:\\PitfallServer\\DTOs\\DTOs.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "H:\\Documentos\\GitHub\\PitfallServer\\DTOs\\DTOs.csproj",
+        "projectUniqueName": "D:\\PitfallServer\\DTOs\\DTOs.csproj",
         "projectName": "DTOs",
-        "projectPath": "H:\\Documentos\\GitHub\\PitfallServer\\DTOs\\DTOs.csproj",
+        "projectPath": "D:\\PitfallServer\\DTOs\\DTOs.csproj",
         "packagesPath": "C:\\Users\\MPLopes\\.nuget\\packages\\",
-        "outputPath": "H:\\Documentos\\GitHub\\PitfallServer\\DTOs\\obj\\",
+        "outputPath": "D:\\PitfallServer\\DTOs\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
