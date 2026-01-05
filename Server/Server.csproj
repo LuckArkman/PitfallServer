@@ -30,7 +30,6 @@
 
     <ItemGroup>
       <Folder Include="certs\" />
-      <Folder Include="ssl\" />
       <Folder Include="temp\" />
     </ItemGroup>
 

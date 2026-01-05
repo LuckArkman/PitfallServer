@@ -1,10 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "D9TVWQJe9Oo=",
+  "dgSpecHash": "P7v+OYKxwGE=",
   "success": true,
   "projectFilePath": "D:\\PitfallServer\\Controllers\\Controllers.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\MPLopes\\.nuget\\packages\\dnsclient\\1.6.1\\dnsclient.1.6.1.nupkg.sha512",
+    "C:\\Users\\MPLopes\\.nuget\\packages\\mercadopago\\1.0.4477.31589\\mercadopago.1.0.4477.31589.nupkg.sha512",
+    "C:\\Users\\MPLopes\\.nuget\\packages\\mercadopagocore\\5.0.0\\mercadopagocore.5.0.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\microsoft.aspnetcore.antiforgery\\2.3.0\\microsoft.aspnetcore.antiforgery.2.3.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\microsoft.aspnetcore.authentication\\2.3.0\\microsoft.aspnetcore.authentication.2.3.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.3.0\\microsoft.aspnetcore.authentication.abstractions.2.3.0.nupkg.sha512",
@@ -94,13 +96,16 @@
     "C:\\Users\\MPLopes\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\microsoft.win32.registry\\5.0.0\\microsoft.win32.registry.5.0.0.nupkg.sha512",
+    "C:\\Users\\MPLopes\\.nuget\\packages\\microsoft.win32.systemevents\\5.0.0\\microsoft.win32.systemevents.5.0.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\mongodb.bson\\3.5.1\\mongodb.bson.3.5.1.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\mongodb.driver\\3.5.1\\mongodb.driver.3.5.1.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\newtonsoft.json\\13.0.4\\newtonsoft.json.13.0.4.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\npgsql\\8.0.0\\npgsql.8.0.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\8.0.0\\npgsql.entityframeworkcore.postgresql.8.0.0.nupkg.sha512",
+    "C:\\Users\\MPLopes\\.nuget\\packages\\objectdumper.net\\3.0.20251.1\\objectdumper.net.3.0.20251.1.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\pipelines.sockets.unofficial\\2.2.8\\pipelines.sockets.unofficial.2.2.8.nupkg.sha512",
+    "C:\\Users\\MPLopes\\.nuget\\packages\\restsharp\\102.7.0\\restsharp.102.7.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
@@ -130,6 +135,7 @@
     "C:\\Users\\MPLopes\\.nuget\\packages\\system.collections.concurrent\\4.3.0\\system.collections.concurrent.4.3.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\system.collections.immutable\\1.3.1\\system.collections.immutable.1.3.1.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\system.componentmodel.annotations\\5.0.0\\system.componentmodel.annotations.5.0.0.nupkg.sha512",
+    "C:\\Users\\MPLopes\\.nuget\\packages\\system.configuration.configurationmanager\\5.0.0\\system.configuration.configurationmanager.5.0.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\system.console\\4.3.0\\system.console.4.3.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\system.diagnostics.debug\\4.3.0\\system.diagnostics.debug.4.3.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\system.diagnostics.diagnosticsource\\8.0.1\\system.diagnostics.diagnosticsource.8.0.1.nupkg.sha512",
@@ -137,6 +143,7 @@
     "C:\\Users\\MPLopes\\.nuget\\packages\\system.diagnostics.stacktrace\\4.3.0\\system.diagnostics.stacktrace.4.3.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\system.diagnostics.tools\\4.3.0\\system.diagnostics.tools.4.3.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\system.diagnostics.tracing\\4.3.0\\system.diagnostics.tracing.4.3.0.nupkg.sha512",
+    "C:\\Users\\MPLopes\\.nuget\\packages\\system.drawing.common\\5.0.0\\system.drawing.common.5.0.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\system.dynamic.runtime\\4.3.0\\system.dynamic.runtime.4.3.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\system.globalization\\4.3.0\\system.globalization.4.3.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\system.globalization.calendars\\4.3.0\\system.globalization.calendars.4.3.0.nupkg.sha512",
@@ -173,8 +180,10 @@
     "C:\\Users\\MPLopes\\.nuget\\packages\\system.security.cryptography.openssl\\4.3.0\\system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\system.security.cryptography.pkcs\\8.0.1\\system.security.cryptography.pkcs.8.0.1.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\system.security.cryptography.primitives\\4.3.0\\system.security.cryptography.primitives.4.3.0.nupkg.sha512",
+    "C:\\Users\\MPLopes\\.nuget\\packages\\system.security.cryptography.protecteddata\\5.0.0\\system.security.cryptography.protecteddata.5.0.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\system.security.cryptography.x509certificates\\4.3.0\\system.security.cryptography.x509certificates.4.3.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\system.security.cryptography.xml\\8.0.2\\system.security.cryptography.xml.8.0.2.nupkg.sha512",
+    "C:\\Users\\MPLopes\\.nuget\\packages\\system.security.permissions\\5.0.0\\system.security.permissions.5.0.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\system.security.principal.windows\\5.0.0\\system.security.principal.windows.5.0.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\system.text.encoding\\4.3.0\\system.text.encoding.4.3.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\system.text.encoding.codepages\\4.3.0\\system.text.encoding.codepages.4.3.0.nupkg.sha512",
@@ -188,6 +197,7 @@
     "C:\\Users\\MPLopes\\.nuget\\packages\\system.threading.tasks.parallel\\4.3.0\\system.threading.tasks.parallel.4.3.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\system.threading.thread\\4.3.0\\system.threading.thread.4.3.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\system.valuetuple\\4.3.0\\system.valuetuple.4.3.0.nupkg.sha512",
+    "C:\\Users\\MPLopes\\.nuget\\packages\\system.windows.extensions\\5.0.0\\system.windows.extensions.5.0.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
@@ -197,5 +207,30 @@
     "C:\\Users\\MPLopes\\.nuget\\packages\\zenit.entityframeworkcore.migrations.postgresql\\1.0.7\\zenit.entityframeworkcore.migrations.postgresql.1.0.7.nupkg.sha512",
     "C:\\Users\\MPLopes\\.nuget\\packages\\zstdsharp.port\\0.7.3\\zstdsharp.port.0.7.3.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "message": "Package 'MercadoPago 1.0.4477.31589' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net8.0'. This package may not be fully compatible with your project.",
+      "projectPath": "D:\\PitfallServer\\Controllers\\Controllers.csproj",
+      "warningLevel": 1,
+      "filePath": "D:\\PitfallServer\\Controllers\\Controllers.csproj",
+      "libraryId": "MercadoPago",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "message": "Package 'RestSharp 102.7.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net8.0'. This package may not be fully compatible with your project.",
+      "projectPath": "D:\\PitfallServer\\Controllers\\Controllers.csproj",
+      "warningLevel": 1,
+      "filePath": "D:\\PitfallServer\\Controllers\\Controllers.csproj",
+      "libraryId": "RestSharp",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
 }

@@ -10,6 +10,9 @@ using Polly.Extensions.Http;
 using Repositorios;
 
 var builder = WebApplication.CreateBuilder(args);
+var accessToken = builder.Configuration["MercadoPago:AccessToken"]
+                  ?? Environment.GetEnvironmentVariable("MERCADOPAGO_ACCESS_TOKEN")
+                  ?? throw new InvalidOperationException("MercadoPago AccessToken não configurado.");
 // --- 🔹 Obter Connection Strings ---
 var sessionConnection = builder.Configuration.GetConnectionString("SessionConnection")
     ?? "Data Source=sessions.db"; // fallback para SQLite
@@ -34,6 +37,7 @@ builder.Services.AddSingleton(typeof(IUserRepositorio<User>), typeof(UserReposit
 builder.Services.AddSingleton(typeof(IWalletRepositorio<Wallet>), typeof(WalletRepositorio));
 builder.Services.AddSingleton(typeof(IWalletLedgerRepositorio<WalletLedger>), typeof(WalletLedgerRepositorio));
 builder.Services.AddScoped<UserRankingService>();
+builder.Services.AddHttpClient<IPaymentGateway, PaymentGateway>();
 builder.Services.AddSingleton(typeof(IRequestTransactionRepositorio<RequestTransaction>), typeof(RequestTransactionRepositorio));
 
 builder.Services.AddHttpClient<PixService>(c =>

@@ -331,6 +331,12 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "StackExchange.Redis": {
+              "target": "Package",
+              "version": "[2.6.122, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -408,6 +414,14 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "MercadoPago": {
+              "target": "Package",
+              "version": "[1.0.4477.31589, )"
+            },
+            "MercadoPagoCore": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
             "Microsoft.AspNetCore.Identity": {
               "target": "Package",
               "version": "[2.3.1, )"

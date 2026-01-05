@@ -4,6 +4,7 @@ namespace DTOs;
 
 public class PaymentRequestDto
 {
+    public string id { get; set; } = Guid.NewGuid().ToString();
     [JsonPropertyName("token")]
     public string Token { get; set; } = null!;
 
