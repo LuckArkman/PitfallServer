@@ -50,3 +50,16 @@ H:\Documentos\GitHub\PitfallServer\DTOs\obj\Debug\net8.0\DTOs.dll
 H:\Documentos\GitHub\PitfallServer\DTOs\obj\Debug\net8.0\refint\DTOs.dll
 H:\Documentos\GitHub\PitfallServer\DTOs\obj\Debug\net8.0\DTOs.pdb
 H:\Documentos\GitHub\PitfallServer\DTOs\obj\Debug\net8.0\ref\DTOs.dll
+D:\PitfallServer\DTOs\bin\Debug\net8.0\DTOs.deps.json
+D:\PitfallServer\DTOs\bin\Debug\net8.0\DTOs.dll
+D:\PitfallServer\DTOs\bin\Debug\net8.0\DTOs.pdb
+D:\PitfallServer\DTOs\obj\Debug\net8.0\DTOs.csproj.AssemblyReference.cache
+D:\PitfallServer\DTOs\obj\Debug\net8.0\DTOs.GeneratedMSBuildEditorConfig.editorconfig
+D:\PitfallServer\DTOs\obj\Debug\net8.0\DTOs.AssemblyInfoInputs.cache
+D:\PitfallServer\DTOs\obj\Debug\net8.0\DTOs.AssemblyInfo.cs
+D:\PitfallServer\DTOs\obj\Debug\net8.0\DTOs.csproj.CoreCompileInputs.cache
+D:\PitfallServer\DTOs\obj\Debug\net8.0\DTOs.sourcelink.json
+D:\PitfallServer\DTOs\obj\Debug\net8.0\DTOs.dll
+D:\PitfallServer\DTOs\obj\Debug\net8.0\refint\DTOs.dll
+D:\PitfallServer\DTOs\obj\Debug\net8.0\DTOs.pdb
+D:\PitfallServer\DTOs\obj\Debug\net8.0\ref\DTOs.dll
