@@ -11,7 +11,7 @@ public class Order
     public string UserId { get; set; }
 
     [BsonElement("items")]
-    public string transacao { get; set; } = "Consulta";
+    public string transacao { get; set; } = "Pix_IN";
 
     [BsonElement("totalAmount")]
     public decimal TotalAmount { get; set; }

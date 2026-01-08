@@ -14,6 +14,7 @@ namespace Services;
 public class PixService
 {
     private readonly IPixTransactionRepositorio<PixTransaction> _repositorio;
+    private readonly IPaymentGateway _paymentGateway;
     private readonly IRequestTransactionRepositorio<RequestTransaction> _repositorioRequestTransaction;
     private readonly HttpClient _http;
     private readonly IConfiguration _cfg;
@@ -24,12 +25,14 @@ public class PixService
 
     public PixService(
         IPixTransactionRepositorio<PixTransaction> repositorio,
+        IPaymentGateway paymentGateway,
         IRequestTransactionRepositorio<RequestTransaction> repositorioRequestTransaction,
         HttpClient http,
         IConfiguration cfg,
         WalletService walletService)
     {
         _repositorio = repositorio;
+        _paymentGateway = paymentGateway;
         _repositorioRequestTransaction = repositorioRequestTransaction;
         _http = http;
         _cfg = cfg;
@@ -88,48 +91,44 @@ public class PixService
             
             
         };
-        var json = JsonSerializer.Serialize(request);
-
-        using var content = new StringContent(
-            json,
-            Encoding.UTF8,
-            "application/json");
-
-        using var _response = await _http.PostAsync(
-            _cfg["kortexpay:BaseUrl"],
-            content,
-            CancellationToken.None);
-
-        if (!_response.IsSuccessStatusCode)
+        var order = new Order
         {
-            var error = await _response.Content.ReadAsStringAsync(CancellationToken.None);
-            throw new HttpRequestException(
-                $"Erro ao chamar API de pagamento: {_response.StatusCode} - {error}");
+            id = Guid.NewGuid().ToString(),
+            UserId = user.Id.ToString(),
+            TotalAmount = req.Amount,
+            PaymentMethod = "pix",
+            Status = "Pending",
+        };
+        var _pixDepositRequest = new PixDepositRequest(
+            req.Amount,
+            user.Name,
+            user.Email,
+            req.Document,
+            "00 90000-0000",
+            user.Email,
+            0
+        );
+        var _req = await _paymentGateway.CreatePaymentAsync(order, _pixDepositRequest, "pix");
+        if (_req != null)
+        {
+            var insert = await _repositorio.InsertOneAsync(new PixTransaction
+            {
+                Id = Guid.NewGuid(),
+                UserId = user.Id,
+                IdTransaction = _req.TransactionId,
+                Amount = req.Amount,
+                QrCode = _req.Details.PixQrCode,
+                QrCodeImageUrl = _req.Details.PixQrCodeImage,
+            });
+            return new PixCharge
+            {
+                Id = _req.TransactionId,
+                QrCodeImageUrl = _req.Details.PixQrCodeImage,
+                BrCode = _req.Details.PixQrCode,
+            };
         }
 
-        var responseJson = await _response.Content.ReadAsStringAsync(CancellationToken.None);
-        Console.WriteLine(responseJson);
-        var response = JsonSerializer.Deserialize<PixChargeResponse>(
-            responseJson,
-            new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
-        var insert = await _repositorio.InsertOneAsync(new PixTransaction
-        {
-            Id = Guid.NewGuid(),
-            UserId = user.Id,
-            IdTransaction = response.IdTransaction,
-            Amount = req.Amount,
-            QrCode = response.QrCode,
-            QrCodeImageUrl = response.QrCodeImageUrl,
-        });
-        return new PixCharge
-        {
-            Id = response.Charge.Id,
-            QrCodeImageUrl = response.Charge.QrCode,
-            BrCode = response.Charge.BrCode
-        };
+        return null;
     }
     public async Task<PixWithdrawResponse?> CreatePixWithdrawAsync(PixWithdrawRequest? req, User? user)
     {

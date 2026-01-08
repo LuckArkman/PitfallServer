@@ -1,22 +1,26 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "H:\\Documentos\\GitHub\\PitfallServer\\",
+  "WorkspaceRootPath": "D:\\PitfallServer\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{449E59D5-C738-42DE-B646-5A914FA75867}|Server\\Server.csproj|h:\\documentos\\github\\pitfallserver\\server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{449E59D5-C738-42DE-B646-5A914FA75867}|Server\\Server.csproj|solutionrelative:server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{6A62D945-C669-470F-B7ED-09AC0AB6953E}|Services\\Services.csproj|d:\\pitfallserver\\services\\pixservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A62D945-C669-470F-B7ED-09AC0AB6953E}|Services\\Services.csproj|solutionrelative:services\\pixservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D5C38835-EEFA-4427-A0F5-04992540944A}|Solution Items{D5C38835-EEFA-4427-A0F5-04992540944A}|H:\\Documentos\\GitHub\\PitfallServer\\compose.yaml||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{D5C38835-EEFA-4427-A0F5-04992540944A}|Solution Items{D5C38835-EEFA-4427-A0F5-04992540944A}|solutionrelative:compose.yaml||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{449E59D5-C738-42DE-B646-5A914FA75867}|Server\\Server.csproj|d:\\pitfallserver\\server\\server.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{449E59D5-C738-42DE-B646-5A914FA75867}|Server\\Server.csproj|solutionrelative:server\\server.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{449E59D5-C738-42DE-B646-5A914FA75867}|Server\\Server.csproj|h:\\documentos\\github\\pitfallserver\\server\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "AbsoluteMoniker": "D:0:0:{449E59D5-C738-42DE-B646-5A914FA75867}|Server\\Server.csproj|d:\\pitfallserver\\server\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{449E59D5-C738-42DE-B646-5A914FA75867}|Server\\Server.csproj|solutionrelative:server\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{449E59D5-C738-42DE-B646-5A914FA75867}|Server\\Server.csproj|h:\\documentos\\github\\pitfallserver\\server\\server.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{449E59D5-C738-42DE-B646-5A914FA75867}|Server\\Server.csproj|solutionrelative:server\\server.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+      "AbsoluteMoniker": "D:0:0:{D5C38835-EEFA-4427-A0F5-04992540944A}|Solution Items{D5C38835-EEFA-4427-A0F5-04992540944A}|D:\\PitfallServer\\compose.yaml||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{D5C38835-EEFA-4427-A0F5-04992540944A}|Solution Items{D5C38835-EEFA-4427-A0F5-04992540944A}|solutionrelative:compose.yaml||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{449E59D5-C738-42DE-B646-5A914FA75867}|Server\\Server.csproj|d:\\pitfallserver\\server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{449E59D5-C738-42DE-B646-5A914FA75867}|Server\\Server.csproj|solutionrelative:server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,28 +30,41 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "PixService.cs",
+              "DocumentMoniker": "D:\\PitfallServer\\Services\\PixService.cs",
+              "RelativeDocumentMoniker": "Services\\PixService.cs",
+              "ToolTip": "D:\\PitfallServer\\Services\\PixService.cs",
+              "RelativeToolTip": "Services\\PixService.cs",
+              "ViewState": "AgIAAGoAAAAAAAAAAADwv3EAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-06T23:44:58.874Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 2,
               "Title": "appsettings.json",
-              "DocumentMoniker": "H:\\Documentos\\GitHub\\PitfallServer\\Server\\appsettings.json",
+              "DocumentMoniker": "D:\\PitfallServer\\Server\\appsettings.json",
               "RelativeDocumentMoniker": "Server\\appsettings.json",
-              "ToolTip": "H:\\Documentos\\GitHub\\PitfallServer\\Server\\appsettings.json",
+              "ToolTip": "D:\\PitfallServer\\Server\\appsettings.json",
               "RelativeToolTip": "Server\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAWAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2025-12-27T14:23:18.351Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "compose.yaml",
-              "DocumentMoniker": "H:\\Documentos\\GitHub\\PitfallServer\\compose.yaml",
+              "DocumentMoniker": "D:\\PitfallServer\\compose.yaml",
               "RelativeDocumentMoniker": "compose.yaml",
-              "ToolTip": "H:\\Documentos\\GitHub\\PitfallServer\\compose.yaml",
+              "ToolTip": "D:\\PitfallServer\\compose.yaml",
               "RelativeToolTip": "compose.yaml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003775|",
@@ -56,33 +73,28 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "Program.cs",
-              "DocumentMoniker": "H:\\Documentos\\GitHub\\PitfallServer\\Server\\Program.cs",
+              "DocumentMoniker": "D:\\PitfallServer\\Server\\Program.cs",
               "RelativeDocumentMoniker": "Server\\Program.cs",
-              "ToolTip": "H:\\Documentos\\GitHub\\PitfallServer\\Server\\Program.cs",
+              "ToolTip": "D:\\PitfallServer\\Server\\Program.cs",
               "RelativeToolTip": "Server\\Program.cs",
-              "ViewState": "AgIAAEEAAAAAAAAAAAAiwEgAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAEgAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-27T14:19:15.707Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-27T14:19:15.707Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Server",
-              "DocumentMoniker": "H:\\Documentos\\GitHub\\PitfallServer\\Server\\Server.csproj",
+              "DocumentIndex": 1,
+              "Title": "Server.csproj",
+              "DocumentMoniker": "D:\\PitfallServer\\Server\\Server.csproj",
               "RelativeDocumentMoniker": "Server\\Server.csproj",
-              "ToolTip": "H:\\Documentos\\GitHub\\PitfallServer\\Server\\Server.csproj",
+              "ToolTip": "D:\\PitfallServer\\Server\\Server.csproj",
               "RelativeToolTip": "Server\\Server.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
               "WhenOpened": "2025-12-27T14:19:09.296Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
             }
           ]
         }
